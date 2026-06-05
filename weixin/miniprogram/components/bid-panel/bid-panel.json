@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "bottom-sheet": "/components/bottom-sheet/bottom-sheet",
+    "result-modal": "/components/result-modal/result-modal"
+  }
+}

@@ -1,0 +1,121 @@
+<!-- result-modal.wxml - 竞拍结果弹窗 -->
+<view class="result-modal {{visible ? 'show' : 'hide'}}" bind:touchmove="preventTouchMove">
+  <!-- 遮罩层 -->
+  <view class="mask" bind:tap="onMaskTap"></view>
+  
+  <!-- 彩带飘落动画（中标时显示） -->
+  <view class="confetti-container {{showCelebration ? 'active' : ''}}" wx:if="{{resultType === 'won'}}">
+    <view 
+      wx:for="{{confettiParticles}}" 
+      wx:key="id"
+      class="confetti-particle"
+      style="left: {{item.left}}%; animation-delay: {{item.delay}}s; animation-duration: {{item.duration}}s; background-color: {{item.color}}; width: {{item.size}}px; height: {{item.size * 0.6}}px; transform: rotate({{item.rotation}}deg);"
+    ></view>
+  </view>
+  
+  <!-- 弹窗内容 -->
+  <view class="modal-content {{showContent ? 'show' : 'hide'}}">
+    <!-- 关闭按钮 -->
+    <view class="close-btn" bind:tap="onClose">
+      <text class="close-icon">✕</text>
+    </view>
+    
+    <!-- 中标状态 -->
+    <block wx:if="{{resultType === 'won'}}">
+      <!-- 庆祝标题 -->
+      <view class="result-header won">
+        <view class="trophy-icon">🏆</view>
+        <view class="result-title">恭喜中标！</view>
+        <view class="result-subtitle">您已成功竞拍该商品</view>
+      </view>
+      
+      <!-- 商品信息 -->
+      <view class="product-info">
+        <image class="product-image" src="{{result.image}}" mode="aspectFill" lazy-load></image>
+        <view class="product-detail">
+          <view class="product-title">{{result.title}}</view>
+          <view class="final-price">
+            <text class="price-label">成交价</text>
+            <text class="price-value">¥{{result.finalPrice}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 操作按钮 -->
+      <view class="action-buttons">
+        <button class="btn btn-primary" bind:tap="onConfirmPay">
+          <text>确认并支付</text>
+        </button>
+        <button class="btn btn-secondary" bind:tap="onViewOrder">
+          <text>查看订单</text>
+        </button>
+      </view>
+    </block>
+    
+    <!-- 未中标状态 -->
+    <block wx:elif="{{resultType === 'lost'}}">
+      <!-- 遗憾标题 -->
+      <view class="result-header lost">
+        <view class="sad-icon">😔</view>
+        <view class="result-title">很遗憾，未中标</view>
+        <view class="result-subtitle">下次再接再厉</view>
+      </view>
+      
+      <!-- 商品信息 -->
+      <view class="product-info">
+        <image class="product-image" src="{{result.image}}" mode="aspectFill" lazy-load></image>
+        <view class="product-detail">
+          <view class="product-title">{{result.title}}</view>
+          <view class="final-price">
+            <text class="price-label">成交价</text>
+            <text class="price-value">¥{{result.finalPrice}}</text>
+          </view>
+          <view class="winner-info" wx:if="{{result.winnerNickname}}">
+            <text class="winner-label">中标者</text>
+            <text class="winner-name">{{result.winnerNickname}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 操作按钮 -->
+      <view class="action-buttons">
+        <button class="btn btn-primary" bind:tap="onContinueWatch">
+          <text>继续围观</text>
+        </button>
+      </view>
+    </block>
+    
+    <!-- 竞拍结束状态（未参与） -->
+    <block wx:else>
+      <view class="result-header ended">
+        <view class="end-icon">🔔</view>
+        <view class="result-title">竞拍已结束</view>
+        <view class="result-subtitle">感谢您的关注</view>
+      </view>
+      
+      <!-- 商品信息 -->
+      <view class="product-info">
+        <image class="product-image" src="{{result.image}}" mode="aspectFill" lazy-load></image>
+        <view class="product-detail">
+          <view class="product-title">{{result.title}}</view>
+          <view class="final-price">
+            <text class="price-label">成交价</text>
+            <text class="price-value">¥{{result.finalPrice}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 操作按钮 -->
+      <view class="action-buttons">
+        <button class="btn btn-primary" bind:tap="onContinueWatch">
+          <text>浏览更多</text>
+        </button>
+      </view>
+    </block>
+    
+    <!-- 自动关闭倒计时 -->
+    <view class="auto-close-tip">
+      <text class="auto-close-text">{{countdown}}秒后自动关闭</text>
+    </view>
+  </view>
+</view>

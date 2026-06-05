@@ -1,0 +1,136 @@
+<!-- 帮助与反馈页面 -->
+<view class="container">
+  <!-- 顶部Banner -->
+  <view class="header-banner">
+    <view class="banner-icon">❓</view>
+    <text class="banner-title">帮助与反馈</text>
+    <text class="banner-desc">我们随时为您提供帮助</text>
+  </view>
+
+  <!-- 常见问题FAQ -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">常见问题</text>
+      <text class="section-subtitle">快速找到您需要的答案</text>
+    </view>
+    
+    <view class="faq-list">
+      <view 
+        wx:for="{{faqList}}" 
+        wx:key="id"
+        class="faq-item {{item.expanded ? 'expanded' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onToggleFAQ"
+      >
+        <view class="faq-header">
+          <text class="faq-question">{{item.question}}</text>
+          <view class="faq-arrow {{item.expanded ? 'rotate' : ''}}">
+            <text>›</text>
+          </view>
+        </view>
+        <view class="faq-answer" wx:if="{{item.expanded}}">
+          <text>{{item.answer}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 联系我们 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">联系我们</text>
+      <text class="section-subtitle">多种方式为您服务</text>
+    </view>
+    
+    <view class="contact-list">
+      <view 
+        wx:for="{{contactMethods}}" 
+        wx:key="id"
+        class="contact-item"
+        data-action="{{item.action}}"
+        bindtap="onContactAction"
+      >
+        <view class="contact-icon">
+          <text>{{item.icon}}</text>
+        </view>
+        <view class="contact-info">
+          <text class="contact-title">{{item.title}}</text>
+          <text class="contact-desc">{{item.desc}}</text>
+        </view>
+        <view class="contact-arrow">
+          <text>›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 反馈表单 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">意见反馈</text>
+      <text class="section-subtitle">您的建议是我们进步的动力</text>
+    </view>
+    
+    <view class="feedback-form">
+      <!-- 反馈类型 -->
+      <view class="form-item">
+        <text class="form-label">反馈类型</text>
+        <picker 
+          mode="selector" 
+          range="{{feedbackForm.types}}" 
+          value="{{feedbackForm.typeIndex}}"
+          bindchange="onFeedbackTypeChange"
+        >
+          <view class="form-picker">
+            <text class="picker-text">{{feedbackForm.types[feedbackForm.typeIndex]}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 反馈内容 -->
+      <view class="form-item">
+        <text class="form-label">反馈内容</text>
+        <textarea 
+          class="form-textarea"
+          placeholder="请详细描述您遇到的问题或建议（至少10个字）"
+          value="{{feedbackForm.content}}"
+          bindinput="onFeedbackContentInput"
+          maxlength="500"
+          auto-height
+        />
+        <text class="form-counter">{{feedbackForm.content.length}}/500</text>
+      </view>
+
+      <!-- 联系方式 -->
+      <view class="form-item">
+        <text class="form-label">联系方式（选填）</text>
+        <input 
+          class="form-input"
+          placeholder="手机号或邮箱，方便我们联系您"
+          value="{{feedbackForm.contact}}"
+          bindinput="onContactInput"
+          type="text"
+        />
+      </view>
+
+      <!-- 提交按钮 -->
+      <button 
+        class="submit-btn {{submitting ? 'loading' : ''}} {{submitted ? 'success' : ''}}"
+        bindtap="onSubmitFeedback"
+        disabled="{{submitting}}"
+      >
+        <text wx:if="{{submitting}}">提交中...</text>
+        <text wx:elif="{{submitted}}">✓ 提交成功</text>
+        <text wx:else>提交反馈</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 底部链接 -->
+  <view class="footer-links">
+    <text class="link" bindtap="onViewAgreement">用户协议</text>
+    <text class="divider">|</text>
+    <text class="link" bindtap="onViewPrivacy">隐私政策</text>
+  </view>
+</view>

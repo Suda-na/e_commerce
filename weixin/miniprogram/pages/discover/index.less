@@ -1,0 +1,326 @@
+@import '../../styles/variables.less';
+
+/**
+ * 发现页面样式
+ * 商家列表展示
+ */
+
+/* ==================== 页面容器 ==================== */
+
+.discover-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: @background-color;
+}
+
+/* ==================== 搜索栏 ==================== */
+
+.search-bar {
+  padding: @spacing-sm @spacing-md;
+  padding-top: calc(@spacing-sm + @safe-area-inset-top);
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: @glass-blur;
+  -webkit-backdrop-filter: @glass-blur;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  height: 72rpx;
+  padding: 0 @spacing-md;
+  background-color: @background-color;
+  border-radius: 36rpx;
+}
+
+.search-icon {
+  font-size: @font-size-md;
+  margin-right: 12rpx;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  font-size: @font-size-md;
+  color: @text-color;
+  height: 72rpx;
+}
+
+.clear-btn {
+  width: @spacing-xl;
+  height: @spacing-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: @overlay-light;
+  border-radius: @border-radius-round;
+  flex-shrink: 0;
+
+  &:active {
+    opacity: 0.7;
+  }
+}
+
+.clear-icon {
+  font-size: @font-size-xs;
+  color: @text-color-secondary;
+}
+
+/* ==================== 页面标题 ==================== */
+
+.page-header {
+  padding: @spacing-md @spacing-lg @spacing-sm;
+  background-color: @white;
+  border-bottom: @border-width-thin solid #f0f0f0;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: @spacing-lg;
+    width: 60rpx;
+    height: @border-width-thick;
+    background: @gradient-primary;
+    border-radius: 2rpx;
+  }
+}
+
+.page-title {
+  font-size: @font-size-xl;
+  font-weight: @font-weight-heavy;
+  color: #1a1a2e;
+  display: block;
+}
+
+.page-subtitle {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+  margin-top: @spacing-xs;
+  display: block;
+}
+
+/* ==================== 商家列表 ==================== */
+
+.merchant-list {
+  flex: 1;
+  padding: @spacing-md;
+  padding-bottom: calc(@spacing-md + @safe-area-inset-bottom);
+}
+
+/* ==================== 加载状态 ==================== */
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: @border-width-thick solid #f0f0f0;
+  border-top-color: @primary-color;
+  border-radius: @border-radius-round;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 26rpx;
+  color: @text-color-disabled;
+  margin-top: @spacing-md;
+}
+
+/* ==================== 空状态 ==================== */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: @spacing-md;
+}
+
+.empty-title {
+  font-size: 30rpx;
+  font-weight: @font-weight-bold;
+  color: @text-color;
+  margin-bottom: 12rpx;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: @text-color-disabled;
+}
+
+/* ==================== 商家网格 ==================== */
+
+@spacing-card-gap: 20rpx;
+
+.merchant-grid {
+  display: flex;
+  flex-direction: column;
+  gap: @spacing-card-gap;
+}
+
+/* ==================== 商家卡片 ==================== */
+
+.merchant-card {
+  display: flex;
+  align-items: center;
+  padding: @spacing-md;
+  background-color: @white;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  transition: all 0.25s ease;
+  animation: listItemIn 0.35s ease-out both;
+
+  &:nth-child(1) { animation-delay: 0s; }
+  &:nth-child(2) { animation-delay: 0.08s; }
+  &:nth-child(3) { animation-delay: 0.16s; }
+  &:nth-child(4) { animation-delay: 0.24s; }
+  &:nth-child(5) { animation-delay: 0.32s; }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* 商家头像 */
+.merchant-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  margin-right: @spacing-md;
+}
+
+.merchant-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 20rpx;
+  background-color: #f0f0f0;
+}
+
+/* 直播指示器 */
+.live-indicator {
+  position: absolute;
+  bottom: -4rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  padding: 4rpx @border-radius-md;
+  background: linear-gradient(135deg, @color-live-red 0%, #FF6B6B 100%);
+  border-radius: @border-radius-md;
+  box-shadow: 0 2rpx 8rpx @color-live-red-glow;
+  animation: livePulse 1.2s ease-in-out infinite;
+}
+
+.live-dot {
+  width: 10rpx;
+  height: 10rpx;
+  background-color: @white;
+  border-radius: @border-radius-round;
+  animation: liveDotPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes liveDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+@keyframes livePulse {
+  0%, 100% { box-shadow: 0 2rpx 8rpx @color-live-red-glow; }
+  50% { box-shadow: 0 2rpx 16rpx @color-live-red-glow; }
+}
+
+.live-text {
+  font-size: 16rpx;
+  color: @white;
+  font-weight: @font-weight-heavy;
+  letter-spacing: 2rpx;
+}
+
+/* 商家信息 */
+.merchant-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.merchant-name {
+  font-size: 30rpx;
+  font-weight: @font-weight-bold;
+  color: #1a1a2e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.merchant-stats {
+  display: flex;
+  align-items: center;
+  gap: @spacing-sm;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  font-size: 22rpx;
+  color: @text-color-secondary;
+  background-color: @background-color;
+  padding: 4rpx @border-radius-md;
+  border-radius: @border-radius-sm;
+
+  &.active {
+    color: @primary-color;
+    background-color: @primary-color-bg;
+  }
+}
+
+.merchant-enter {
+  font-size: @font-size-sm;
+  color: @primary-color;
+  font-weight: @font-weight-medium;
+}
+
+/* ==================== 列表底部 ==================== */
+
+.list-footer {
+  text-align: center;
+  padding: @spacing-lg 0 @spacing-xxl;
+  padding-bottom: calc(@spacing-xxl + @safe-area-inset-bottom);
+}
+
+.footer-text {
+  font-size: @font-size-sm;
+  color: #ccc;
+}
+
+/* ==================== 入场动画 ==================== */
+
+@keyframes listItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(@spacing-md);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

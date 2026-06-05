@@ -1,0 +1,59 @@
+@import '../../styles/variables.less';
+
+.countdown-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.countdown-segment {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.countdown-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44rpx;
+  height: 44rpx;
+  padding: 0 @spacing-xs;
+  background-color: fade(@black, 65%);
+  border-radius: @border-radius-sm;
+  font-family: 'DIN Alternate', 'Roboto Condensed', Arial, sans-serif;
+  font-size: 26rpx;
+  font-weight: @font-weight-heavy;
+  color: @auction-gold;
+  line-height: 1;
+}
+
+.countdown-unit {
+  font-size: @font-size-xs;
+  color: fade(@white, 70%);
+  margin-left: 2rpx;
+}
+
+.countdown-separator {
+  font-size: @font-size-sm;
+  color: fade(@white, 50%);
+  font-weight: @font-weight-heavy;
+  margin: 0 2rpx;
+}
+
+.countdown-finished {
+  font-size: @font-size-sm;
+  color: fade(@white, 50%);
+}
+
+/* 紧迫模式 - 最后60秒 */
+.countdown-urgent .countdown-num {
+  background-color: fade(@primary-color, 85%);
+  color: @white;
+  animation: countPulse 1s ease-in-out infinite;
+}
+
+@keyframes countPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}

@@ -1,0 +1,212 @@
+<!--
+  直播间主页面布局
+  结构（参考设计稿 - 移动端单列布局）:
+  1. 自定义导航栏 - 主播名/会员标识/观看人数（半透明毛玻璃效果）
+  2. 视频播放区域 - 全屏
+  3. 弹幕滚动区域 - 半透明背景，从下往上滚
+  4. 右下角竞拍入口按钮
+  5. 底部输入工具栏 - 固定
+-->
+<view class="live-room">
+
+  <!-- ===== 全屏视频区域 ===== -->
+  <video
+    id="liveVideo"
+    class="live-video"
+    src="{{videoSrc}}"
+    poster="{{videoPoster}}"
+    autoplay
+    loop
+    muted="{{isMuted}}"
+    show-fullscreen-btn="{{false}}"
+    show-play-btn="{{false}}"
+    show-center-play-btn="{{false}}"
+    controls="{{false}}"
+    object-fit="cover"
+    enable-progress-gesture="{{false}}"
+    binderror="onVideoError"
+    bindtimeupdate="onVideoTimeUpdate"
+    bindplay="onVideoPlay"
+    bindpause="onVideoPause"
+    bindended="onVideoEnded"
+    bindfullscreenchange="onVideoFullscreenChange"
+    bindprogress="onVideoProgress"
+  />
+
+  <!-- ===== 视频叠加层 ===== -->
+  <view class="overlay-layer" bindtap="onTapVideoArea">
+
+    <!-- ========== 顶部导航栏（商家信息栏 - 毛玻璃效果）========== -->
+    <view class="top-anchor-bar">
+      <view class="anchor-bar-content">
+        <!-- 左侧：商家信息 -->
+        <view class="anchor-info-row">
+          <!-- 返回按钮 -->
+          <view class="back-btn" bindtap="onTapBack">
+            <text class="back-icon">←</text>
+          </view>
+          <!-- 商家头像 -->
+          <image
+            class="anchor-avatar"
+            src="{{merchantInfo.avatar || '/assets/icons/default-avatar.png'}}"
+            mode="aspectFill"
+            lazy-load
+          />
+          <!-- 商家名称 -->
+          <text class="anchor-name">{{merchantInfo.username || '商家'}}</text>
+          <!-- 观看人数 -->
+          <view class="viewer-count">
+            <text class="viewer-icon">👥</text>
+            <text class="viewer-num">{{onlineCountText}}人观看</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ========== 中间弹幕区域（组件化） ========== -->
+    <view class="danmaku-area">
+      <danmaku
+        messages="{{danmakuMessages}}"
+        maxVisible="{{5}}"
+        showAvatar="{{false}}"
+        showLevel="{{true}}"
+      />
+    </view>
+
+    <!-- ========== 中下区域：当前竞拍信息（可选显示）========== -->
+    <view class="current-auction-overlay" wx:if="{{currentAuction}}" bindtap="onTapAuctionCard">
+      <view class="auction-quick-info">
+        <text class="auction-price-current">当前价 ¥{{currentAuction.currentPrice}}</text>
+        <!-- 倒计时显示 -->
+        <view class="auction-countdown-row">
+          <text class="auction-countdown {{countdownTimeLeft < 60 ? 'countdown-urgent' : ''}}">{{countdownText}}</text>
+        </view>
+        <text class="auction-bid-hint">{{currentAuction.bidCount}}次出价</text>
+      </view>
+      <!-- 延时动画提示 -->
+      <view class="delay-badge" wx:if="{{showDelayBadge}}">
+        <text class="delay-badge-text">+{{delayBadgeSeconds}}s</text>
+      </view>
+    </view>
+
+    <!-- ========== 视频控制层（点击视频时显示）========== -->
+    <view class="video-controls-overlay" wx:if="{{showVideoControls}}">
+      <!-- 播放/暂停 -->
+      <view class="ctrl-btn ctrl-play" bindtap="onTapPlayPause">
+        <text class="ctrl-icon">{{isPlaying ? '⏸' : '▶'}}</text>
+      </view>
+      <!-- 全屏 -->
+      <view class="ctrl-btn ctrl-fullscreen" bindtap="onTapFullscreen">
+        <text class="ctrl-icon">{{isFullscreen ? '⤓' : '⤢'}}</text>
+      </view>
+    </view>
+
+    <!-- ========== 右下角：竞拍入口按钮 ========== -->
+    <view class="auction-entry-float" bindtap="onTapAuctionList">
+      <view class="auction-float-btn">
+        <text class="float-icon">🔨</text>
+        <text class="float-text">竞拍</text>
+      </view>
+      <!-- 竞拍数量角标 -->
+      <view class="float-badge" wx:if="{{activeAuctionCount > 0}}">
+        <text>{{activeAuctionCount}}</text>
+      </view>
+    </view>
+
+    <!-- ========== 底部工具栏 ========== -->
+    <view class="bottom-toolbar">
+      <!-- 评论输入区 -->
+      <view class="comment-input-wrapper" bindtap="onTapCommentInput">
+        <text class="comment-placeholder">说点什么...</text>
+      </view>
+
+      <!-- 工具按钮组 -->
+      <view class="toolbar-actions">
+        <!-- 收藏商家 -->
+        <view class="action-btn" bindtap="onTapFavorite">
+          <text class="action-icon {{isFavorited ? 'favorited' : ''}}">{{isFavorited ? '❤️' : '🤍'}}</text>
+        </view>
+        <!-- 礼物 -->
+        <view class="action-btn" bindtap="onTapGift">
+          <text class="action-icon">🎁</text>
+        </view>
+        <!-- 分享 -->
+        <button class="action-btn share-action" open-type="share">
+          <text class="action-icon">✉️</text>
+        </button>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- ===== 评论输入弹出层 ===== -->
+  <view class="popup-mask" wx:if="{{showCommentInput}}" bindtap="onCloseCommentInput" />
+  <view class="comment-popup {{showCommentInput ? 'show' : ''}}">
+    <view class="popup-input-row">
+      <input
+        class="popup-input"
+        placeholder="输入评论内容..."
+        value="{{commentText}}"
+        bindinput="onCommentInput"
+        bindconfirm="onSendComment"
+        focus="{{showCommentInput}}"
+        maxlength="200"
+        confirm-type="send"
+        confirm-hold
+      />
+      <view class="popup-send-btn {{commentText.length > 0 ? 'active' : ''}}" bindtap="onSendComment">
+        <text>发送</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 更多操作弹出层 ===== -->
+  <view class="popup-mask" wx:if="{{showMoreActions}}" bindtap="onCloseMoreActions" />
+  <view class="more-actions-sheet {{showMoreActions ? 'show' : ''}}">
+    <view class="sheet-item" bindtap="onActionReport">
+      <text>举报</text>
+    </view>
+    <view class="sheet-item" bindtap="onActionBlacklist">
+      <text>屏蔽主播</text>
+    </view>
+    <view class="sheet-item" bindtap="onActionCopyLink">
+      <text>复制链接</text>
+    </view>
+    <view class="sheet-cancel" bindtap="onCloseMoreActions">
+      <text>取消</text>
+    </view>
+  </view>
+
+  <!-- ===== 竞拍列表BottomSheet ===== -->
+  <auction-list-sheet
+    visible="{{showAuctionListSheet}}"
+    liveRoomId="{{liveRoomId}}"
+    merchantId="{{merchantId}}"
+    bind:close="onCloseAuctionListSheet"
+    bind:cardtap="onTapAuctionCardFromSheet"
+    bind:bid="onTapBidFromSheet"
+  />
+
+  <!-- ===== 竞拍详情弹窗 ===== -->
+  <auction-detail-sheet
+    visible="{{showAuctionDetail}}"
+    auctionId="{{selectedAuctionId}}"
+    bind:close="onCloseAuctionDetail"
+    bind:bid="onBidFromDetail"
+  />
+
+  <!-- ===== 出价面板 ===== -->
+  <bid-panel
+    visible="{{showBidPanel}}"
+    auction="{{selectedAuction}}"
+    bind:close="onCloseBidPanel"
+    bind:success="onBidSuccess"
+  />
+
+  <!-- ===== 加载状态 ===== -->
+  <view class="loading-overlay" wx:if="{{isLoading}}">
+    <view class="loading-spinner" />
+    <text class="loading-text">正在进入直播间...</text>
+  </view>
+
+</view>

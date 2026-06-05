@@ -1,0 +1,622 @@
+/**
+ * ============================================================
+ * 动画关键帧 - 基于 UI/UX 设计规范 v2.0
+ * 使用 CSS 自定义属性（var）引用 variables.wxss 中的变量
+ * ============================================================
+ */
+
+/* ===== 1. 过渡动画 ===== */
+
+/* 淡入 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+/* 淡出 */
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.fade-out {
+  animation: fadeOut var(--duration-normal) var(--ease-out);
+}
+
+/* 从下方滑入 */
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.slide-in-up {
+  animation: slideInUp var(--duration-normal) var(--ease-out);
+}
+
+/* 从上方滑入 */
+@keyframes slideInDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.slide-in-down {
+  animation: slideInDown var(--duration-normal) var(--ease-out);
+}
+
+/* 从左侧滑入 */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.slide-in-left {
+  animation: slideInLeft var(--duration-normal) var(--ease-out);
+}
+
+/* 从右侧滑入 */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.slide-in-right {
+  animation: slideInRight var(--duration-normal) var(--ease-out);
+}
+
+/* 从下方滑出 */
+@keyframes slideOutDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+.slide-out-down {
+  animation: slideOutDown var(--duration-normal) var(--ease-in);
+}
+
+/* 缩放弹入 */
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.zoom-in {
+  animation: zoomIn var(--duration-normal) var(--ease-bounce);
+}
+
+/* 缩放弹出 */
+@keyframes zoomOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+.zoom-out {
+  animation: zoomOut var(--duration-normal) var(--ease-in);
+}
+
+/* ===== 2. 反馈动画 ===== */
+
+/* 弹跳 */
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translate3d(0, -30rpx, 0);
+  }
+  70% {
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    transform: translate3d(0, -15rpx, 0);
+  }
+  90% {
+    transform: translate3d(0, -4rpx, 0);
+  }
+}
+.bounce {
+  animation: bounce 1s;
+}
+
+/* 闪烁 */
+@keyframes flash {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+.flash {
+  animation: flash 1s;
+}
+
+/* 脉冲 */
+@keyframes pulse {
+  0% { transform: scale3d(1, 1, 1); }
+  50% { transform: scale3d(1.05, 1.05, 1.05); }
+  100% { transform: scale3d(1, 1, 1); }
+}
+.pulse {
+  animation: pulse 1s infinite;
+}
+
+/* 摇摆 */
+@keyframes shake {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  10%, 30%, 50%, 70%, 90% { transform: translate3d(-10rpx, 0, 0); }
+  20%, 40%, 60%, 80% { transform: translate3d(10rpx, 0, 0); }
+}
+.shake {
+  animation: shake 1s;
+}
+
+/* 旋转 */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* 旋转弹入 */
+@keyframes rotateIn {
+  from {
+    transform-origin: center;
+    transform: rotate3d(0, 0, 1, -200deg);
+    opacity: 0;
+  }
+  to {
+    transform-origin: center;
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+.rotate-in {
+  animation: rotateIn var(--duration-normal) var(--ease-out);
+}
+
+/* 心跳 */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.3); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.3); }
+  70% { transform: scale(1); }
+}
+.heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+/* ===== 3. 庆祝动画 ===== */
+
+/* 纸屑下落 */
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+.confetti-fall {
+  animation: confettiFall 3s ease-in forwards;
+}
+
+/* 星光闪烁 */
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+.sparkle {
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+/* 恭喜弹入 */
+@keyframes celebrationBounce {
+  0% {
+    transform: scale(0) rotate(-10deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(5deg);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.9) rotate(-3deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+.celebration-bounce {
+  animation: celebrationBounce 0.8s var(--ease-bounce) forwards;
+}
+
+/* 奖杯弹跳 */
+@keyframes trophyBounce {
+  0% { transform: translateY(-200rpx) scale(0); opacity: 0; }
+  60% { transform: translateY(20rpx) scale(1.1); opacity: 1; }
+  80% { transform: translateY(-10rpx) scale(0.95); }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+.trophy-bounce {
+  animation: trophyBounce 1s var(--ease-bounce) forwards;
+}
+
+/* 光环扩散 */
+@keyframes haloExpand {
+  0% {
+    transform: scale(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+.halo-expand {
+  animation: haloExpand 1.5s ease-out infinite;
+}
+
+/* ===== 4. 页面过渡 ===== */
+
+/* 页面进入（从右） */
+@keyframes pageEnterRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.page-enter-right {
+  animation: pageEnterRight var(--duration-normal) var(--ease-out);
+}
+
+/* 页面退出（到左） */
+@keyframes pageExitLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-30%);
+    opacity: 0.5;
+  }
+}
+.page-exit-left {
+  animation: pageExitLeft var(--duration-normal) var(--ease-in);
+}
+
+/* 底部面板进入 */
+@keyframes panelSlideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.panel-slide-up {
+  animation: panelSlideUp var(--duration-normal) var(--ease-out);
+}
+
+/* 底部面板退出 */
+@keyframes panelSlideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+.panel-slide-down {
+  animation: panelSlideDown var(--duration-fast) var(--ease-in);
+}
+
+/* 遮罩淡入 */
+@keyframes maskFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.mask-fade-in {
+  animation: maskFadeIn var(--duration-normal) var(--ease-out);
+}
+
+/* 遮罩淡出 */
+@keyframes maskFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.mask-fade-out {
+  animation: maskFadeOut var(--duration-fast) var(--ease-in);
+}
+
+/* ===== 5. 直播间专用动画 ===== */
+
+/* 价格变化闪烁 */
+@keyframes priceFlash {
+  0% { color: var(--color-text-primary); transform: scale(1); }
+  50% { color: var(--color-warning); transform: scale(1.15); }
+  100% { color: var(--color-primary); transform: scale(1); }
+}
+.price-flash {
+  animation: priceFlash var(--duration-bounce) var(--ease-bounce);
+}
+
+/* 出价成功 */
+@keyframes bidSuccess {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.bid-success {
+  animation: bidSuccess 0.6s var(--ease-bounce);
+}
+
+/* 出价被超越抖动 */
+@keyframes outbidShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-8rpx); }
+  20%, 40%, 60%, 80% { transform: translateX(8rpx); }
+}
+.outbid-shake {
+  animation: outbidShake 0.5s var(--ease-default);
+}
+
+/* 倒计时圆环 */
+@keyframes countdownCircle {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: 283; }
+}
+.countdown-circle {
+  animation: countdownCircle linear forwards;
+}
+
+/* 弹幕滚动 */
+@keyframes danmakuScroll {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
+.danmaku-scroll {
+  animation: danmakuScroll 8s linear;
+}
+
+/* 渐变背景流动 */
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.gradient-flow {
+  background-size: 200% 200%;
+  animation: gradientFlow 3s ease infinite;
+}
+
+/* 在线人数更新 */
+@keyframes countUpdate {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); color: var(--color-warning); }
+  100% { transform: scale(1); }
+}
+.count-update {
+  animation: countUpdate var(--duration-normal) var(--ease-bounce);
+}
+
+/* ===== 6. 加载动画 ===== */
+
+/* 骨架屏闪烁 */
+@keyframes skeletonPulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+.skeleton-pulse {
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+/* 加载点跳动 */
+@keyframes dotBounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.dot-bounce-1 { animation: dotBounce 1.4s ease-in-out infinite; }
+.dot-bounce-2 { animation: dotBounce 1.4s ease-in-out 0.16s infinite; }
+.dot-bounce-3 { animation: dotBounce 1.4s ease-in-out 0.32s infinite; }
+
+/* 加载旋转器 */
+@keyframes loaderSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.loader-spin {
+  animation: loaderSpin 0.8s linear infinite;
+}
+
+/* ===== 7. 通知动画 ===== */
+
+/* 通知从顶部滑入 */
+@keyframes notifySlideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.notify-slide-in {
+  animation: notifySlideIn var(--duration-normal) var(--ease-out);
+}
+
+/* 通知从顶部滑出 */
+@keyframes notifySlideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+.notify-slide-out {
+  animation: notifySlideOut var(--duration-fast) var(--ease-in);
+}
+
+/* SnackBar 从底部弹入 */
+@keyframes snackbarEnter {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.snackbar-enter {
+  animation: snackbarEnter var(--duration-normal) var(--ease-bounce);
+}
+
+/* SnackBar 从底部退出 */
+@keyframes snackbarExit {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+.snackbar-exit {
+  animation: snackbarExit var(--duration-fast) var(--ease-in);
+}
+
+/* ===== 8. 微交互动画 ===== */
+
+/* 列表项依次入场 */
+@keyframes listItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(24rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.list-item-in {
+  animation: listItemIn 0.35s var(--ease-out) both;
+}
+
+/* 卡片微浮起 */
+@keyframes cardFloat {
+  from {
+    box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  }
+  to {
+    box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+    transform: translateY(-4rpx);
+  }
+}
+
+.card-float:active {
+  animation: cardFloat 0.2s var(--ease-out) both;
+}
+
+/* 按钮涟漪效果（视觉模拟） */
+@keyframes btnRipple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 16rpx rgba(255, 77, 79, 0);
+  }
+}
+
+.btn-ripple:active {
+  animation: btnRipple 0.4s ease-out;
+}
+
+/* 数字跳动 */
+@keyframes numberBounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.15); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.number-bounce {
+  animation: numberBounce 0.4s var(--ease-out);
+}
+
+/* 骨架屏微光优化 */
+@keyframes shimmerSmooth {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-smooth {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 37%, #f0f0f0 63%);
+  background-size: 200% 100%;
+  animation: shimmerSmooth 1.8s ease-in-out infinite;
+}

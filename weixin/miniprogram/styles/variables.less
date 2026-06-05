@@ -1,0 +1,188 @@
+/* variables.less */
+/* 全局样式变量 */
+
+/* 颜色变量 */
+@primary-color: #FF4D4F;
+@primary-color-light: #FF7875;
+@primary-color-dark: #D9363E;
+@primary-color-bg: rgba(255, 77, 79, 0.1);
+
+@success-color: #52C41A;
+@success-color-light: #95DE64;
+@success-color-dark: #389E0D;
+@success-color-bg: rgba(82, 196, 26, 0.1);
+
+@warning-color: #FAAD14;
+@warning-color-light: #FFD666;
+@warning-color-dark: #D48806;
+@warning-color-bg: rgba(250, 173, 20, 0.1);
+
+@error-color: #FF4D4F;
+@error-color-light: #FF7875;
+@error-color-dark: #D9363E;
+@error-color-bg: rgba(255, 77, 79, 0.1);
+
+@info-color: #1890FF;
+@info-color-light: #69C0FF;
+@info-color-dark: #096DD9;
+@info-color-bg: rgba(24, 144, 255, 0.1);
+
+/* 中性色 */
+@text-color: #333333;
+@text-color-secondary: #666666;
+@text-color-disabled: #999999;
+@text-color-inverse: #FFFFFF;
+
+@background-color: #F5F5F5;
+@background-color-light: #FAFAFA;
+@background-color-dark: #E8E8E8;
+
+@border-color: #EEEEEE;
+@border-color-light: #F5F5F5;
+@border-color-dark: #D9D9D9;
+
+@white: #FFFFFF;
+@black: #000000;
+
+/* 阴影 */
+@shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+@shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+@shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+@shadow-xl: 0 8px 24px rgba(0, 0, 0, 0.2);
+
+/* 字体大小 */
+@font-size-xxs: 16rpx;
+@font-size-xs: 20rpx;
+@font-size-sm: 24rpx;
+@font-size-md: 28rpx;
+@font-size-lg: 32rpx;
+@font-size-xl: 36rpx;
+@font-size-xxl: 40rpx;
+@font-size-title: 44rpx;
+@font-size-heading: 48rpx;
+
+/* 字体粗细 */
+@font-weight-light: 300;
+@font-weight-normal: 400;
+@font-weight-medium: 500;
+@font-weight-bold: 600;
+@font-weight-heavy: 700;
+
+/* 行高 */
+@line-height-tight: 1.2;
+@line-height-normal: 1.5;
+@line-height-loose: 1.8;
+
+/* 间距 */
+@spacing-xs: 8rpx;
+@spacing-sm: 16rpx;
+@spacing-md: 24rpx;
+@spacing-lg: 32rpx;
+@spacing-xl: 40rpx;
+@spacing-xxl: 48rpx;
+@spacing-xxxl: 64rpx;
+
+/* 边框圆角 */
+@border-radius-xs: 4rpx;
+@border-radius-sm: 8rpx;
+@border-radius-md: 12rpx;
+@border-radius-lg: 16rpx;
+@border-radius-xl: 24rpx;
+@border-radius-xxl: 32rpx;
+@border-radius-round: 50%;
+
+/* 边框宽度 */
+@border-width-thin: 1rpx;
+@border-width-normal: 2rpx;
+@border-width-thick: 4rpx;
+
+/* 动画时间 */
+@animation-duration-fast: 0.1s;
+@animation-duration-normal: 0.3s;
+@animation-duration-slow: 0.5s;
+
+/* 动画函数 */
+@animation-ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+@animation-ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+@animation-ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+@animation-ease-linear: linear;
+
+/* 断点 */
+@breakpoint-sm: 576px;
+@breakpoint-md: 768px;
+@breakpoint-lg: 992px;
+@breakpoint-xl: 1200px;
+
+/* 安全区域 */
+@safe-area-inset-top: env(safe-area-inset-top);
+@safe-area-inset-bottom: env(safe-area-inset-bottom);
+@safe-area-inset-left: env(safe-area-inset-left);
+@safe-area-inset-right: env(safe-area-inset-right);
+
+/* 组件尺寸 */
+@tab-bar-height: 100rpx;
+@nav-bar-height: 88rpx;
+@search-bar-height: 80rpx;
+@button-height-sm: 56rpx;
+@button-height-md: 72rpx;
+@button-height-lg: 88rpx;
+@input-height-sm: 56rpx;
+@input-height-md: 72rpx;
+@input-height-lg: 88rpx;
+
+/* 渐变色变量 */
+@gradient-primary: linear-gradient(135deg, @primary-color 0%, @primary-color-light 100%);
+@gradient-success: linear-gradient(135deg, @success-color 0%, @success-color-light 100%);
+@gradient-warning: linear-gradient(135deg, @warning-color 0%, @warning-color-light 100%);
+@gradient-gold: linear-gradient(135deg, #D4A017 0%, #F2D06B 50%, #D4A017 100%);
+@gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+@gradient-orange: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+@gradient-dark: linear-gradient(135deg, #1A1A2E 0%, #2D2D44 100%);
+
+/* 毛玻璃变量 */
+@glass-bg: rgba(255, 255, 255, 0.15);
+@glass-bg-dark: rgba(0, 0, 0, 0.4);
+@glass-blur: blur(20rpx);
+@glass-border: 1rpx solid rgba(255, 255, 255, 0.2);
+
+/* 竞拍相关色彩 */
+@auction-gold: #FFD700;
+@auction-gold-dark: #FFA500;
+@gradient-auction-gold: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+
+/* 叠加层透明度 */
+@overlay-light: rgba(0, 0, 0, 0.3);
+@overlay-medium: rgba(0, 0, 0, 0.5);
+@overlay-heavy: rgba(0, 0, 0, 0.7);
+
+/* ===== 补充变量 ===== */
+
+/* 直播间专用色 */
+@color-live-red: #FF2D2D;
+@color-live-red-glow: rgba(255, 45, 45, 0.4);
+@gradient-live-header: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+@gradient-live-bottom: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+
+/* 竞拍状态色 */
+@color-auction-live: #FF2D2D;
+@color-auction-upcoming: #1890FF;
+@color-auction-ended: #999999;
+@color-auction-preview: #FAAD14;
+
+/* 价格渐变 */
+@gradient-price: linear-gradient(135deg, #FF4D4F 0%, #FF7875 100%);
+@gradient-price-gold: linear-gradient(135deg, #D4A017 0%, #F2D06B 100%);
+
+/* 输入框焦点色 */
+@color-input-focus: rgba(255, 77, 79, 0.2);
+@color-input-border-focus: #FF4D4F;
+
+/* Tab 指示器 */
+@color-tab-indicator: #FF4D4F;
+
+/* 菜单项 */
+@color-menu-arrow: #CCCCCC;
+@color-menu-hover: #F8F8F8;
+
+/* VIP 徽章 */
+@gradient-vip: linear-gradient(135deg, #D4A017 0%, #F2D06B 50%, #D4A017 100%);

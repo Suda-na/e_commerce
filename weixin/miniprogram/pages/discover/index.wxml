@@ -1,0 +1,98 @@
+<!--
+  发现页面 - 商家列表
+  功能：显示所有商家，点击跳转对应直播间
+-->
+<view class="discover-page">
+
+  <!-- ===== 顶部搜索栏 ===== -->
+  <view class="search-bar">
+    <view class="search-input-wrapper">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索商家..."
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        confirm-type="search"
+      />
+      <view class="clear-btn" wx:if="{{searchKeyword}}" bindtap="onClearSearch">
+        <text class="clear-icon">✕</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 页面标题 ===== -->
+  <view class="page-header">
+    <text class="page-title">发现直播间</text>
+    <text class="page-subtitle">选择商家进入直播间</text>
+  </view>
+
+  <!-- ===== 商家列表 ===== -->
+  <scroll-view
+    class="merchant-list"
+    scroll-y
+    enhanced
+    show-scrollbar="{{false}}"
+  >
+    <!-- 骨架屏加载状态 -->
+    <skeleton wx:if="{{isLoading}}" type="list" rows="{{5}}" avatar="{{true}}" animate="{{true}}">
+      <!-- 骨架屏占位，实际内容不显示 -->
+    </skeleton>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:elif="{{isEmpty}}">
+      <text class="empty-icon">🏪</text>
+      <text class="empty-title">暂无商家</text>
+      <text class="empty-desc">还没有商家入驻，请稍后再来</text>
+    </view>
+
+    <!-- 搜索无结果 -->
+    <view class="empty-state" wx:elif="{{searchKeyword && filteredMerchants.length === 0}}">
+      <text class="empty-icon">🔍</text>
+      <text class="empty-title">未找到商家</text>
+      <text class="empty-desc">没有找到 "{{searchKeyword}}" 相关的商家</text>
+    </view>
+
+    <!-- 商家卡片列表 -->
+    <view class="merchant-grid" wx:else>
+      <view
+        class="merchant-card"
+        wx:for="{{filteredMerchants}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        data-name="{{item.username}}"
+        bindtap="onTapMerchant"
+      >
+        <!-- 商家头像 -->
+        <view class="merchant-avatar-wrapper">
+          <image
+            class="merchant-avatar"
+            src="{{item.avatar || '/assets/icons/default-avatar.png'}}"
+            mode="aspectFill"
+            lazy-load
+          />
+          <view class="live-indicator">
+            <view class="live-dot" />
+            <text class="live-text">LIVE</text>
+          </view>
+        </view>
+        
+        <!-- 商家信息 -->
+        <view class="merchant-info">
+          <text class="merchant-name">{{item.username}}</text>
+          <view class="merchant-stats">
+            <text class="stat-item" wx:if="{{item.productCount > 0}}">📦 {{item.productCount}}件商品</text>
+            <text class="stat-item active" wx:if="{{item.activeAuctionCount > 0}}">🔴 {{item.activeAuctionCount}}场竞拍</text>
+          </view>
+          <text class="merchant-enter">进入直播间 →</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部提示 -->
+    <view class="list-footer" wx:if="{{filteredMerchants.length > 0}}">
+      <text class="footer-text">共 {{filteredMerchants.length}} 个商家</text>
+    </view>
+  </scroll-view>
+
+</view>

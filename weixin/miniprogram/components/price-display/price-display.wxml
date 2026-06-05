@@ -1,0 +1,4 @@
+<!--price-display.wxml-->
+<view class="price-display">
+  <slot></slot>
+</view>

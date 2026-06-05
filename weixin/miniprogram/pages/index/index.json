@@ -1,0 +1,8 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "启动页",
+  "navigationBarBackgroundColor": "#FF4D4F",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#FF4D4F",
+  "disableScroll": true
+}

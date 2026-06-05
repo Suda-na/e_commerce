@@ -1,0 +1,66 @@
+@import '../../styles/variables.less';
+
+.toast-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: @spacing-sm;
+  padding: @spacing-md @spacing-xl;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(20rpx);
+  -webkit-backdrop-filter: blur(20rpx);
+  border-radius: @border-radius-lg;
+  max-width: 70vw;
+  animation: toastIn @animation-duration-normal @animation-ease-out;
+}
+
+.toast-icon {
+  font-size: @font-size-xl;
+  flex-shrink: 0;
+}
+
+.toast-text {
+  font-size: @font-size-md;
+  color: @white;
+  line-height: @line-height-normal;
+  word-break: break-all;
+}
+
+.toast-success .toast-icon { color: @success-color; }
+.toast-error .toast-icon { color: @error-color; }
+.toast-warning .toast-icon { color: @warning-color; }
+.toast-info .toast-icon { color: @info-color; }
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes toastOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+.toast-hiding .toast-content {
+  animation: toastOut 0.25s @animation-ease-in forwards;
+}

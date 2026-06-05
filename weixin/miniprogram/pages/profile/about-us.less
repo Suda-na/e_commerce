@@ -1,0 +1,623 @@
+@import '../../styles/variables.less';
+
+/* 关于我们页面样式 */
+
+.container {
+  min-height: 100vh;
+  background-color: @background-color;
+  padding-bottom: calc(@spacing-xl + @safe-area-inset-bottom);
+}
+
+/* 应用头部信息 */
+.app-header {
+  background: @gradient-orange;
+  padding: 60rpx @spacing-xl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: @white;
+}
+
+.app-logo {
+  width: 160rpx;
+  height: 160rpx;
+  background: @glass-bg;
+  border-radius: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: @spacing-md;
+  backdrop-filter: @glass-blur;
+}
+
+.app-logo text {
+  font-size: 80rpx;
+}
+
+.app-name {
+  font-size: @font-size-title;
+  font-weight: @font-weight-heavy;
+  margin-bottom: 12rpx;
+}
+
+.app-version {
+  font-size: 26rpx;
+  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.2);
+  padding: @spacing-xs @spacing-md;
+  border-radius: 20rpx;
+}
+
+/* 区块通用样式 */
+.section {
+  margin: @spacing-md 20rpx;
+  background: @white;
+  border-radius: @border-radius-lg;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 30rpx 30rpx 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.section-title {
+  font-size: @font-size-lg;
+  font-weight: @font-weight-heavy;
+  color: @text-color;
+  display: block;
+}
+
+.section-subtitle {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+  margin-top: @spacing-xs;
+  display: block;
+}
+
+.section-content {
+  padding: 20rpx 30rpx;
+}
+
+/* 公司简介 */
+.intro-text {
+  font-size: @font-size-md;
+  color: @text-color-secondary;
+  line-height: @line-height-loose;
+  text-align: justify;
+  display: block;
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 30rpx;
+  background: #f9f9f9;
+  margin: 0 20rpx 20rpx;
+  border-radius: @border-radius-md;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-size: @font-size-xl;
+  font-weight: @font-weight-heavy;
+  color: @primary-color;
+  margin-bottom: @spacing-xs;
+}
+
+.stat-label {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+}
+
+.stat-divider {
+  width: 1rpx;
+  height: 60rpx;
+  background: @border-color;
+}
+
+/* 核心价值观 */
+.values-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20rpx;
+}
+
+.value-item {
+  width: 50%;
+  padding: 20rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.value-icon {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: @border-radius-round;
+  background: #f0f4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: @spacing-sm;
+}
+
+.value-icon text {
+  font-size: @font-size-heading;
+}
+
+.value-title {
+  font-size: @font-size-md;
+  font-weight: @font-weight-heavy;
+  color: @text-color;
+  margin-bottom: @spacing-xs;
+  display: block;
+}
+
+.value-desc {
+  font-size: 22rpx;
+  color: @text-color-disabled;
+  text-align: center;
+  line-height: 1.4;
+  display: block;
+}
+
+/* 团队介绍 */
+.team-desc {
+  font-size: @font-size-md;
+  color: @text-color-secondary;
+  line-height: 1.6;
+  display: block;
+}
+
+.team-grid {
+  display: flex;
+  justify-content: space-around;
+  padding: 30rpx;
+}
+
+.team-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.team-icon {
+  font-size: @font-size-heading;
+  margin-bottom: 12rpx;
+}
+
+.team-count {
+  font-size: @font-size-xl;
+  font-weight: @font-weight-heavy;
+  color: #FF6B6B;
+  margin-bottom: @spacing-xs;
+}
+
+.team-role {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+}
+
+/* 联系方式列表 */
+.contact-list {
+  padding: 0 30rpx;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid @border-color-light;
+
+  &:active {
+    background-color: @background-color-light;
+  }
+}
+
+.contact-item:last-child {
+  border-bottom: none;
+}
+
+.contact-icon {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: @border-radius-round;
+  background: #f0f4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.contact-icon text {
+  font-size: @font-size-md;
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.contact-label {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+  display: block;
+}
+
+.contact-value {
+  font-size: @font-size-md;
+  color: @text-color;
+  margin-top: 6rpx;
+  display: block;
+}
+
+.contact-value.highlight {
+  color: @primary-color;
+  font-weight: @font-weight-medium;
+}
+
+.contact-action {
+  font-size: 26rpx;
+  color: @primary-color;
+  padding: @spacing-xs 20rpx;
+  border: 1rpx solid @primary-color;
+  border-radius: 20rpx;
+
+  &:active {
+    background-color: @primary-color-bg;
+  }
+}
+
+/* 社交媒体 */
+.social-list {
+  padding: 0 30rpx;
+}
+
+.social-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid @border-color-light;
+
+  &:active {
+    background-color: @background-color-light;
+  }
+}
+
+.social-item:last-child {
+  border-bottom: none;
+}
+
+.social-icon {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: @border-radius-round;
+  background: #f0fff4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.social-icon text {
+  font-size: @font-size-md;
+}
+
+.social-info {
+  flex: 1;
+}
+
+.social-name {
+  font-size: @font-size-md;
+  color: @text-color;
+  font-weight: @font-weight-medium;
+  display: block;
+}
+
+.social-account {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+  margin-top: 6rpx;
+  display: block;
+}
+
+.social-action {
+  font-size: 26rpx;
+  color: #43e97b;
+  padding: @spacing-xs 20rpx;
+  border: 1rpx solid #43e97b;
+  border-radius: 20rpx;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+/* 资质信息 */
+.qualifications-list {
+  padding: 20rpx 30rpx;
+}
+
+.qualification-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 12rpx 0;
+}
+
+.qualification-icon {
+  color: #43e97b;
+  font-size: @font-size-sm;
+  margin-right: 12rpx;
+  margin-top: 4rpx;
+}
+
+.qualification-text {
+  font-size: 26rpx;
+  color: @text-color-secondary;
+  line-height: @line-height-normal;
+}
+
+/* 法律链接 */
+.legal-section {
+  padding: 0;
+}
+
+.legal-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 30rpx;
+  border-bottom: 1rpx solid @border-color-light;
+
+  &:active {
+    background-color: @background-color-light;
+  }
+}
+
+.legal-item:last-child {
+  border-bottom: none;
+}
+
+.legal-icon {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: @border-radius-round;
+  background: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.legal-icon text {
+  font-size: @font-size-sm;
+}
+
+.legal-title {
+  flex: 1;
+  font-size: @font-size-md;
+  color: @text-color;
+}
+
+.legal-arrow {
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.legal-arrow text {
+  font-size: @font-size-xl;
+  color: #ccc;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  gap: 20rpx;
+  padding: 30rpx 20rpx;
+}
+
+.action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: @spacing-md;
+  background: @white;
+  border-radius: @border-radius-md;
+  border: 1rpx solid @border-color;
+
+  &:active {
+    background-color: @background-color-light;
+  }
+}
+
+.action-btn::after {
+  border: none;
+}
+
+.btn-icon {
+  font-size: @font-size-lg;
+  margin-right: 12rpx;
+}
+
+.btn-text {
+  font-size: @font-size-md;
+  color: @text-color;
+}
+
+/* 底部版权信息 */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: @spacing-xl 20rpx;
+}
+
+.copyright {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+  margin-bottom: @spacing-xs;
+  display: block;
+}
+
+.powered {
+  font-size: 22rpx;
+  color: #ccc;
+  display: block;
+}
+
+/* 响应式调整 */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .app-header {
+    padding: 80rpx 60rpx;
+  }
+
+  .app-logo {
+    width: 200rpx;
+    height: 200rpx;
+    border-radius: 50rpx;
+  }
+
+  .app-logo text {
+    font-size: 100rpx;
+  }
+
+  .app-name {
+    font-size: 52rpx;
+  }
+
+  .values-grid {
+    padding: 30rpx;
+  }
+
+  .value-item {
+    padding: 30rpx;
+  }
+
+  .value-icon {
+    width: 120rpx;
+    height: 120rpx;
+  }
+
+  .value-icon text {
+    font-size: 56rpx;
+  }
+
+  .value-title {
+    font-size: @font-size-lg;
+  }
+
+  .value-desc {
+    font-size: @font-size-sm;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .app-header {
+    padding: 40rpx 30rpx;
+  }
+
+  .app-logo {
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 30rpx;
+  }
+
+  .app-logo text {
+    font-size: 60rpx;
+  }
+
+  .app-name {
+    font-size: @font-size-xl;
+  }
+
+  .section {
+    margin: @spacing-sm @spacing-sm;
+  }
+
+  .section-header {
+    padding: @spacing-sm @spacing-sm 16rpx;
+  }
+
+  .stats-grid {
+    padding: 20rpx;
+    margin: 0 @spacing-sm @spacing-sm;
+  }
+
+  .stat-number {
+    font-size: @font-size-lg;
+  }
+
+  .values-grid {
+    padding: @spacing-sm;
+  }
+
+  .value-item {
+    padding: @spacing-sm;
+  }
+
+  .value-icon {
+    width: 80rpx;
+    height: 80rpx;
+  }
+
+  .value-icon text {
+    font-size: @font-size-xxl;
+  }
+
+  .contact-list {
+    padding: 0 @spacing-sm;
+  }
+
+  .social-list {
+    padding: 0 @spacing-sm;
+  }
+
+  .qualifications-list {
+    padding: @spacing-sm @spacing-sm;
+  }
+
+  .legal-item {
+    padding: @spacing-sm;
+  }
+
+  .action-buttons {
+    padding: 20rpx @spacing-sm;
+  }
+}
+
+/* 动画效果 */
+.value-item {
+  animation: fadeInUp @animation-duration-slow ease;
+  animation-fill-mode: both;
+}
+
+.value-item:nth-child(1) { animation-delay: @animation-duration-fast; }
+.value-item:nth-child(2) { animation-delay: 0.2s; }
+.value-item:nth-child(3) { animation-delay: 0.3s; }
+.value-item:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

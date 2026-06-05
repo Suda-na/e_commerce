@@ -1,0 +1,104 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+  <!-- Logo 区域 -->
+  <view class="logo-area">
+    <image class="logo" src="/assets/icons/tab-live.png" mode="aspectFit"></image>
+    <text class="app-name">直播竞拍大师</text>
+    <text class="app-slogan">沉浸式竞拍体验</text>
+  </view>
+
+  <!-- 表单区域 -->
+  <view class="form-area">
+    <!-- 用户名输入 -->
+    <view class="input-group">
+      <view class="input-wrapper {{usernameFocus ? 'focused' : ''}} {{errors.username ? 'error' : ''}}">
+        <image class="input-icon" src="/assets/icons/user.png" mode="aspectFit"></image>
+        <input 
+          class="input-field" 
+          type="text" 
+          placeholder="请输入用户名" 
+          placeholder-class="placeholder"
+          value="{{username}}"
+          bindinput="onUsernameInput"
+          bindblur="onUsernameBlur"
+          bindfocus="onUsernameFocus"
+          maxlength="20"
+        />
+      </view>
+      <text class="error-text" wx:if="{{errors.username}}">{{errors.username}}</text>
+    </view>
+
+    <!-- 密码输入 -->
+    <view class="input-group">
+      <view class="input-wrapper {{passwordFocus ? 'focused' : ''}} {{errors.password ? 'error' : ''}}">
+        <image class="input-icon" src="/assets/icons/lock.png" mode="aspectFit"></image>
+        <input 
+          class="input-field" 
+          type="{{showPassword ? 'text' : 'password'}}" 
+          placeholder="请输入密码" 
+          placeholder-class="placeholder"
+          value="{{password}}"
+          bindinput="onPasswordInput"
+          bindblur="onPasswordBlur"
+          bindfocus="onPasswordFocus"
+          maxlength="20"
+        />
+        <image 
+          class="eye-icon" 
+          src="{{showPassword ? '/assets/icons/eye-open.png' : '/assets/icons/eye-close.png'}}" 
+          mode="aspectFit"
+          bindtap="togglePassword"
+        ></image>
+      </view>
+      <text class="error-text" wx:if="{{errors.password}}">{{errors.password}}</text>
+    </view>
+
+    <!-- 记住我 -->
+    <view class="remember-area">
+      <checkbox 
+        class="remember-checkbox" 
+        checked="{{rememberMe}}" 
+        bindtap="toggleRemember"
+        color="#FF4D4F"
+      ></checkbox>
+      <text class="remember-text">记住用户名</text>
+    </view>
+
+    <!-- 登录按钮 -->
+    <button 
+      class="login-btn {{loading ? 'loading' : ''}}" 
+      bindtap="handleLogin"
+      disabled="{{loading}}"
+    >
+      <text wx:if="{{!loading}}">登 录</text>
+      <view wx:if="{{loading}}" class="loading-spinner"></view>
+      <text wx:if="{{loading}}">登录中...</text>
+    </button>
+
+    <!-- 注册链接 -->
+    <view class="register-link" bindtap="goToRegister">
+      <text class="link-text">还没有账号？</text>
+      <text class="link-highlight">立即注册 ></text>
+    </view>
+  </view>
+
+  <!-- 其他登录方式 (P2功能) -->
+  <view class="other-login" wx:if="{{showOtherLogin}}">
+    <view class="divider">
+      <view class="divider-line"></view>
+      <text class="divider-text">其他登录方式</text>
+      <view class="divider-line"></view>
+    </view>
+    <view class="social-login">
+      <button class="wechat-btn" bindtap="wxLogin">
+        <image class="wechat-icon" src="/assets/icons/wechat.png" mode="aspectFit"></image>
+        <text>微信一键登录</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-area">
+    <text class="version-text">v1.0.0</text>
+  </view>
+</view>

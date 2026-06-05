@@ -1,0 +1,290 @@
+@import '../../styles/variables.less';
+
+/* bid-dialog.less */
+.bid-dialog {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 商品信息 */
+.auction-info {
+  display: flex;
+  gap: 20rpx;
+  padding: 30rpx;
+  background-color: #F8F8F8;
+  border-radius: @border-radius-lg;
+  margin: 0 30rpx 30rpx;
+}
+
+.auction-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: @border-radius-md;
+  flex-shrink: 0;
+}
+
+.auction-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.auction-title {
+  font-size: @font-size-md;
+  color: @text-color;
+  font-weight: @font-weight-medium;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.auction-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12rpx;
+  margin-top: 12rpx;
+}
+
+.price-label {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+}
+
+.price-value {
+  font-size: @font-size-xxl;
+  color: @primary-color;
+  font-weight: @font-weight-heavy;
+  font-family: 'DIN Alternate', 'Roboto Condensed', Arial, sans-serif;
+}
+
+.auction-meta {
+  display: flex;
+  gap: 20rpx;
+  margin-top: @spacing-xs;
+}
+
+.bid-count,
+.participant-count {
+  font-size: 22rpx;
+  color: @text-color-disabled;
+}
+
+/* 出价金额区域 */
+.bid-amount-section {
+  padding: 0 30rpx;
+}
+
+.section-title {
+  margin-bottom: 20rpx;
+}
+
+.title-text {
+  font-size: 30rpx;
+  color: @text-color;
+  font-weight: @font-weight-bold;
+}
+
+/* 金额输入框 */
+.amount-input-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100rpx;
+  background-color: @background-color;
+  border-radius: @border-radius-lg;
+  padding: 0 20rpx;
+  gap: 12rpx;
+  border: @border-width-normal solid transparent;
+  transition: all @animation-duration-normal ease;
+
+  &:focus-within {
+    border-color: @primary-color;
+    background-color: @white;
+    box-shadow: 0 0 0 4rpx @primary-color-bg;
+  }
+}
+
+.amount-prefix {
+  flex-shrink: 0;
+}
+
+.prefix-text {
+  font-size: @font-size-xl;
+  color: @text-color;
+  font-weight: @font-weight-bold;
+}
+
+.amount-input {
+  flex: 1;
+  height: 100%;
+  font-size: @font-size-xl;
+  color: @text-color;
+  font-weight: @font-weight-heavy;
+  font-family: 'DIN Alternate', 'Roboto Condensed', Arial, sans-serif;
+
+  &::placeholder {
+    color: #CCCCCC;
+    font-weight: @font-weight-normal;
+  }
+}
+
+.amount-controls {
+  display: flex;
+  gap: 12rpx;
+  flex-shrink: 0;
+}
+
+.control-btn {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: @border-radius-round;
+  background-color: @border-color;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.9);
+    background-color: #DDDDDD;
+  }
+}
+
+.control-icon {
+  font-size: @font-size-lg;
+  color: @text-color-secondary;
+  font-weight: @font-weight-bold;
+}
+
+/* 快捷加价 */
+.quick-add-section {
+  margin-top: @spacing-md;
+}
+
+.quick-add-label {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+  margin-bottom: @spacing-sm;
+  display: block;
+}
+
+.quick-add-options {
+  display: flex;
+  gap: @spacing-sm;
+}
+
+.quick-add-btn {
+  flex: 1;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFF1F0;
+  border-radius: @border-radius-md;
+  border: @border-width-normal solid #FFCCC7;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.95);
+    background-color: @primary-color;
+    border-color: @primary-color;
+
+    .quick-add-text {
+      color: @white;
+    }
+  }
+}
+
+.quick-add-text {
+  font-size: 26rpx;
+  color: @primary-color;
+  font-weight: @font-weight-medium;
+}
+
+/* 提示信息 */
+.hint-message {
+  margin-top: @spacing-sm;
+  padding: 12rpx @spacing-sm;
+  background-color: #F6FFED;
+  border-radius: @border-radius-sm;
+  border: @border-width-normal solid #B7EB8F;
+}
+
+.hint-text {
+  font-size: @font-size-sm;
+  color: @success-color;
+}
+
+/* 错误信息 */
+.error-message {
+  margin-top: @spacing-sm;
+  padding: 12rpx @spacing-sm;
+  background-color: #FFF2F0;
+  border-radius: @border-radius-sm;
+  border: @border-width-normal solid #FFCCC7;
+}
+
+.error-text {
+  font-size: @font-size-sm;
+  color: @primary-color;
+}
+
+/* 提交按钮 */
+.submit-section {
+  padding: 30rpx;
+  margin-top: 30rpx;
+}
+
+.submit-btn {
+  width: 100%;
+  height: @button-height-lg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  background: @gradient-primary;
+  border-radius: 44rpx;
+  box-shadow: 0 8rpx 24rpx rgba(255, 77, 79, 0.4);
+  transition: all @animation-duration-normal ease;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
+  &.submitting {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+}
+
+.submit-spinner {
+  width: 32rpx;
+  height: 32rpx;
+  border: 3rpx solid rgba(255, 255, 255, 0.3);
+  border-top-color: @white;
+  border-radius: @border-radius-round;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.submit-text {
+  font-size: @font-size-lg;
+  color: @white;
+  font-weight: @font-weight-bold;
+}
+
+.submit-hint {
+  text-align: center;
+  margin-top: @spacing-sm;
+}
+
+.submit-hint .hint-text {
+  font-size: 22rpx;
+  color: #CCCCCC;
+}

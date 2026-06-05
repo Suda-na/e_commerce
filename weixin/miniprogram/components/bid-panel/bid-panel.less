@@ -1,0 +1,1250 @@
+@import '../../styles/variables.less';
+
+/* bid-panel.less - 出价面板样式 */
+
+.bid-panel {
+  padding-bottom: @safe-area-inset-bottom;
+  position: relative;
+  overflow: hidden;
+
+  // 震动动画
+  &.shake {
+    animation: shake @animation-duration-slow ease-in-out;
+  }
+
+  // 庆祝动画
+  &.celebrate {
+    animation: celebrate 0.6s ease-in-out;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5rpx); }
+  20%, 40%, 60%, 80% { transform: translateX(5rpx); }
+}
+
+@keyframes celebrate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* ==================== 图片轮播 ==================== */
+
+.image-carousel {
+  position: relative;
+  width: 100%;
+  height: 400rpx;
+  background-color: @background-color;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-image {
+  width: 100%;
+  height: 100%;
+}
+
+.image-count {
+  position: absolute;
+  bottom: @spacing-sm;
+  right: @spacing-sm;
+  background-color: @overlay-medium;
+  padding: @spacing-xs / 2 @spacing-sm;
+  border-radius: @spacing-sm;
+}
+
+.count-text {
+  font-size: @font-size-xs;
+  color: @white;
+}
+
+.countdown-badge {
+  position: absolute;
+  top: @spacing-sm;
+  right: @spacing-sm;
+  background-color: rgba(0, 0, 0, 0.65);
+  padding: @spacing-sm @spacing-md;
+  border-radius: @spacing-lg;
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  backdrop-filter: blur(8rpx);
+  transition: all 0.3s ease;
+
+  &.delay-active {
+    background-color: rgba(212, 160, 23, 0.9);
+    box-shadow: 0 0 20rpx rgba(212, 160, 23, 0.6);
+    animation: delayPulse 0.6s ease-in-out 2;
+  }
+
+  // 平滑过渡状态
+  &.transitioning {
+    .countdown-text {
+      color: #FFD591;
+      text-shadow: 0 0 8rpx rgba(255, 213, 145, 0.6);
+      animation: countdownGlow 0.4s ease-in-out;
+    }
+  }
+}
+
+@keyframes delayPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@keyframes countdownGlow {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* 延时提示条 */
+.delay-notice-bar {
+  position: absolute;
+  bottom: @spacing-md;
+  left: @spacing-md;
+  right: @spacing-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: @spacing-xs;
+  padding: @spacing-sm @spacing-md;
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.95), rgba(240, 192, 64, 0.95));
+  border-radius: @border-radius-lg;
+  box-shadow: 0 4rpx 16rpx rgba(212, 160, 23, 0.5);
+  animation: noticeBarIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  z-index: 10;
+}
+
+@keyframes noticeBarIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20rpx) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.delay-notice-icon {
+  font-size: @font-size-md;
+}
+
+.delay-notice-text {
+  font-size: @font-size-sm;
+  color: @white;
+  font-weight: @font-weight-bold;
+}
+
+.delay-anim-badge {
+  display: inline-flex;
+  align-items: baseline;
+  margin-left: 8rpx;
+  padding: 2rpx 10rpx;
+  background: linear-gradient(135deg, #ff4d4f, #ff7875);
+  border-radius: @border-radius-round;
+  animation: delayBadgeIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes delayBadgeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(10rpx);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.delay-anim-plus {
+  font-size: @font-size-xs;
+  color: @white;
+  font-weight: @font-weight-bold;
+}
+
+.delay-anim-seconds {
+  font-size: @font-size-lg;
+  color: @white;
+  font-weight: @font-weight-heavy;
+  font-family: 'DIN Alternate', 'Roboto Condensed', Arial, sans-serif;
+}
+
+.delay-anim-unit {
+  font-size: @font-size-xs;
+  color: rgba(255, 255, 255, 0.85);
+  margin-left: 2rpx;
+}
+
+.countdown-icon {
+  font-size: @font-size-lg;
+}
+
+.countdown-text {
+  font-size: @font-size-lg;
+  color: @white;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+}
+
+/* ==================== 商品信息 ==================== */
+
+.auction-info {
+  padding: @spacing-md @spacing-md + @spacing-sm;
+  border-bottom: @border-width-thin solid #f0f0f0;
+}
+
+.auction-header {
+  margin-bottom: @spacing-sm;
+}
+
+.auction-title {
+  font-size: @font-size-md + 2rpx;
+  color: @text-color;
+  font-weight: @font-weight-bold;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.auction-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: @spacing-xs + 2rpx;
+  margin-top: @spacing-xs + 4rpx;
+}
+
+.tag {
+  font-size: @font-size-xs;
+  color: @primary-color;
+  background-color: #fff1f0;
+  padding: @spacing-xs / 2 @spacing-sm;
+  border-radius: @border-radius-xs + 2rpx;
+  border: @border-width-thin solid #ffccc7;
+}
+
+.auction-meta {
+  display: flex;
+  align-items: center;
+  gap: @spacing-sm;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: @spacing-xs / 2;
+}
+
+.meta-label {
+  font-size: @font-size-xs;
+  color: @text-color-disabled;
+}
+
+.meta-value {
+  font-size: @font-size-md;
+  color: @text-color;
+  font-weight: @font-weight-bold;
+  font-family: 'DIN Alternate', 'Roboto Condensed', Arial, sans-serif;
+}
+
+.meta-divider {
+  width: @border-width-thin;
+  height: 40rpx;
+  background-color: @background-color-dark;
+}
+
+/* ==================== 价格对比区 ==================== */
+
+.price-compare {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: @spacing-md + @spacing-sm;
+  background: linear-gradient(135deg, #fff5f5 0%, @white 100%);
+  margin: 0 @spacing-md + @spacing-sm;
+  border-radius: @border-radius-lg;
+  margin-top: @spacing-sm;
+}
+
+.price-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: @spacing-xs;
+}
+
+.price-label {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+}
+
+.price-value-wrapper {
+  display: flex;
+  align-items: baseline;
+  gap: @spacing-xs / 2;
+}
+
+.price-currency {
+  font-size: @font-size-md;
+  color: @primary-color;
+  font-weight: @font-weight-bold;
+}
+
+.price-value {
+  font-size: @font-size-heading;
+  color: @primary-color;
+  font-weight: @font-weight-heavy;
+  font-family: 'DIN Alternate', 'Roboto Condensed', Arial, sans-serif;
+}
+
+.price-vs {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border-radius: @border-radius-round;
+  flex-shrink: 0;
+}
+
+.vs-text {
+  font-size: @font-size-xs;
+  color: @text-color-disabled;
+  font-weight: @font-weight-bold;
+}
+
+.bid-status {
+  display: flex;
+  align-items: center;
+  gap: @spacing-xs / 2;
+  padding: @spacing-xs / 2 @spacing-sm;
+  background-color: #f6ffed;
+  border-radius: @border-radius-md;
+  border: @border-width-thin solid #b7eb8f;
+
+  &.outbid {
+    background-color: #fff2f0;
+    border-color: #ffccc7;
+  }
+}
+
+.status-icon {
+  font-size: @font-size-xs;
+}
+
+.status-text {
+  font-size: @font-size-xs;
+  color: @success-color;
+
+  .outbid & {
+    color: @primary-color;
+  }
+}
+
+/* ==================== 智能提示 ==================== */
+
+.smart-tip {
+  display: flex;
+  align-items: center;
+  gap: @spacing-xs + 2rpx;
+  margin: @spacing-sm @spacing-md + @spacing-sm;
+  padding: @spacing-sm;
+  border-radius: @border-radius-md;
+  transition: all @animation-duration-normal ease;
+
+  /* ① 默认提示 */
+  &.tip-default {
+    background-color: #FFF7E6;
+    border: @border-width-thin solid #FFD591;
+  }
+
+  /* ② 被超越警告 */
+  &.tip-outbid {
+    background-color: #FFF0F6;
+    border: @border-width-thin solid #FFADD2;
+
+    .tip-text {
+      color: #C41D7F;
+    }
+  }
+
+  /* ③ 即将结束 */
+  &.tip-ending-soon {
+    background-color: #FFF1F0;
+    border: @border-width-thin solid #FFCCC7;
+
+    .tip-text {
+      color: #CF1322;
+    }
+  }
+
+  /* ④ 最高价警告 */
+  &.tip-highest {
+    background-color: #F6FFED;
+    border: @border-width-thin solid #B7EB8F;
+
+    .tip-text {
+      color: @success-color-dark;
+    }
+  }
+
+  /* ⑤ 高价提醒 */
+  &.tip-high-bid {
+    background-color: #E6F7FF;
+    border: @border-width-thin solid #91D5FF;
+
+    .tip-text {
+      color: @info-color-dark;
+    }
+  }
+
+  /* ⑥ 封顶警告（额外状态） */
+  &.tip-cap-warning {
+    background-color: #FFF1F0;
+    border: @border-width-thin solid #FFCCC7;
+
+    .tip-text {
+      color: #CF1322;
+    }
+  }
+}
+
+.tip-icon {
+  font-size: @font-size-sm;
+}
+
+.tip-text {
+  font-size: @font-size-sm;
+  color: @warning-color-dark;
+}
+
+/* ==================== 出价金额控制 ==================== */
+
+.bid-control {
+  padding: @spacing-md + @spacing-sm;
+}
+
+.control-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: @spacing-sm;
+}
+
+.control-title {
+  font-size: @font-size-md + 2rpx;
+  color: @text-color;
+  font-weight: @font-weight-bold;
+}
+
+.control-step {
+  font-size: @font-size-xs;
+  color: @text-color-disabled;
+}
+
+.amount-input-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100rpx;
+  background-color: @background-color;
+  border-radius: @border-radius-lg;
+  padding: 0 @spacing-sm;
+  gap: @spacing-sm;
+  border: @border-width-normal solid transparent;
+  transition: all @animation-duration-normal ease;
+
+  &:focus-within {
+    border-color: @color-input-border-focus;
+    background-color: @white;
+    box-shadow: 0 0 0 @border-width-thick @color-input-focus;
+  }
+}
+
+.control-btn {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: @border-radius-round;
+  background-color: @white;
+  box-shadow: @shadow-md;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:active {
+    transform: scale(0.9);
+    background-color: #f0f0f0;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.control-icon {
+  font-size: @font-size-xl;
+  color: @text-color;
+  font-weight: @font-weight-bold;
+}
+
+.amount-display {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: @spacing-xs / 2;
+  height: 100%;
+}
+
+.amount-currency {
+  font-size: @font-size-lg;
+  color: @text-color;
+  font-weight: @font-weight-bold;
+}
+
+.amount-input {
+  width: 200rpx;
+  height: 100%;
+  font-size: @font-size-xxl;
+  color: @text-color;
+  font-weight: @font-weight-heavy;
+  font-family: 'DIN Alternate', 'Roboto Condensed', Arial, sans-serif;
+  text-align: center;
+
+  &::placeholder {
+    color: @color-menu-arrow;
+    font-weight: @font-weight-normal;
+    font-size: @font-size-md;
+  }
+}
+
+/* ==================== 快捷加价 ==================== */
+
+.quick-add-section {
+  display: flex;
+  gap: @spacing-sm;
+  margin-top: @spacing-sm;
+}
+
+.quick-add-btn {
+  flex: 1;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff1f0;
+  border-radius: @border-radius-md;
+  border: @border-width-normal solid #ffccc7;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.95);
+    background-color: @primary-color;
+    border-color: @primary-color;
+
+    .quick-add-text {
+      color: @white;
+    }
+  }
+}
+
+.quick-add-text {
+  font-size: @font-size-sm;
+  color: @primary-color;
+  font-weight: @font-weight-medium;
+}
+
+/* ==================== 错误信息 ==================== */
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: @spacing-xs;
+  margin-top: @spacing-sm;
+  padding: @spacing-sm @spacing-sm;
+  background-color: #fff2f0;
+  border-radius: @border-radius-sm;
+  border: @border-width-thin solid #ffccc7;
+}
+
+.error-icon {
+  font-size: @font-size-xs;
+}
+
+.error-text {
+  font-size: @font-size-sm;
+  color: @primary-color;
+}
+
+/* ==================== 提交按钮 ==================== */
+
+.submit-section {
+  padding: @spacing-md + @spacing-sm;
+  margin-top: @spacing-xs + 2rpx;
+}
+
+.submit-btn {
+  width: 100%;
+  height: @button-height-lg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: @spacing-sm;
+  background: @gradient-primary;
+  border-radius: 44rpx;
+  box-shadow: 0 8rpx 24rpx rgba(255, 77, 79, 0.4);
+  transition: all @animation-duration-normal ease;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+
+  &.submitting {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  &.success {
+    background: @gradient-success;
+    box-shadow: 0 8rpx 24rpx rgba(82, 196, 26, 0.4);
+  }
+
+  &.error {
+    background: @gradient-primary;
+    animation: shake @animation-duration-slow ease-in-out;
+  }
+
+  &.ended {
+    background: linear-gradient(135deg, @text-color-disabled, #bfbfbf);
+    box-shadow: 0 8rpx 24rpx rgba(153, 153, 153, 0.4);
+    pointer-events: none;
+  }
+}
+
+.submit-spinner {
+  width: @spacing-xxl;
+  height: @spacing-xxl;
+  border: 3rpx solid rgba(255, 255, 255, 0.3);
+  border-top-color: @white;
+  border-radius: @border-radius-round;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.submit-success-icon,
+.submit-error-icon {
+  width: @spacing-xxl;
+  height: @spacing-xxl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: @border-radius-round;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.success-icon {
+  font-size: @font-size-xs;
+  color: @white;
+}
+
+.error-icon {
+  font-size: @font-size-xs;
+  color: @white;
+}
+
+.submit-text {
+  font-size: @font-size-lg;
+  color: @white;
+  font-weight: @font-weight-bold;
+}
+
+.submit-hint {
+  text-align: center;
+  margin-top: @spacing-sm;
+}
+
+.hint-text {
+  font-size: @font-size-xs;
+  color: @color-menu-arrow;
+}
+
+/* ==================== 竞拍结束遮罩 ==================== */
+
+.ended-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: @overlay-heavy;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.ended-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: @spacing-sm;
+  padding: @spacing-xl;
+  background-color: @white;
+  border-radius: @border-radius-xl;
+  box-shadow: @shadow-xl;
+}
+
+.ended-icon {
+  font-size: 80rpx;
+}
+
+.ended-title {
+  font-size: @font-size-xl;
+  color: @text-color;
+  font-weight: @font-weight-bold;
+}
+
+.ended-price {
+  font-size: @font-size-md;
+  color: @primary-color;
+  font-weight: @font-weight-medium;
+}
+
+/* ==================== AI 出价顾问 ==================== */
+
+/* 入口按钮 */
+.ai-advisor-entry {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  margin-left: auto;
+  padding: 4rpx 12rpx;
+  background: linear-gradient(135deg, #d4a017, #f0c040);
+  border-radius: @border-radius-round;
+  flex-shrink: 0;
+}
+
+.ai-entry-icon {
+  font-size: @font-size-xs;
+}
+
+.ai-entry-text {
+  font-size: @font-size-xs;
+  color: @white;
+  font-weight: @font-weight-medium;
+}
+
+/* 顾问面板 */
+.ai-advisor {
+  margin: @spacing-sm @spacing-md + @spacing-sm;
+  background-color: @white;
+  border-radius: @border-radius-lg;
+  border: @border-width-thin solid #e8e8e8;
+  overflow: hidden;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ai-advisor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: @spacing-sm @spacing-md;
+  background: linear-gradient(135deg, #d4a017, #f0c040);
+}
+
+.ai-advisor-title {
+  display: flex;
+  align-items: center;
+  gap: @spacing-xs;
+}
+
+.ai-title-icon {
+  font-size: @font-size-md;
+}
+
+.ai-title-text {
+  font-size: @font-size-md;
+  color: @white;
+  font-weight: @font-weight-bold;
+}
+
+.ai-badge {
+  font-size: @font-size-xs;
+  color: #d4a017;
+  background-color: @white;
+  padding: 2rpx 10rpx;
+  border-radius: @border-radius-round;
+  font-weight: @font-weight-medium;
+}
+
+.ai-advisor-close {
+  width: 44rpx;
+  height: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: @white;
+  font-size: @font-size-md;
+  border-radius: @border-radius-round;
+  background-color: rgba(255, 255, 255, 0.3);
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* 风险偏好选择 */
+.risk-selector {
+  display: flex;
+  align-items: center;
+  gap: @spacing-sm;
+  padding: @spacing-sm @spacing-md;
+  border-bottom: @border-width-thin solid #f0f0f0;
+}
+
+.risk-label {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+  flex-shrink: 0;
+}
+
+.risk-options {
+  display: flex;
+  gap: @spacing-xs;
+  flex: 1;
+}
+
+.risk-option {
+  flex: 1;
+  text-align: center;
+  padding: 6rpx 0;
+  font-size: @font-size-sm;
+  color: @text-color-secondary;
+  background-color: @background-color;
+  border-radius: @border-radius-md;
+  border: @border-width-thin solid transparent;
+  transition: all 0.2s ease;
+
+  &.active {
+    color: #d4a017;
+    background-color: #fff7e6;
+    border-color: #ffd591;
+    font-weight: @font-weight-medium;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Tab 切换 */
+.ai-tabs {
+  display: flex;
+  border-bottom: @border-width-thin solid #f0f0f0;
+}
+
+.ai-tab {
+  flex: 1;
+  text-align: center;
+  padding: @spacing-sm 0;
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+  position: relative;
+  transition: all 0.2s ease;
+
+  &.active {
+    color: #d4a017;
+    font-weight: @font-weight-medium;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 30%;
+      right: 30%;
+      height: 4rpx;
+      background-color: #d4a017;
+      border-radius: 2rpx;
+    }
+  }
+}
+
+/* Tab 内容 */
+.ai-tab-content {
+  padding: @spacing-md;
+}
+
+/* 操作按钮 */
+.ai-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72rpx;
+  background: linear-gradient(135deg, #d4a017, #f0c040);
+  border-radius: @border-radius-lg;
+  color: @white;
+  font-size: @font-size-md;
+  font-weight: @font-weight-bold;
+  margin-bottom: @spacing-md;
+
+  &.trend {
+    background: linear-gradient(135deg, #722ed1, #9254de);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}
+
+.ai-btn-loading {
+  width: 36rpx;
+  height: 36rpx;
+  border: 3rpx solid rgba(255, 255, 255, 0.3);
+  border-top-color: @white;
+  border-radius: @border-radius-round;
+  animation: spin 0.8s linear infinite;
+}
+
+/* 核心数据 */
+.ai-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: @spacing-sm;
+  margin-bottom: @spacing-md;
+}
+
+.ai-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rpx;
+  padding: @spacing-sm;
+  background-color: @background-color-light;
+  border-radius: @border-radius-md;
+}
+
+.ai-stat-label {
+  font-size: @font-size-xs;
+  color: @text-color-disabled;
+}
+
+.ai-stat-value {
+  font-size: @font-size-md;
+  font-weight: @font-weight-bold;
+  color: @text-color;
+  font-family: 'DIN Alternate', 'Roboto Condensed', Arial, sans-serif;
+
+  &.highlight {
+    color: #d4a017;
+    font-size: @font-size-lg;
+  }
+
+  &.success {
+    color: @success-color;
+  }
+
+  &.warning {
+    color: @warning-color;
+  }
+
+  &.danger {
+    color: @primary-color;
+  }
+
+  &.info {
+    color: @info-color;
+  }
+
+  &.purple {
+    color: #722ed1;
+  }
+
+  &.muted {
+    color: @text-color-disabled;
+  }
+}
+
+/* 使用建议出价按钮 */
+.ai-use-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64rpx;
+  background-color: #fff7e6;
+  border: @border-width-normal solid #ffd591;
+  border-radius: @border-radius-lg;
+  color: #d4a017;
+  font-size: @font-size-sm;
+  font-weight: @font-weight-bold;
+  margin-bottom: @spacing-md;
+
+  &:active {
+    background-color: #ffe58f;
+    transform: scale(0.98);
+  }
+}
+
+/* 卡片 */
+.ai-card {
+  background-color: @background-color-light;
+  border-radius: @border-radius-md;
+  padding: @spacing-sm @spacing-md;
+  margin-bottom: @spacing-sm;
+}
+
+.ai-card-title {
+  font-size: @font-size-sm;
+  color: @text-color;
+  font-weight: @font-weight-bold;
+  margin-bottom: @spacing-xs;
+}
+
+/* 风险评估 */
+.ai-risk-level {
+  display: inline-block;
+  font-size: @font-size-xs;
+  padding: 4rpx 16rpx;
+  border-radius: @border-radius-round;
+  margin-bottom: @spacing-xs;
+
+  &.success {
+    color: @success-color;
+    background-color: @success-color-bg;
+  }
+
+  &.warning {
+    color: @warning-color-dark;
+    background-color: @warning-color-bg;
+  }
+
+  &.danger {
+    color: @primary-color;
+    background-color: @primary-color-bg;
+  }
+}
+
+.ai-risk-factors {
+  display: flex;
+  flex-direction: column;
+  gap: 2rpx;
+  margin-bottom: @spacing-xs;
+}
+
+.ai-risk-factor {
+  font-size: @font-size-xs;
+  color: @text-color-secondary;
+}
+
+.ai-mitigation {
+  font-size: @font-size-xs;
+  color: @success-color;
+}
+
+/* 最佳时机 */
+.ai-timing-action {
+  display: inline-block;
+  font-size: @font-size-xs;
+  padding: 4rpx 16rpx;
+  border-radius: @border-radius-round;
+  margin-bottom: @spacing-xs;
+
+  &.success {
+    color: @success-color;
+    background-color: @success-color-bg;
+  }
+
+  &.info {
+    color: @info-color;
+    background-color: @info-color-bg;
+  }
+
+  &.purple {
+    color: #722ed1;
+    background-color: rgba(114, 46, 209, 0.1);
+  }
+}
+
+.ai-timing-reason {
+  font-size: @font-size-xs;
+  color: @text-color-secondary;
+  display: block;
+}
+
+.ai-timing-window {
+  font-size: @font-size-xs;
+  color: @text-color-disabled;
+  display: block;
+  margin-top: 4rpx;
+}
+
+/* 竞争对手 */
+.ai-competitor {
+  display: flex;
+  align-items: center;
+  gap: @spacing-xs;
+  padding: 6rpx 0;
+}
+
+.ai-competitor-name {
+  font-size: @font-size-xs;
+  color: @text-color;
+  font-weight: @font-weight-medium;
+}
+
+.ai-competitor-pattern {
+  font-size: @font-size-xs;
+  padding: 2rpx 8rpx;
+  border-radius: @border-radius-xs;
+
+  &.danger {
+    color: @primary-color;
+    background-color: @primary-color-bg;
+  }
+
+  &.info {
+    color: @info-color;
+    background-color: @info-color-bg;
+  }
+}
+
+.ai-competitor-bids {
+  font-size: @font-size-xs;
+  color: @text-color-disabled;
+}
+
+.ai-competitor-pattern-overall {
+  display: flex;
+  align-items: center;
+  gap: @spacing-xs;
+  margin-top: @spacing-xs;
+  padding-top: @spacing-xs;
+  border-top: @border-width-thin solid #f0f0f0;
+}
+
+.ai-pattern-label {
+  font-size: @font-size-xs;
+  color: @text-color-disabled;
+}
+
+.ai-pattern-tag {
+  font-size: @font-size-xs;
+  padding: 2rpx 8rpx;
+  border-radius: @border-radius-xs;
+
+  &.danger {
+    color: @primary-color;
+    background-color: @primary-color-bg;
+  }
+
+  &.warning {
+    color: @warning-color-dark;
+    background-color: @warning-color-bg;
+  }
+
+  &.info {
+    color: @info-color;
+    background-color: @info-color-bg;
+  }
+}
+
+/* AI 推理 */
+.ai-reasoning {
+  padding: @spacing-sm;
+  background-color: #f6ffed;
+  border-radius: @border-radius-md;
+  margin-top: @spacing-xs;
+
+  text {
+    font-size: @font-size-xs;
+    color: @text-color-secondary;
+    line-height: 1.5;
+  }
+}
+
+/* 趋势分析 - AI 建议 */
+.ai-recommendation {
+  display: block;
+  font-size: @font-size-xs;
+  color: @text-color-secondary;
+  line-height: 1.6;
+  padding: 2rpx 0;
+}
+
+/* 关键事件 */
+.ai-event {
+  display: flex;
+  align-items: center;
+  gap: @spacing-xs;
+  padding: 6rpx 0;
+}
+
+.ai-event-impact {
+  font-size: @font-size-xs;
+  padding: 2rpx 8rpx;
+  border-radius: @border-radius-xs;
+  flex-shrink: 0;
+
+  &.danger {
+    color: @primary-color;
+    background-color: @primary-color-bg;
+  }
+
+  &.warning {
+    color: @warning-color-dark;
+    background-color: @warning-color-bg;
+  }
+
+  &.info {
+    color: @info-color;
+    background-color: @info-color-bg;
+  }
+}
+
+.ai-event-text {
+  font-size: @font-size-xs;
+  color: @text-color;
+  font-weight: @font-weight-medium;
+}
+
+/* 空状态 */
+.ai-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: @spacing-xl 0;
+}
+
+.ai-empty-icon {
+  font-size: 60rpx;
+  margin-bottom: @spacing-sm;
+}
+
+.ai-empty-text {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+  text-align: center;
+  line-height: 1.5;
+}

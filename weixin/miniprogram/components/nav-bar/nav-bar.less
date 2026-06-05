@@ -1,0 +1,63 @@
+@import '../../styles/variables.less';
+
+.nav-bar-wrapper {
+  position: relative;
+  width: 100%;
+  z-index: 100;
+  background-color: @white;
+}
+
+.nav-bar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: @nav-bar-height;
+  padding: 0 @spacing-md;
+  padding-top: env(safe-area-inset-top);
+  box-sizing: content-box;
+}
+
+.nav-bar-left {
+  display: flex;
+  align-items: center;
+  min-width: 80rpx;
+}
+
+.nav-bar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-bar-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 80rpx;
+}
+
+.nav-bar-title {
+  font-size: @font-size-lg;
+  font-weight: @font-weight-bold;
+  color: @text-color;
+}
+
+.nav-bar-back {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: @border-radius-round;
+  transition: background-color 0.2s ease;
+
+  &:active {
+    background-color: @background-color;
+  }
+}
+
+.nav-bar-back-icon {
+  font-size: @font-size-xl;
+  color: @text-color;
+}

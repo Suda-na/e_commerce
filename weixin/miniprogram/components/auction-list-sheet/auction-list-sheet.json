@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "bottom-sheet": "/components/bottom-sheet/bottom-sheet",
+    "auction-card": "/components/auction-card/auction-card"
+  }
+}

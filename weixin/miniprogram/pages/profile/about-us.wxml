@@ -1,0 +1,210 @@
+<!-- 关于我们页面 -->
+<view class="container">
+  <!-- 顶部应用信息 -->
+  <view class="app-header">
+    <view class="app-logo">
+      <text>{{appInfo.logo}}</text>
+    </view>
+    <text class="app-name">{{appInfo.name}}</text>
+    <text class="app-version">版本 {{appInfo.version}} ({{appInfo.build}})</text>
+  </view>
+
+  <!-- 公司简介 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">{{companyIntro.title}}</text>
+    </view>
+    <view class="section-content">
+      <text class="intro-text">{{companyIntro.content}}</text>
+    </view>
+    
+    <!-- 数据统计 -->
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-number">{{companyIntro.founded}}</text>
+        <text class="stat-label">成立时间</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-number">{{companyIntro.users}}</text>
+        <text class="stat-label">服务用户</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-number">{{companyIntro.transactions}}</text>
+        <text class="stat-label">成交金额</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 核心价值观 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">核心价值观</text>
+      <text class="section-subtitle">我们的承诺与追求</text>
+    </view>
+    
+    <view class="values-grid">
+      <view 
+        wx:for="{{coreValues}}" 
+        wx:key="id"
+        class="value-item"
+      >
+        <view class="value-icon">
+          <text>{{item.icon}}</text>
+        </view>
+        <text class="value-title">{{item.title}}</text>
+        <text class="value-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 团队介绍 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">{{teamInfo.title}}</text>
+    </view>
+    <view class="section-content">
+      <text class="team-desc">{{teamInfo.desc}}</text>
+    </view>
+    
+    <view class="team-grid">
+      <view 
+        wx:for="{{teamInfo.members}}" 
+        wx:key="role"
+        class="team-item"
+      >
+        <text class="team-icon">{{item.icon}}</text>
+        <text class="team-count">{{item.count}}</text>
+        <text class="team-role">{{item.role}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 联系方式 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">联系我们</text>
+      <text class="section-subtitle">随时为您服务</text>
+    </view>
+    
+    <view class="contact-list">
+      <view class="contact-item" data-type="address" bindtap="onCopyContact">
+        <view class="contact-icon">📍</view>
+        <view class="contact-info">
+          <text class="contact-label">公司地址</text>
+          <text class="contact-value">{{contactInfo.address}}</text>
+        </view>
+        <text class="contact-action">复制</text>
+      </view>
+      
+      <view class="contact-item" bindtap="onCallPhone">
+        <view class="contact-icon">📞</view>
+        <view class="contact-info">
+          <text class="contact-label">客服电话</text>
+          <text class="contact-value highlight">{{contactInfo.phone}}</text>
+        </view>
+        <text class="contact-action">拨打</text>
+      </view>
+      
+      <view class="contact-item" data-type="email" bindtap="onCopyContact">
+        <view class="contact-icon">📧</view>
+        <view class="contact-info">
+          <text class="contact-label">电子邮箱</text>
+          <text class="contact-value">{{contactInfo.email}}</text>
+        </view>
+        <text class="contact-action">复制</text>
+      </view>
+      
+      <view class="contact-item">
+        <view class="contact-icon">🕐</view>
+        <view class="contact-info">
+          <text class="contact-label">工作时间</text>
+          <text class="contact-value">{{contactInfo.workHours}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 社交媒体 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">关注我们</text>
+      <text class="section-subtitle">获取最新动态</text>
+    </view>
+    
+    <view class="social-list">
+      <view 
+        wx:for="{{socialMedia}}" 
+        wx:key="id"
+        class="social-item"
+        data-account="{{item.account}}"
+        bindtap="onCopySocial"
+      >
+        <view class="social-icon">
+          <text>{{item.icon}}</text>
+        </view>
+        <view class="social-info">
+          <text class="social-name">{{item.name}}</text>
+          <text class="social-account">{{item.account}}</text>
+        </view>
+        <text class="social-action">复制账号</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 资质信息 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">资质信息</text>
+    </view>
+    
+    <view class="qualifications-list">
+      <view 
+        wx:for="{{qualifications}}" 
+        wx:key="*this"
+        class="qualification-item"
+      >
+        <text class="qualification-icon">✓</text>
+        <text class="qualification-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 法律链接 -->
+  <view class="section legal-section">
+    <view 
+      wx:for="{{legalLinks}}" 
+      wx:key="id"
+      class="legal-item"
+      data-id="{{item.id}}"
+      bindtap="onLegalLinkTap"
+    >
+      <view class="legal-icon">
+        <text>{{item.icon}}</text>
+      </view>
+      <text class="legal-title">{{item.title}}</text>
+      <view class="legal-arrow">
+        <text>›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="action-btn" bindtap="onCheckUpdate">
+      <text class="btn-icon">🔄</text>
+      <text class="btn-text">检查更新</text>
+    </button>
+    <button class="action-btn" bindtap="onRateUs">
+      <text class="btn-icon">⭐</text>
+      <text class="btn-text">给我们评分</text>
+    </button>
+  </view>
+
+  <!-- 底部版权信息 -->
+  <view class="footer">
+    <text class="copyright">© 2024-2026 直播竞拍大师 All Rights Reserved</text>
+    <text class="powered">Powered by Auction Team</text>
+  </view>
+</view>

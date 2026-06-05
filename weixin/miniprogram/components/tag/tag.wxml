@@ -1,0 +1,4 @@
+<!--tag.wxml-->
+<view class="tag">
+  <slot></slot>
+</view>

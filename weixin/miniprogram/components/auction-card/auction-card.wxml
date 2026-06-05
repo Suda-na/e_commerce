@@ -1,0 +1,77 @@
+<!--auction-card.wxml-->
+<view 
+  class="auction-card {{mode}} {{statusClass}}" 
+  bind:tap="onTapCard"
+  hover-class="card-hover"
+>
+  <!-- 商品图片 -->
+  <view class="card-image-wrapper">
+    <image 
+      class="card-image" 
+      src="{{auction.images[0] || '/assets/icons/default-product.png'}}" 
+      mode="aspectFill"
+      lazy-load
+    />
+    <!-- 状态标签 -->
+    <view class="status-tag {{statusClass}}">
+      <text class="status-text">{{statusText}}</text>
+    </view>
+    <!-- 图片数量 -->
+    <view class="image-count" wx:if="{{auction.images.length > 1}}">
+      <text class="count-text">{{auction.images.length}}</text>
+    </view>
+  </view>
+  
+  <!-- 商品信息 -->
+  <view class="card-info">
+    <!-- 标题 -->
+    <view class="card-title-wrapper">
+      <text class="card-title">{{auction.title}}</text>
+    </view>
+    
+    <!-- 价格区域 -->
+    <view class="card-price-row">
+      <view class="price-info">
+        <text class="price-label">当前价</text>
+        <text class="price-value">{{priceText}}</text>
+      </view>
+      <view class="start-price-info" wx:if="{{hasBid && startPriceText}}">
+        <text class="start-price-label">起拍价</text>
+        <text class="start-price-value">{{startPriceText}}</text>
+      </view>
+      <view class="bid-count" wx:if="{{auction.bidCount > 0}}">
+        <text class="bid-count-text">{{auction.bidCount}}次出价</text>
+      </view>
+    </view>
+    
+    <!-- 倒计时和参与人数 -->
+    <view class="card-meta-row">
+      <view class="countdown-wrapper {{showDelayAnimation ? 'delay-active' : ''}} {{countdownTransitioning ? 'transitioning' : ''}}" wx:if="{{showCountdown && timeLeft && auction.status === 'active'}}">
+        <view class="countdown-icon"></view>
+        <text class="countdown-text" wx:if="{{!countdownTransitioning}}">{{timeLeft}}</text>
+        <text class="countdown-text countdown-transition" wx:else>{{countdownDisplaySeconds}}</text>
+        <!-- 延时动画徽章 -->
+        <view class="delay-anim-badge" wx:if="{{showDelayAnimation}}">
+          <text class="delay-anim-text">+{{delaySeconds}}s</text>
+        </view>
+      </view>
+      <!-- 延时通知条 -->
+      <view class="delay-notice-bar" wx:if="{{showDelayAnimation}}">
+        <text class="delay-notice-text">⏰ 竞拍延时 {{delaySeconds }}秒</text>
+      </view>
+      <view class="participant-count">
+        <view class="participant-icon"></view>
+        <text class="participant-text">{{auction.participantCount || 0}}人参与</text>
+      </view>
+    </view>
+    
+    <!-- 出价按钮（仅竞拍中状态显示） -->
+    <view 
+      class="bid-button {{auction.status === 'active' ? 'active' : 'disabled'}}" 
+      wx:if="{{auction.status === 'active'}}"
+      catch:tap="onTapBid"
+    >
+      <text class="bid-button-text">立即出价</text>
+    </view>
+  </view>
+</view>

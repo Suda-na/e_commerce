@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "modal": "/components/modal/modal"
+  },
+  "navigationBarTitleText": "个人中心",
+  "navigationBarBackgroundColor": "#D4A017",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#f5f5f5"
+}

@@ -1,0 +1,45 @@
+page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+
+.scrollarea {
+  flex: 1;
+  overflow-y: hidden;
+  padding: 24rpx;
+}
+
+.log-item {
+  margin-top: 20rpx;
+  text-align: center;
+  padding: 16rpx 24rpx;
+  background-color: #ffffff;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: #666666;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  animation: listItemIn 0.35s ease-out both;
+
+  &:nth-child(1) { animation-delay: 0s; }
+  &:nth-child(2) { animation-delay: 0.05s; }
+  &:nth-child(3) { animation-delay: 0.1s; }
+  &:nth-child(4) { animation-delay: 0.15s; }
+  &:nth-child(5) { animation-delay: 0.2s; }
+}
+
+.log-item:last-child {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@keyframes listItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(16rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

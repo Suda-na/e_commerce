@@ -1,0 +1,106 @@
+<!--
+  订单详情页面（参考编辑资料风格）
+  功能：展示订单详细信息，支持模拟支付和取消订单
+-->
+<view class="order-detail-page">
+
+  <!-- ===== 加载状态 ===== -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- ===== 错误状态 ===== -->
+  <view class="error-state" wx:elif="{{error}}">
+    <text class="error-icon">⚠️</text>
+    <text class="error-title">加载失败</text>
+    <text class="error-desc">{{error}}</text>
+    <view class="error-action" bindtap="loadOrderDetail" data-id="{{orderId}}">
+      <text class="action-text">重新加载</text>
+    </view>
+  </view>
+
+  <!-- ===== 订单详情内容 ===== -->
+  <scroll-view class="form-container" scroll-y wx:elif="{{orderDisplay}}">
+
+    <!-- 订单状态区域 -->
+    <view class="status-section">
+      <view class="status-icon-wrapper" style="background-color: {{orderDisplay.statusColor}}20">
+        <text class="status-icon">{{orderDisplay.statusIcon}}</text>
+      </view>
+      <text class="status-title">{{orderDisplay.statusText}}</text>
+      <text class="status-desc">{{orderDisplay.statusDesc}}</text>
+    </view>
+
+    <!-- 商品信息 -->
+    <view class="form-fields">
+      <view class="form-item product-item">
+        <view class="product-row">
+          <image
+            class="product-image"
+            src="{{orderDisplay.product.image}}"
+            mode="aspectFill"
+          />
+          <view class="product-info">
+            <text class="product-name">{{orderDisplay.product.name}}</text>
+            <text class="product-desc" wx:if="{{orderDisplay.product.description}}">{{orderDisplay.product.description}}</text>
+            <text class="product-price">{{orderDisplay.auction.currentPrice}}</text>
+          </view>
+        </view>
+        <!-- 查看竞拍详情 -->
+        <view class="go-live-btn" bindtap="goToLiveRoom">
+          <text class="btn-text">查看竞拍详情</text>
+          <text class="btn-arrow">→</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 订单信息 -->
+    <view class="form-fields">
+      <view class="form-item">
+        <text class="form-label">订单号</text>
+        <text class="form-value">{{orderDisplay.id}}</text>
+      </view>
+      <view class="form-item">
+        <text class="form-label">订单金额</text>
+        <text class="form-value amount">{{orderDisplay.amount}}</text>
+      </view>
+      <view class="form-item" wx:if="{{orderDisplay.shippingAddress || orderDisplay.receiverName || orderDisplay.receiverPhone}}">
+        <text class="form-label">收货信息</text>
+        <view class="receiver-info" wx:if="{{orderDisplay.receiverName || orderDisplay.receiverPhone}}">
+          <text class="form-value">{{orderDisplay.receiverName || ''}} {{orderDisplay.receiverPhone || ''}}</text>
+        </view>
+        <text class="form-value" wx:if="{{orderDisplay.shippingAddress}}">{{orderDisplay.shippingAddress}}</text>
+      </view>
+      <view class="form-item">
+        <text class="form-label">创建时间</text>
+        <text class="form-value">{{orderDisplay.createdAt}}</text>
+      </view>
+      <view class="form-item">
+        <text class="form-label">更新时间</text>
+        <text class="form-value">{{orderDisplay.updatedAt}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮区域 -->
+    <view class="action-section" wx:if="{{orderDisplay.status === 'pending'}}">
+      <button class="action-btn pay-btn" bindtap="handlePayOrder">
+        <text class="btn-text">模拟支付 {{orderDisplay.amount}}</text>
+      </button>
+      <button class="action-btn cancel-btn" bindtap="handleCancelOrder">
+        <text class="btn-text">取消订单</text>
+      </button>
+    </view>
+
+    <!-- 已发货状态提示 -->
+    <view class="action-section" wx:if="{{orderDisplay.status === 'shipped'}}">
+      <view class="shipping-info">
+        <text class="shipping-tip">商家已发货，请注意查收</text>
+      </view>
+    </view>
+
+    <!-- 底部安全区域 -->
+    <view class="safe-area-bottom" />
+  </scroll-view>
+
+</view>

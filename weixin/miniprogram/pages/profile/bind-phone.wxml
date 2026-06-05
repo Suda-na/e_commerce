@@ -1,0 +1,87 @@
+<!-- 绑定手机页面 -->
+<view class="page-container">
+  <!-- 表单区域 -->
+  <view class="form-container">
+    <!-- 当前绑定信息 -->
+    <view class="current-phone" wx:if="{{hasBoundPhone}}">
+      <view class="current-label">当前绑定手机号</view>
+      <view class="current-value">{{currentPhone}}</view>
+      <view class="current-tip">更换手机号后，原手机号将自动解绑</view>
+    </view>
+
+    <!-- 手机号 -->
+    <view class="form-group">
+      <view class="input-label">手机号</view>
+      <view class="input-wrapper {{phoneError ? 'input-error' : ''}}">
+        <input 
+          class="form-input"
+          type="number"
+          value="{{phone}}"
+          placeholder="请输入手机号"
+          bindinput="onPhoneInput"
+          maxlength="11"
+        />
+      </view>
+      <view class="error-message" wx:if="{{phoneError}}">
+        <text>{{phoneError}}</text>
+      </view>
+    </view>
+
+    <!-- 验证码 -->
+    <view class="form-group">
+      <view class="input-label">验证码</view>
+      <view class="input-wrapper {{codeError ? 'input-error' : ''}}">
+        <input 
+          class="form-input"
+          type="number"
+          value="{{verifyCode}}"
+          placeholder="请输入6位验证码"
+          bindinput="onCodeInput"
+          maxlength="6"
+        />
+        <view 
+          class="send-code-btn {{canSendCode && countdown === 0 ? '' : 'disabled'}}" 
+          bind:tap="onSendCode"
+        >
+          <text>{{codeButtonText}}</text>
+        </view>
+      </view>
+      <view class="error-message" wx:if="{{codeError}}">
+        <text>{{codeError}}</text>
+      </view>
+    </view>
+
+    <!-- 提示信息 -->
+    <view class="tips-section">
+      <view class="tips-title">温馨提示</view>
+      <view class="tip-item">
+        <text class="tip-icon">•</text>
+        <text class="tip-text">请输入有效的手机号码</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-icon">•</text>
+        <text class="tip-text">验证码有效期为5分钟</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-icon">•</text>
+        <text class="tip-text">每个手机号每天最多发送5次验证码</text>
+      </view>
+      <view class="tip-item">
+        <text class="tip-icon">•</text>
+        <text class="tip-text">绑定手机号可用于登录和接收重要通知</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button 
+      class="submit-btn {{canSubmit && !loading ? '' : 'disabled'}}"
+      bind:tap="onSubmit"
+      disabled="{{!canSubmit || loading}}"
+    >
+      <view class="loading-spinner" wx:if="{{loading}}"></view>
+      <text>{{loading ? '绑定中...' : '确认绑定'}}</text>
+    </button>
+  </view>
+</view>

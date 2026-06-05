@@ -1,0 +1,113 @@
+<!-- skeleton.wxml - 骨架屏组件 -->
+<view class="skeleton {{loading ? 'loading' : 'loaded'}} {{animate ? 'animate' : ''}}" wx:if="{{loading}}">
+  
+  <!-- 默认骨架屏 -->
+  <block wx:if="{{type === 'default'}}">
+    <view class="skeleton-default">
+      <!-- 标题行 -->
+      <view class="skeleton-title" wx:if="{{title}}">
+        <view class="skeleton-block title-block" />
+      </view>
+      <!-- 段落行 -->
+      <view class="skeleton-paragraph" wx:if="{{paragraph}}">
+        <view class="skeleton-block paragraph-block" wx:for="{{paragraphRows}}" wx:key="index" style="width: {{index === paragraphRows - 1 ? '60%' : '100%'}}" />
+      </view>
+    </view>
+  </block>
+
+  <!-- 列表骨架屏 -->
+  <block wx:elif="{{type === 'list'}}">
+    <view class="skeleton-list">
+      <view class="skeleton-list-item" wx:for="{{listItems}}" wx:key="index">
+        <!-- 左侧头像/图片 -->
+        <view class="skeleton-avatar {{avatarShape}}" wx:if="{{avatar}}" />
+        <!-- 右侧内容 -->
+        <view class="skeleton-list-content">
+          <view class="skeleton-block title-block" />
+          <view class="skeleton-block paragraph-block" style="width: {{70 + index * 5}}%" />
+          <view class="skeleton-block paragraph-block short" />
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 卡片骨架屏 -->
+  <block wx:elif="{{type === 'card'}}">
+    <view class="skeleton-card-list">
+      <view class="skeleton-card" wx:for="{{cardItems}}" wx:key="index">
+        <!-- 卡片图片 -->
+        <view class="skeleton-card-image">
+          <view class="skeleton-block image-block" />
+        </view>
+        <!-- 卡片内容 -->
+        <view class="skeleton-card-content">
+          <view class="skeleton-block title-block" />
+          <view class="skeleton-block paragraph-block" />
+          <view class="skeleton-block paragraph-block short" />
+          <view class="skeleton-card-footer">
+            <view class="skeleton-block price-block" />
+            <view class="skeleton-block button-block" />
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 详情骨架屏 -->
+  <block wx:elif="{{type === 'detail'}}">
+    <view class="skeleton-detail">
+      <!-- 大图 -->
+      <view class="skeleton-detail-image">
+        <view class="skeleton-block image-block large" />
+      </view>
+      <!-- 标题 -->
+      <view class="skeleton-detail-title">
+        <view class="skeleton-block title-block" />
+        <view class="skeleton-block title-block short" />
+      </view>
+      <!-- 价格区域 -->
+      <view class="skeleton-detail-price">
+        <view class="skeleton-block price-block large" />
+        <view class="skeleton-block price-block small" />
+      </view>
+      <!-- 信息区域 -->
+      <view class="skeleton-detail-info">
+        <view class="skeleton-block info-block" wx:for="{{3}}" wx:key="index" />
+      </view>
+    </view>
+  </block>
+
+  <!-- 个人中心骨架屏 -->
+  <block wx:elif="{{type === 'profile'}}">
+    <view class="skeleton-profile">
+      <!-- 头部卡片 -->
+      <view class="skeleton-profile-header">
+        <view class="skeleton-avatar large circle" />
+        <view class="skeleton-profile-info">
+          <view class="skeleton-block title-block" />
+          <view class="skeleton-block paragraph-block short" />
+        </view>
+      </view>
+      <!-- 统计数据 -->
+      <view class="skeleton-profile-stats">
+        <view class="skeleton-stat-item" wx:for="{{3}}" wx:key="index">
+          <view class="skeleton-block number-block" />
+          <view class="skeleton-block label-block" />
+        </view>
+      </view>
+      <!-- 菜单列表 -->
+      <view class="skeleton-profile-menu">
+        <view class="skeleton-menu-item" wx:for="{{5}}" wx:key="index">
+          <view class="skeleton-block icon-block" />
+          <view class="skeleton-block text-block" />
+        </view>
+      </view>
+    </view>
+  </block>
+
+</view>
+
+<!-- 实际内容（加载完成后显示） -->
+<view class="skeleton-content {{loading ? 'hidden' : 'visible'}}">
+  <slot />
+</view>

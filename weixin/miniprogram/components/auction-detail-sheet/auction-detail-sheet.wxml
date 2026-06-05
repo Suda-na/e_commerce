@@ -1,0 +1,240 @@
+<!--auction-detail-sheet.wxml-->
+<bottom-sheet 
+  visible="{{visible}}" 
+  title="竞拍详情" 
+  height="90%" 
+  maxHeight="90%"
+  bind:close="onClose"
+>
+  <view class="auction-detail-sheet" bind:touchmove="preventTouchMove">
+    <!-- 加载状态 -->
+    <view class="loading-state" wx:if="{{isLoading}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+    
+    <!-- 详情内容 -->
+    <scroll-view 
+      class="detail-scroll" 
+      scroll-y 
+      wx:else
+    >
+      <!-- 商品图片轮播 -->
+      <view class="image-carousel">
+        <swiper 
+          wx:if="{{auction.images && auction.images.length > 0}}"
+          class="swiper"
+          current="{{currentImageIndex}}"
+          indicator-dots="{{auction.images.length > 1}}"
+          indicator-color="rgba(255,255,255,0.5)"
+          indicator-active-color="#FFFFFF"
+          autoplay
+          interval="{{3000}}"
+          circular
+          bindchange="onImageChange"
+        >
+          <swiper-item wx:for="{{auction.images}}" wx:key="*this">
+            <image 
+              class="carousel-image" 
+              src="{{item}}" 
+              mode="aspectFill"
+              data-src="{{item}}"
+              bindtap="onPreviewImage"
+            />
+          </swiper-item>
+        </swiper>
+        <image 
+          wx:else 
+          class="carousel-image" 
+          src="/assets/icons/default-product.png" 
+          mode="aspectFill"
+        />
+        
+        <!-- 图片计数 -->
+        <view class="image-count" wx:if="{{auction.images.length > 1}}">
+          <text class="image-count-text">{{currentImageIndex + 1}}/{{auction.images.length}}</text>
+        </view>
+        
+        <!-- 状态标签 -->
+        <view class="status-tag {{auction.status}}">
+          <text class="status-text">{{auction.statusText}}</text>
+        </view>
+      </view>
+      
+      <!-- 基本信息 -->
+      <view class="basic-info">
+        <view class="title-row">
+          <text class="auction-title">{{auction.title}}</text>
+        </view>
+        
+        <view class="price-row">
+          <view class="current-price">
+            <text class="price-label">当前价</text>
+            <text class="price-symbol">¥</text>
+            <text class="price-value">{{displayCurrentPrice}}</text>
+          </view>
+          <view class="start-price">
+            <text class="price-label">起拍价</text>
+            <text class="price-symbol-small">¥</text>
+            <text class="price-value-small">{{displayStartPrice}}</text>
+          </view>
+        </view>
+        
+        <view class="info-tags">
+          <view class="info-tag">
+            <text class="tag-icon">🔥</text>
+            <text class="tag-text">{{auction.bidCount}}次出价</text>
+          </view>
+          <view class="info-tag">
+            <text class="tag-icon">👥</text>
+            <text class="tag-text">{{auction.participantCount}}人参与</text>
+          </view>
+          <view class="info-tag">
+            <text class="tag-icon">📈</text>
+            <text class="tag-text">加价幅度 ¥{{auction.priceStep}}</text>
+          </view>
+          <view class="info-tag" wx:if="{{auction.capPrice}}">
+            <text class="tag-icon">🎯</text>
+            <text class="tag-text">封顶价 ¥{{displayCapPrice}}</text>
+          </view>
+          <view class="info-tag" wx:if="{{auction.stock > 1}}">
+            <text class="tag-icon">📦</text>
+            <text class="tag-text">库存 {{auction.stock}}件</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 倒计时（竞拍中显示） -->
+      <view class="countdown-section" wx:if="{{auction.status === 'active'}}">
+        <view class="countdown-card {{showDelayAnimation ? 'delay-active' : ''}} {{countdownTransitioning ? 'transitioning' : ''}}">
+          <view class="countdown-icon">⏰</view>
+          <view class="countdown-info">
+            <text class="countdown-label">距离结束</text>
+            <!-- 平滑过渡：显示从旧秒数到新秒数的动画 -->
+            <text class="countdown-value" wx:if="{{countdownTransitioning}}">{{countdownDisplaySeconds}}秒</text>
+            <text class="countdown-value" wx:else>{{countdownText}}</text>
+          </view>
+          <!-- 延时动画 -->
+          <view class="delay-anim-badge" wx:if="{{showDelayAnimation}}">
+            <text class="delay-anim-plus">+</text>
+            <text class="delay-anim-seconds">{{delayAnimProgress}}</text>
+            <text class="delay-anim-unit">s</text>
+          </view>
+        </view>
+        <!-- 延时提示条 -->
+        <view class="delay-notice-bar" wx:if="{{showDelayAnimation}}">
+          <text class="delay-notice-icon">⏳</text>
+          <text class="delay-notice-text">竞拍时间延长 {{delaySeconds}} 秒</text>
+        </view>
+      </view>
+      
+      <!-- 时间信息 -->
+      <view class="time-section">
+        <view class="time-item">
+          <text class="time-label">开始时间</text>
+          <text class="time-value">{{displayStartTime}}</text>
+        </view>
+        <view class="time-item">
+          <text class="time-label">结束时间</text>
+          <text class="time-value">{{displayEndTime}}</text>
+        </view>
+      </view>
+      
+      <!-- 竞拍结果（已结束时显示） -->
+      <view class="result-section" wx:if="{{auction.status === 'completed' || auction.status === 'ended'}}">
+        <view class="section-title">
+          <text>竞拍结果</text>
+        </view>
+        <view class="result-card">
+          <view class="result-row" wx:if="{{auction.winnerInfo}}">
+            <text class="result-label">中标者</text>
+            <text class="result-value">{{auction.winnerInfo.username || auction.winnerInfo.nickname || '匿名用户'}}</text>
+          </view>
+          <view class="result-row">
+            <text class="result-label">成交价</text>
+            <text class="result-value price">¥{{displayCurrentPrice}}</text>
+          </view>
+          <view class="result-row">
+            <text class="result-label">出价次数</text>
+            <text class="result-value">{{auction.bidCount}}次</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 商品描述 -->
+      <view class="description-section" wx:if="{{auction.description}}">
+        <view class="section-title">
+          <text>商品描述</text>
+        </view>
+        <view class="description-content">
+          <text>{{auction.description}}</text>
+        </view>
+      </view>
+      
+      <!-- 商家信息 -->
+      <view class="merchant-section" wx:if="{{auction.merchantInfo}}">
+        <view class="section-title">
+          <text>商家信息</text>
+        </view>
+        <view class="merchant-card">
+          <image 
+            class="merchant-avatar" 
+            src="{{auction.merchantInfo.avatar || '/assets/icons/default-avatar.png'}}" 
+            mode="aspectFill"
+          />
+          <view class="merchant-info">
+            <text class="merchant-name">{{auction.merchantInfo.username || auction.merchantInfo.nickname || '商家'}}</text>
+            <text class="merchant-label">直播商家</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 排行榜 -->
+      <view class="leaderboard-section" wx:if="{{leaderboard.length > 0}}">
+        <view class="section-title">
+          <text>出价排行</text>
+        </view>
+        <view class="leaderboard-list">
+          <view 
+            class="leaderboard-item {{index < 3 ? 'top3' : ''}}" 
+            wx:for="{{leaderboard}}" 
+            wx:key="userId"
+          >
+            <view class="rank-badge {{index < 3 ? 'rank-' + (index + 1) : ''}}">
+              <text class="rank-text">{{index + 1}}</text>
+            </view>
+            <view class="bidder-info">
+              <text class="bidder-name">{{item.displayName}}</text>
+              <text class="bid-amount">¥{{item.displayAmount}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 底部占位 -->
+      <view class="bottom-placeholder"></view>
+    </scroll-view>
+    
+    <!-- 底部操作栏 -->
+    <view class="action-bar" wx:if="{{!isLoading && auction}}">
+      <!-- 价格信息 -->
+      <view class="action-price">
+        <text class="action-price-label">当前价</text>
+        <view class="action-price-row">
+          <text class="action-price-symbol">¥</text>
+          <text class="action-price-value">{{displayCurrentPrice}}</text>
+        </view>
+      </view>
+      
+      <!-- 出价按钮 -->
+      <view class="action-btn-wrap">
+        <view
+          class="action-btn {{auction.status === 'active' ? 'bid-btn' : 'disabled-btn'}}"
+          bindtap="onTapBid"
+        >
+          <text class="action-btn-text">{{auction.status === 'active' ? '立即出价' : auction.statusText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</bottom-sheet>

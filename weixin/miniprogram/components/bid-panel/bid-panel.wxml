@@ -1,0 +1,411 @@
+<!--bid-panel.wxml - 出价面板组件-->
+<bottom-sheet 
+  visible="{{visible}}" 
+  title="出价" 
+  height="auto" 
+  maxHeight="85%"
+  bind:close="onClose"
+>
+  <view class="bid-panel {{shakeAnimation ? 'shake' : ''}} {{celebrateAnimation ? 'celebrate' : ''}}" bind:touchmove="preventTouchMove">
+    
+    <!-- 商品图片轮播 -->
+    <view class="image-carousel">
+      <swiper 
+        wx:if="{{auction.images && auction.images.length > 0}}"
+        class="swiper"
+        current="{{currentSwiperIndex}}"
+        indicator-dots="{{auction.images.length > 1}}"
+        indicator-color="rgba(255,255,255,0.5)"
+        indicator-active-color="#FFFFFF"
+        autoplay="{{false}}"
+        circular="{{true}}"
+        bindchange="onSwiperChange"
+      >
+        <swiper-item wx:for="{{auction.images}}" wx:key="*this">
+          <image 
+            class="swiper-image" 
+            src="{{item}}" 
+            mode="aspectFill"
+            lazy-load
+          />
+        </swiper-item>
+      </swiper>
+      <image 
+        wx:else 
+        class="swiper-image" 
+        src="/assets/icons/default-product.png" 
+        mode="aspectFill"
+      />
+      
+      <!-- 图片计数 -->
+      <view class="image-count" wx:if="{{auction.images.length > 1}}">
+        <text class="count-text">{{currentSwiperIndex + 1}}/{{auction.images.length}}</text>
+      </view>
+      
+      <!-- 倒计时 -->
+      <view class="countdown-badge {{showDelayAnimation ? 'delay-active' : ''}} {{countdownTransitioning ? 'transitioning' : ''}}" wx:if="{{timeLeftText && auction.status === 'active'}}">
+        <text class="countdown-icon">⏱</text>
+        <!-- 平滑过渡：显示从旧秒数到新秒数的动画 -->
+        <text class="countdown-text" wx:if="{{countdownTransitioning}}">{{countdownDisplaySeconds}}秒</text>
+        <text class="countdown-text" wx:else>{{timeLeftText}}</text>
+        <!-- 延时动画浮层 -->
+        <view class="delay-anim-badge" wx:if="{{showDelayAnimation}}">
+          <text class="delay-anim-plus">+</text>
+          <text class="delay-anim-seconds">{{delayAnimProgress}}</text>
+          <text class="delay-anim-unit">s</text>
+        </view>
+      </view>
+      <!-- 延时提示条 -->
+      <view class="delay-notice-bar" wx:if="{{showDelayAnimation}}">
+        <text class="delay-notice-icon">⏳</text>
+        <text class="delay-notice-text">竞拍时间延长 {{delaySeconds}} 秒</text>
+      </view>
+    </view>
+    
+    <!-- 商品信息 -->
+    <view class="auction-info">
+      <view class="auction-header">
+        <text class="auction-title">{{auction.title}}</text>
+        <view class="auction-tags" wx:if="{{auction.tags && auction.tags.length > 0}}">
+          <text class="tag" wx:for="{{auction.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+      
+      <view class="auction-meta">
+        <view class="meta-item">
+          <text class="meta-label">出价次数</text>
+          <text class="meta-value">{{auction.bidCount || 0}}</text>
+        </view>
+        <view class="meta-divider"></view>
+        <view class="meta-item">
+          <text class="meta-label">参与人数</text>
+          <text class="meta-value">{{auction.participantCount || 0}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 价格对比区 -->
+    <view class="price-compare">
+      <view class="price-item current-price">
+        <text class="price-label">当前价</text>
+        <view class="price-value-wrapper">
+          <text class="price-currency">¥</text>
+          <text class="price-value">{{auction.currentPrice || 0}}</text>
+        </view>
+      </view>
+      
+      <view class="price-vs">
+        <text class="vs-text">VS</text>
+      </view>
+      
+      <view class="price-item my-price">
+        <text class="price-label">我的出价</text>
+        <view class="price-value-wrapper">
+          <text class="price-currency">¥</text>
+          <text class="price-value">{{myBidAmount || 0}}</text>
+        </view>
+        <view class="bid-status" wx:if="{{isTopBidder}}">
+          <text class="status-icon">👑</text>
+          <text class="status-text">领先</text>
+        </view>
+        <view class="bid-status outbid" wx:elif="{{isOutbid}}">
+          <text class="status-icon">⚠️</text>
+          <text class="status-text">被超越</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 智能提示 -->
+    <view class="smart-tip tip-{{tipType}}">
+      <text class="tip-icon">{{tipIcon}}</text>
+      <text class="tip-text">{{tipText}}</text>
+      <!-- AI 出价顾问入口 -->
+      <view class="ai-advisor-entry" bind:tap="onToggleAiAdvisor">
+        <text class="ai-entry-icon">🤖</text>
+        <text class="ai-entry-text">AI顾问</text>
+      </view>
+    </view>
+
+    <!-- AI 出价顾问面板 -->
+    <view class="ai-advisor {{showAiAdvisor ? 'show' : ''}}" wx:if="{{showAiAdvisor}}">
+      <view class="ai-advisor-header">
+        <view class="ai-advisor-title">
+          <text class="ai-title-icon">🤖</text>
+          <text class="ai-title-text">AI 出价顾问</text>
+          <text class="ai-badge">智能分析</text>
+        </view>
+        <view class="ai-advisor-close" bind:tap="onToggleAiAdvisor">
+          <text>✕</text>
+        </view>
+      </view>
+
+      <!-- 风险偏好选择 -->
+      <view class="risk-selector">
+        <text class="risk-label">风险偏好:</text>
+        <view class="risk-options">
+          <view class="risk-option {{riskLevel === 'conservative' ? 'active' : ''}}" data-level="conservative" bind:tap="onRiskLevelChange">保守</view>
+          <view class="risk-option {{riskLevel === 'moderate' ? 'active' : ''}}" data-level="moderate" bind:tap="onRiskLevelChange">适中</view>
+          <view class="risk-option {{riskLevel === 'aggressive' ? 'active' : ''}}" data-level="aggressive" bind:tap="onRiskLevelChange">积极</view>
+        </view>
+      </view>
+
+      <!-- Tab 切换 -->
+      <view class="ai-tabs">
+        <view class="ai-tab {{aiAdvisorTab === 'suggestion' ? 'active' : ''}}" data-tab="suggestion" bind:tap="onAiTabChange">
+          <text>🎯 出价建议</text>
+        </view>
+        <view class="ai-tab {{aiAdvisorTab === 'trend' ? 'active' : ''}}" data-tab="trend" bind:tap="onAiTabChange">
+          <text>📈 趋势分析</text>
+        </view>
+      </view>
+
+      <!-- 出价建议 Tab -->
+      <view class="ai-tab-content" wx:if="{{aiAdvisorTab === 'suggestion'}}">
+        <view class="ai-action-btn" bind:tap="onFetchBidSuggestion">
+          <view class="ai-btn-loading" wx:if="{{bidSuggestionLoading}}"></view>
+          <text wx:else>🤖 获取AI出价建议</text>
+        </view>
+
+        <view class="ai-suggestion" wx:if="{{bidSuggestion}}">
+          <!-- 核心数据 -->
+          <view class="ai-stats">
+            <view class="ai-stat-item">
+              <text class="ai-stat-label">建议出价</text>
+              <text class="ai-stat-value highlight">¥{{bidSuggestion.suggestedBid}}</text>
+            </view>
+            <view class="ai-stat-item">
+              <text class="ai-stat-label">置信度</text>
+              <text class="ai-stat-value {{bidSuggestion.confidence > 70 ? 'success' : bidSuggestion.confidence > 40 ? 'warning' : 'danger'}}">{{bidSuggestion.confidence}}%</text>
+            </view>
+            <view class="ai-stat-item">
+              <text class="ai-stat-label">预测最终价</text>
+              <text class="ai-stat-value purple">¥{{bidSuggestion.pricePrediction.predictedFinalPrice}}</text>
+            </view>
+            <view class="ai-stat-item">
+              <text class="ai-stat-label">出价策略</text>
+              <text class="ai-stat-value {{bidSuggestion.strategy.type === 'conservative' ? 'info' : bidSuggestion.strategy.type === 'moderate' ? 'success' : bidSuggestion.strategy.type === 'aggressive' ? 'danger' : 'purple'}}">{{bidSuggestion.strategy.type === 'conservative' ? '保守' : bidSuggestion.strategy.type === 'moderate' ? '适中' : bidSuggestion.strategy.type === 'aggressive' ? '积极' : '狙击'}}</text>
+            </view>
+          </view>
+
+          <!-- 使用建议出价 -->
+          <view class="ai-use-btn" bind:tap="onUseAiSuggestion">
+            <text>使用建议出价 ¥{{bidSuggestion.suggestedBid}}</text>
+          </view>
+
+          <!-- 风险评估 -->
+          <view class="ai-card" wx:if="{{bidSuggestion.riskAssessment}}">
+            <view class="ai-card-title">🛡️ 风险评估</view>
+            <view class="ai-risk-level {{bidSuggestion.riskAssessment.level === 'high' ? 'danger' : bidSuggestion.riskAssessment.level === 'medium' ? 'warning' : 'success'}}">
+              {{bidSuggestion.riskAssessment.level === 'high' ? '高风险' : bidSuggestion.riskAssessment.level === 'medium' ? '中风险' : '低风险'}}
+            </view>
+            <view class="ai-risk-factors" wx:if="{{bidSuggestion.riskAssessment.factors.length > 0}}">
+              <text class="ai-risk-factor" wx:for="{{bidSuggestion.riskAssessment.factors}}" wx:key="*this">• {{item}}</text>
+            </view>
+            <text class="ai-mitigation" wx:if="{{bidSuggestion.riskAssessment.mitigation}}">{{bidSuggestion.riskAssessment.mitigation}}</text>
+          </view>
+
+          <!-- 最佳时机 -->
+          <view class="ai-card" wx:if="{{bidSuggestion.optimalTiming}}">
+            <view class="ai-card-title">🎯 最佳时机</view>
+            <view class="ai-timing-action {{bidSuggestion.optimalTiming.recommendedAction === 'bid_now' ? 'success' : bidSuggestion.optimalTiming.recommendedAction === 'snipe' ? 'purple' : 'info'}}">
+              {{bidSuggestion.optimalTiming.recommendedAction === 'bid_now' ? '立即出价' : bidSuggestion.optimalTiming.recommendedAction === 'snipe' ? '狙击' : '等待'}}
+            </view>
+            <text class="ai-timing-reason">{{bidSuggestion.optimalTiming.reason}}</text>
+            <text class="ai-timing-window" wx:if="{{bidSuggestion.optimalTiming.nextOptimalWindow}}">最佳窗口: {{bidSuggestion.optimalTiming.nextOptimalWindow}}</text>
+          </view>
+
+          <!-- 竞争对手 -->
+          <view class="ai-card" wx:if="{{bidSuggestion.competitorAnalysis.topBidders.length > 0}}">
+            <view class="ai-card-title">👥 竞争对手</view>
+            <view class="ai-competitor" wx:for="{{bidSuggestion.competitorAnalysis.topBidders}}" wx:key="username" wx:if="{{index < 3}}">
+              <text class="ai-competitor-name">{{item.username}}</text>
+              <text class="ai-competitor-pattern {{item.pattern === '积极竞拍者' ? 'danger' : 'info'}}">{{item.pattern}}</text>
+              <text class="ai-competitor-bids">{{item.bidCount}}次</text>
+            </view>
+            <view class="ai-competitor-pattern-overall">
+              <text class="ai-pattern-label">整体模式:</text>
+              <text class="ai-pattern-tag {{bidSuggestion.competitorAnalysis.biddingPattern === 'aggressive' ? 'danger' : bidSuggestion.competitorAnalysis.biddingPattern === 'erratic' ? 'warning' : 'info'}}">
+                {{bidSuggestion.competitorAnalysis.biddingPattern === 'aggressive' ? '积极' : bidSuggestion.competitorAnalysis.biddingPattern === 'erratic' ? '不稳定' : '稳定'}}
+              </text>
+            </view>
+          </view>
+
+          <!-- AI 推理 -->
+          <view class="ai-reasoning" wx:if="{{bidSuggestion.reasoning}}">
+            <text>{{bidSuggestion.reasoning}}</text>
+          </view>
+        </view>
+
+        <view class="ai-empty" wx:elif="{{!bidSuggestionLoading}}">
+          <text class="ai-empty-icon">💡</text>
+          <text class="ai-empty-text">选择风险偏好后点击按钮，AI将为你生成个性化出价建议</text>
+        </view>
+      </view>
+
+      <!-- 趋势分析 Tab -->
+      <view class="ai-tab-content" wx:if="{{aiAdvisorTab === 'trend'}}">
+        <view class="ai-action-btn trend" bind:tap="onFetchTrendAnalysis">
+          <view class="ai-btn-loading" wx:if="{{trendLoading}}"></view>
+          <text wx:else>📈 分析竞拍趋势</text>
+        </view>
+
+        <view class="ai-trend" wx:if="{{trendAnalysis}}">
+          <!-- 趋势指标 -->
+          <view class="ai-stats">
+            <view class="ai-stat-item">
+              <text class="ai-stat-label">动量</text>
+              <text class="ai-stat-value {{trendAnalysis.trends.momentum === 'accelerating' ? 'success' : trendAnalysis.trends.momentum === 'decelerating' ? 'danger' : 'muted'}}">{{trendAnalysis.trends.momentum === 'accelerating' ? '加速' : trendAnalysis.trends.momentum === 'decelerating' ? '减速' : '稳定'}}</text>
+            </view>
+            <view class="ai-stat-item">
+              <text class="ai-stat-label">竞争强度</text>
+              <text class="ai-stat-value {{trendAnalysis.trends.competition === 'intense' ? 'danger' : trendAnalysis.trends.competition === 'moderate' ? 'warning' : 'success'}}">{{trendAnalysis.trends.competition === 'intense' ? '激烈' : trendAnalysis.trends.competition === 'moderate' ? '适中' : '轻松'}}</text>
+            </view>
+            <view class="ai-stat-item">
+              <text class="ai-stat-label">紧急程度</text>
+              <text class="ai-stat-value {{trendAnalysis.trends.urgency === 'critical' ? 'danger' : trendAnalysis.trends.urgency === 'high' ? 'warning' : 'success'}}">{{trendAnalysis.trends.urgency === 'critical' ? '紧急' : trendAnalysis.trends.urgency === 'high' ? '高' : trendAnalysis.trends.urgency === 'medium' ? '中' : '低'}}</text>
+            </view>
+            <view class="ai-stat-item">
+              <text class="ai-stat-label">价格趋势</text>
+              <text class="ai-stat-value {{trendAnalysis.prediction.trend === 'rising' ? 'danger' : trendAnalysis.prediction.trend === 'declining' ? 'success' : 'muted'}}">{{trendAnalysis.prediction.trend === 'rising' ? '上涨' : trendAnalysis.prediction.trend === 'declining' ? '下降' : '稳定'}}</text>
+            </view>
+          </view>
+
+          <!-- AI 建议 -->
+          <view class="ai-card" wx:if="{{trendAnalysis.recommendations.length > 0}}">
+            <view class="ai-card-title">💡 AI建议</view>
+            <text class="ai-recommendation" wx:for="{{trendAnalysis.recommendations}}" wx:key="*this">• {{item}}</text>
+          </view>
+
+          <!-- 关键事件 -->
+          <view class="ai-card" wx:if="{{trendAnalysis.trends.keyEvents.length > 0}}">
+            <view class="ai-card-title">⚡ 关键事件</view>
+            <view class="ai-event" wx:for="{{trendAnalysis.trends.keyEvents}}" wx:key="event">
+              <text class="ai-event-impact {{item.impact === 'high' ? 'danger' : item.impact === 'medium' ? 'warning' : 'info'}}">{{item.impact === 'high' ? '高' : item.impact === 'medium' ? '中' : '低'}}</text>
+              <text class="ai-event-text">{{item.event}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="ai-empty" wx:elif="{{!trendLoading}}">
+          <text class="ai-empty-icon">📈</text>
+          <text class="ai-empty-text">点击按钮，AI将分析当前竞拍的价格趋势和竞争态势</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 出价金额控制 -->
+    <view class="bid-control">
+      <view class="control-header">
+        <text class="control-title">出价金额</text>
+        <text class="control-step">加价幅度 ¥{{auction.priceStep}}</text>
+      </view>
+      
+      <view class="amount-input-wrapper">
+        <!-- 减少按钮 -->
+        <view 
+          class="control-btn decrease {{bidAmount <= auction.currentPrice + auction.priceStep ? 'disabled' : ''}}"
+          bind:tap="onTapDecrease"
+          bind:longpress="onDecreaseLongPress"
+          bind:touchend="onLongPressEnd"
+          bind:touchcancel="onLongPressEnd"
+        >
+          <text class="control-icon">-</text>
+        </view>
+        
+        <!-- 金额输入 -->
+        <view class="amount-display">
+          <text class="amount-currency">¥</text>
+          <input 
+            class="amount-input"
+            type="digit"
+            placeholder="输入金额"
+            value="{{bidAmountText}}"
+            bindinput="onBidInput"
+            focus="{{visible}}"
+          />
+        </view>
+        
+        <!-- 增加按钮 -->
+        <view 
+          class="control-btn increase"
+          bind:tap="onTapIncrease"
+          bind:longpress="onIncreaseLongPress"
+          bind:touchend="onLongPressEnd"
+          bind:touchcancel="onLongPressEnd"
+        >
+          <text class="control-icon">+</text>
+        </view>
+      </view>
+      
+      <!-- 快捷加价 -->
+      <view class="quick-add-section">
+        <view 
+          class="quick-add-btn" 
+          wx:for="{{quickAddOptions}}" 
+          wx:key="*this"
+          data-amount="{{item}}"
+          bind:tap="onTapQuickAdd"
+        >
+          <text class="quick-add-text">+¥{{item}}</text>
+        </view>
+      </view>
+      
+      <!-- 错误信息 -->
+      <view class="error-message" wx:if="{{errorMessage}}">
+        <text class="error-icon">❌</text>
+        <text class="error-text">{{errorMessage}}</text>
+      </view>
+    </view>
+    
+    <!-- 提交按钮 -->
+    <view class="submit-section">
+      <view 
+        class="submit-btn {{bidStatus === 'submitting' ? 'submitting' : ''}} {{bidStatus === 'success' ? 'success' : ''}} {{bidStatus === 'error' ? 'error' : ''}} {{bidStatus === 'ended' ? 'ended' : ''}}"
+        bind:tap="onSubmitBid"
+      >
+        <!-- Loading状态 -->
+        <view class="submit-spinner" wx:if="{{bidStatus === 'submitting'}}"></view>
+        
+        <!-- 成功状态 -->
+        <view class="submit-success-icon" wx:if="{{bidStatus === 'success'}}">
+          <text class="success-icon">✓</text>
+        </view>
+        
+        <!-- 错误状态 -->
+        <view class="submit-error-icon" wx:if="{{bidStatus === 'error'}}">
+          <text class="error-icon">✕</text>
+        </view>
+        
+        <!-- 按钮文字 -->
+        <text class="submit-text" wx:if="{{bidStatus === 'idle'}}">立即出价</text>
+        <text class="submit-text" wx:elif="{{bidStatus === 'submitting'}}">出价中...</text>
+        <text class="submit-text" wx:elif="{{bidStatus === 'success'}}">出价成功</text>
+        <text class="submit-text" wx:elif="{{bidStatus === 'error'}}">出价失败</text>
+        <text class="submit-text" wx:elif="{{bidStatus === 'ended'}}">竞拍已结束</text>
+      </view>
+      
+      <view class="submit-hint">
+        <text class="hint-text">出价即表示同意《竞拍规则》</text>
+      </view>
+    </view>
+    
+    <!-- 竞拍结束遮罩 -->
+    <view class="ended-overlay" wx:if="{{bidStatus === 'ended'}}">
+      <view class="ended-content">
+        <text class="ended-icon">🏁</text>
+        <text class="ended-title">竞拍已结束</text>
+        <text class="ended-price">最终价格 ¥{{auction.currentPrice}}</text>
+      </view>
+    </view>
+  </view>
+</bottom-sheet>
+
+<!-- 竞拍结果弹窗 -->
+<result-modal
+  visible="{{showResultModal}}"
+  result="{{auctionResult}}"
+  bind:close="onResultModalClose"
+  bind:pay="onResultPay"
+  bind:continue="onResultContinue"
+  bind:viewOrder="onResultViewOrder"
+/>

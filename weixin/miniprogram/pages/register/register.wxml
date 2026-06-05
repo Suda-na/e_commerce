@@ -1,0 +1,139 @@
+<!--pages/register/register.wxml-->
+<view class="container">
+  <!-- Logo 区域 -->
+  <view class="logo-area">
+    <image class="logo" src="/assets/icons/tab-live.png" mode="aspectFit"></image>
+    <text class="app-name">创建账号</text>
+    <text class="app-slogan">加入直播竞拍大师，开启竞拍之旅</text>
+  </view>
+
+  <!-- 表单区域 -->
+  <view class="form-area">
+    <!-- 用户名输入 -->
+    <view class="input-group">
+      <view class="input-wrapper {{usernameFocus ? 'focused' : ''}} {{errors.username ? 'error' : ''}}">
+        <image class="input-icon" src="/assets/icons/user.png" mode="aspectFit"></image>
+        <input 
+          class="input-field" 
+          type="text" 
+          placeholder="请输入用户名（5-50个字符）" 
+          placeholder-class="placeholder"
+          value="{{username}}"
+          bindinput="onUsernameInput"
+          bindblur="onUsernameBlur"
+          bindfocus="onUsernameFocus"
+          maxlength="50"
+        />
+      </view>
+      <text class="error-text" wx:if="{{errors.username}}">{{errors.username}}</text>
+      <text class="hint-text" wx:if="{{!errors.username && username.length > 0}}">{{username.length}}/50</text>
+    </view>
+
+    <!-- 密码输入 -->
+    <view class="input-group">
+      <view class="input-wrapper {{passwordFocus ? 'focused' : ''}} {{errors.password ? 'error' : ''}}">
+        <image class="input-icon" src="/assets/icons/lock.png" mode="aspectFit"></image>
+        <input 
+          class="input-field" 
+          type="{{showPassword ? 'text' : 'password'}}" 
+          placeholder="请输入密码（6-20位，含字母和数字）" 
+          placeholder-class="placeholder"
+          value="{{password}}"
+          bindinput="onPasswordInput"
+          bindblur="onPasswordBlur"
+          bindfocus="onPasswordFocus"
+          maxlength="20"
+        />
+        <image 
+          class="eye-icon" 
+          src="{{showPassword ? '/assets/icons/eye-open.png' : '/assets/icons/eye-close.png'}}" 
+          mode="aspectFit"
+          bindtap="togglePassword"
+        ></image>
+      </view>
+      <text class="error-text" wx:if="{{errors.password}}">{{errors.password}}</text>
+      <!-- 密码强度指示器 -->
+      <view class="password-strength" wx:if="{{password.length > 0}}">
+        <view class="strength-bar {{passwordStrength >= 1 ? 'active strength-weak' : ''}}"></view>
+        <view class="strength-bar {{passwordStrength >= 2 ? 'active strength-medium' : ''}}"></view>
+        <view class="strength-bar {{passwordStrength >= 3 ? 'active strength-strong' : ''}}"></view>
+        <text class="strength-text strength-level-{{passwordStrength}}">{{passwordStrengthText}}</text>
+      </view>
+      <!-- 密码要求提示 -->
+      <view class="password-requirements" wx:if="{{password.length > 0 && passwordStrength < 3}}">
+        <text class="requirement {{reqLengthMet ? 'met' : ''}}">{{reqLengthMet ? '✓' : '○'}} 至少8位字符</text>
+        <text class="requirement {{reqCaseMet ? 'met' : ''}}">{{reqCaseMet ? '✓' : '○'}} 含大小写字母</text>
+        <text class="requirement {{reqSpecialMet ? 'met' : ''}}">{{reqSpecialMet ? '✓' : '○'}} 含数字和特殊字符</text>
+      </view>
+    </view>
+
+    <!-- 确认密码输入 -->
+    <view class="input-group">
+      <view class="input-wrapper {{confirmPasswordFocus ? 'focused' : ''}} {{errors.confirmPassword ? 'error' : ''}}">
+        <image class="input-icon" src="/assets/icons/lock.png" mode="aspectFit"></image>
+        <input 
+          class="input-field" 
+          type="{{showConfirmPassword ? 'text' : 'password'}}" 
+          placeholder="请再次输入密码" 
+          placeholder-class="placeholder"
+          value="{{confirmPassword}}"
+          bindinput="onConfirmPasswordInput"
+          bindblur="onConfirmPasswordBlur"
+          bindfocus="onConfirmPasswordFocus"
+          maxlength="20"
+        />
+        <image 
+          class="eye-icon" 
+          src="{{showConfirmPassword ? '/assets/icons/eye-open.png' : '/assets/icons/eye-close.png'}}" 
+          mode="aspectFit"
+          bindtap="toggleConfirmPassword"
+        ></image>
+      </view>
+      <text class="error-text" wx:if="{{errors.confirmPassword}}">{{errors.confirmPassword}}</text>
+      <text class="success-text" wx:if="{{confirmPassword.length > 0 && !errors.confirmPassword && password === confirmPassword}}">
+        密码一致
+      </text>
+    </view>
+
+    <!-- 用户端固定为用户角色，不显示角色选择 -->
+
+    <!-- 用户协议 -->
+    <view class="agreement-area">
+      <checkbox 
+        class="agreement-checkbox" 
+        checked="{{agreeTerms}}" 
+        bindtap="toggleAgreement"
+        color="#FF4D4F"
+      ></checkbox>
+      <view class="agreement-text">
+        <text>我已阅读并同意</text>
+        <text class="link" bindtap="showTerms">《用户协议》</text>
+        <text>和</text>
+        <text class="link" bindtap="showPrivacy">《隐私政策》</text>
+      </view>
+    </view>
+    <text class="error-text agreement-error" wx:if="{{errors.agreement}}">{{errors.agreement}}</text>
+
+    <!-- 注册按钮 -->
+    <button 
+      class="register-btn {{loading ? 'loading' : ''}}" 
+      bindtap="handleRegister"
+      disabled="{{loading}}"
+    >
+      <text wx:if="{{!loading}}">注 册</text>
+      <view wx:if="{{loading}}" class="loading-spinner"></view>
+      <text wx:if="{{loading}}">注册中...</text>
+    </button>
+
+    <!-- 登录链接 -->
+    <view class="login-link" bindtap="goToLogin">
+      <text class="link-text">已有账号？</text>
+      <text class="link-highlight">去登录 ></text>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-area">
+    <text class="version-text">v1.0.0</text>
+  </view>
+</view>

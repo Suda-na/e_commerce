@@ -1,0 +1,102 @@
+@import '../../styles/variables.less';
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity @animation-duration-normal ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal.hide {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: @overlay-medium;
+}
+
+.content {
+  position: relative;
+  width: 600rpx;
+  background-color: @white;
+  border-radius: @border-radius-xl;
+  overflow: hidden;
+  transform: scale(0.85);
+  opacity: 0;
+  transition: all @animation-duration-normal cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal.show .content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.header {
+  padding: @spacing-xl @spacing-md 20rpx;
+  text-align: center;
+}
+
+.title {
+  font-size: @font-size-xl;
+  font-weight: @font-weight-heavy;
+  color: @text-color;
+}
+
+.body {
+  padding: 20rpx @spacing-md @spacing-xl;
+  text-align: center;
+}
+
+.content-text {
+  font-size: @font-size-md;
+  color: @text-color-secondary;
+  line-height: @line-height-normal;
+}
+
+.footer {
+  display: flex;
+  border-top: @border-width-thin solid @border-color;
+}
+
+.btn {
+  flex: 1;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: @font-size-lg;
+  transition: background-color 0.2s ease;
+
+  &:active {
+    background-color: @background-color;
+  }
+}
+
+.cancel-btn {
+  color: @text-color-secondary;
+  border-right: @border-width-thin solid @border-color;
+}
+
+.confirm-btn {
+  color: @primary-color;
+  font-weight: @font-weight-heavy;
+}

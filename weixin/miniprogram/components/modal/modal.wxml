@@ -1,0 +1,29 @@
+<!--modal.wxml-->
+<view class="modal {{visible ? 'show' : 'hide'}}" bind:touchmove="preventTouchMove">
+  <!-- 遮罩层 -->
+  <view class="mask" bind:tap="onMaskTap"></view>
+  
+  <!-- 内容区域 -->
+  <view class="content">
+    <!-- 标题 -->
+    <view class="header" wx:if="{{title}}">
+      <text class="title">{{title}}</text>
+    </view>
+    
+    <!-- 内容 -->
+    <view class="body">
+      <text class="content-text">{{content}}</text>
+      <slot></slot>
+    </view>
+    
+    <!-- 按钮区域 -->
+    <view class="footer">
+      <view class="btn cancel-btn" wx:if="{{showCancel}}" bind:tap="onCancel">
+        <text>{{cancelText}}</text>
+      </view>
+      <view class="btn confirm-btn" bind:tap="onConfirm">
+        <text>{{confirmText}}</text>
+      </view>
+    </view>
+  </view>
+</view>

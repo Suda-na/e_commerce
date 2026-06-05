@@ -1,0 +1,17 @@
+{
+  "name": "miniprogram-ts-less-quickstart",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.21",
+    "miniprogram-recycle-view": "^0.1.5"
+  },
+  "devDependencies": {
+    "miniprogram-api-typings": "^2.8.3-1"
+  }
+}

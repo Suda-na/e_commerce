@@ -1,0 +1,303 @@
+/**
+ * ============================================================
+ * 全局样式入口 - 直播竞拍微信小程序
+ * 导入设计系统变量、公共样式混入、动画关键帧
+ * ============================================================
+ */
+
+/* 导入设计系统 */
+@import './styles/variables.wxss';
+@import './styles/mixins.wxss';
+@import './styles/animations.wxss';
+
+/* ===== 全局重置 ===== */
+
+page {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-page);
+  line-height: 1.5;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+view, text, image, navigator, button, input, textarea, scroll-view {
+  box-sizing: border-box;
+}
+
+image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  outline: none;
+  line-height: inherit;
+}
+
+button::after {
+  border: none;
+}
+
+/* ===== 全局容器 ===== */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: var(--spacing-page-padding);
+  background-color: var(--color-bg-page);
+}
+
+/* ===== 分割线 ===== */
+
+.divider {
+  height: 1rpx;
+  background-color: var(--color-divider);
+  margin: var(--spacing-md) 0;
+}
+
+/* ===== 全局 Loading ===== */
+
+.global-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xxl) 0;
+}
+
+.global-loading .loading-text {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-tertiary);
+  margin-top: var(--spacing-sm);
+}
+
+/* ===== 全局空状态 ===== */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xxl) var(--spacing-lg);
+}
+
+.empty-state .empty-icon {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: var(--spacing-lg);
+  opacity: 0.5;
+}
+
+.empty-state .empty-text {
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+.empty-state .empty-action {
+  margin-top: var(--spacing-lg);
+}
+
+/* ===== 全局错误状态 ===== */
+
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xxl) var(--spacing-lg);
+}
+
+.error-state .error-text {
+  font-size: var(--font-size-body-sm);
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.error-state .retry-btn {
+  font-size: var(--font-size-caption);
+  color: var(--color-primary);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: 1rpx solid var(--color-primary);
+  border-radius: var(--radius-sm);
+}
+
+/* ===== 骨架屏 ===== */
+
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+  border-radius: var(--radius-xs);
+}
+
+.skeleton-text {
+  height: 28rpx;
+  margin-bottom: var(--spacing-xs);
+  border-radius: var(--radius-xs);
+}
+
+.skeleton-title {
+  height: 40rpx;
+  width: 60%;
+  margin-bottom: var(--spacing-sm);
+}
+
+.skeleton-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: var(--radius-full);
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 300rpx;
+}
+
+/* ===== 价格专用样式 ===== */
+
+.price {
+  font-family: var(--font-family-number);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.price-lg {
+  font-size: var(--font-size-price-lg);
+}
+
+.price-md {
+  font-size: var(--font-size-price-md);
+}
+
+.price-sm {
+  font-size: var(--font-size-price-sm);
+}
+
+.price-prefix {
+  font-size: 0.7em;
+  margin-right: 2rpx;
+  vertical-align: top;
+  line-height: 1.8;
+}
+
+/* ===== 卡片样式 ===== */
+
+.card {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.card-inset {
+  padding: var(--spacing-card-padding);
+}
+
+/* ===== 毛玻璃效果 ===== */
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+}
+
+.glass-dark {
+  background: var(--glass-bg-dark);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+/* ===== 渐变文字工具类 ===== */
+
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== 微交互基础类 ===== */
+
+.press-scale {
+  transition: transform 0.2s ease;
+}
+
+.press-scale:active {
+  transform: scale(0.97);
+}
+
+.press-opacity {
+  transition: opacity 0.2s ease;
+}
+
+.press-opacity:active {
+  opacity: 0.85;
+}
+
+/* ===== 渐变背景工具类 ===== */
+
+.bg-gradient-primary { background: var(--gradient-primary); }
+.bg-gradient-gold { background: var(--gradient-gold); }
+.bg-gradient-purple { background: var(--gradient-purple); }
+.bg-gradient-orange { background: var(--gradient-orange); }
+
+/* ===== 安全区域工具类增强 ===== */
+
+.safe-area-bottom-padding {
+  padding-bottom: calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+}
+
+.safe-area-top-padding {
+  padding-top: calc(var(--spacing-lg) + env(safe-area-inset-top));
+}
+
+/* ===== 标签样式 ===== */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 12rpx;
+  border-radius: var(--radius-xs);
+  font-size: var(--font-badge);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.5;
+}
+
+.tag-primary {
+  background-color: var(--color-danger-bg);
+  color: var(--color-primary);
+}
+
+.tag-success {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.tag-warning {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.tag-info {
+  background-color: var(--color-info-bg);
+  color: var(--color-info);
+}
+
+/* ===== 页面 Tab 容器 ===== */
+
+.page-tab-container {
+  min-height: 100vh;
+  background-color: var(--color-bg-page);
+  padding-bottom: calc(var(--spacing-safe-bottom) + env(safe-area-inset-bottom));
+}

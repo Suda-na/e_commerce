@@ -1,0 +1,190 @@
+@import '../../styles/variables.less';
+
+/* danmaku.less - 弹幕评论组件样式 */
+
+.danmaku-container {
+  width: 100%;
+  max-height: 400rpx;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.danmaku-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12rpx 0;
+}
+
+/* ========== 弹幕条目 ========== */
+
+.danmaku-item {
+  display: inline-flex;
+  align-items: center;
+  max-width: 85%;
+  padding: 10rpx 18rpx;
+  margin-bottom: 12rpx;
+  border-radius: @border-radius-xxl;
+  animation: slideInRight 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  /* 每条消息错开一点时间 */
+  will-change: transform, opacity;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* 从右侧滑入 + 淡入 */
+@keyframes slideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(60rpx) translateY(8rpx);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+/* 旧消息向上滑出 + 淡出 */
+@keyframes slideOutUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 100rpx;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40rpx);
+    max-height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* ========== 头像 ========== */
+
+.danmaku-avatar {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: @border-radius-round;
+  margin-right: 10rpx;
+  flex-shrink: 0;
+  border: @border-width-normal solid fade(@white, 40%);
+}
+
+/* ========== 等级标签 ========== */
+
+.danmaku-level {
+  padding: 2rpx 10rpx;
+  border-radius: @border-radius-md;
+  margin-right: 10rpx;
+  flex-shrink: 0;
+
+  .level-text {
+    font-size: 18rpx;
+    font-weight: @font-weight-bold;
+    line-height: 1.4;
+  }
+}
+
+.level-low {
+  background: rgba(100, 200, 100, 0.6);
+
+  .level-text {
+    color: #e8f5e9;
+  }
+}
+
+.level-mid {
+  background: rgba(66, 165, 245, 0.6);
+
+  .level-text {
+    color: #e3f2fd;
+  }
+}
+
+.level-high {
+  background: linear-gradient(135deg, rgba(255, 183, 77, 0.8), rgba(255, 136, 0, 0.8));
+
+  .level-text {
+    color: #fff8e1;
+  }
+}
+
+/* ========== 消息体 ========== */
+
+.danmaku-body {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.danmaku-nickname {
+  font-size: 22rpx;
+  color: fade(@white, 75%);
+  margin-right: @spacing-xs;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140rpx;
+}
+
+.danmaku-content {
+  font-size: @font-size-sm;
+  color: fade(@white, 95%);
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+/* ========== 类型样式 ========== */
+
+/* 普通评论 - 半透明深色 */
+.danmaku-type-comment {
+  background-color: @glass-bg-dark;
+  backdrop-filter: @glass-blur;
+}
+
+/* 出价消息 - 渐变红色 */
+.danmaku-type-bid {
+  background: linear-gradient(135deg, fade(@primary-color, 55%), fade(@primary-color-light, 55%));
+  backdrop-filter: @glass-blur;
+
+  .danmaku-content {
+    color: @auction-gold;
+    font-weight: @font-weight-heavy;
+  }
+}
+
+/* 系统消息 - 蓝色半透明 */
+.danmaku-type-system {
+  background-color: fade(@info-color, 40%);
+  backdrop-filter: @glass-blur;
+  border: @border-width-thin solid fade(@info-color, 30%);
+
+  .danmaku-content {
+    color: fade(@white, 85%);
+    font-size: 22rpx;
+  }
+}
+
+/* 出价消息增强 - 金色闪光效果 */
+.danmaku-type-bid {
+  .danmaku-content {
+    text-shadow: 0 0 8rpx fade(@auction-gold, 50%);
+  }
+}
+
+/* 新增礼物/打赏类型 */
+.danmaku-type-gift {
+  background: linear-gradient(135deg, fade(@auction-gold, 50%), fade(@auction-gold-dark, 50%));
+  backdrop-filter: @glass-blur;
+
+  .danmaku-content {
+    color: @auction-gold;
+    font-weight: @font-weight-heavy;
+  }
+}

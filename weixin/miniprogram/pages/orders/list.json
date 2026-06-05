@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "skeleton": "/components/skeleton/skeleton"
+  },
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
+  "navigationBarTitleText": "我的订单",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "navigationBarTextStyle": "black"
+}

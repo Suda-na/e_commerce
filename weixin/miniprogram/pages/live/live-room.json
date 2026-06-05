@@ -1,0 +1,10 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "danmaku": "/components/danmaku/danmaku",
+    "countdown": "/components/countdown/countdown",
+    "auction-list-sheet": "/components/auction-list-sheet/auction-list-sheet",
+    "bid-panel": "/components/bid-panel/bid-panel",
+    "auction-detail-sheet": "/components/auction-detail-sheet/auction-detail-sheet"
+  }
+}

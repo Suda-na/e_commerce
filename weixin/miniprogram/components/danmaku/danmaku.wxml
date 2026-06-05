@@ -1,0 +1,31 @@
+<!--danmaku.wxml - 弹幕评论组件-->
+<view class="danmaku-container">
+  <view class="danmaku-list">
+    <view
+      wx:for="{{visibleMessages}}"
+      wx:key="id"
+      class="danmaku-item danmaku-type-{{item.type || 'comment'}}"
+    >
+      <!-- 用户头像 -->
+      <image
+        wx:if="{{showAvatar}}"
+        class="danmaku-avatar"
+        src="{{item.avatar || '/assets/icons/default-avatar.png'}}"
+        mode="aspectFill"
+        lazy-load
+      />
+      <!-- 用户等级标签 -->
+      <view
+        wx:if="{{showLevel && item.level}}"
+        class="danmaku-level level-{{item.level > 10 ? 'high' : item.level > 3 ? 'mid' : 'low'}}"
+      >
+        <text class="level-text">Lv{{item.level}}</text>
+      </view>
+      <!-- 昵称 + 内容 -->
+      <view class="danmaku-body">
+        <text class="danmaku-nickname" wx:if="{{item.type !== 'system'}}">{{item.nickname}}</text>
+        <text class="danmaku-content">{{item.content}}</text>
+      </view>
+    </view>
+  </view>
+</view>

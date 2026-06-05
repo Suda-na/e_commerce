@@ -1,0 +1,200 @@
+/**
+ * ============================================================
+ * 设计系统变量 - 基于 UI/UX 设计规范 v2.0（移动端/小程序版）
+ * ============================================================
+ */
+
+/* ===== 1. 色彩系统 ===== */
+
+/* 主品牌色（红渐变系） */
+--color-primary: #FF4D4F;
+--color-primary-light: #FF7875;
+--color-primary-dark: #CF1322;
+--gradient-primary: linear-gradient(135deg, #FF4D4F 0%, #FF7875 50%, #FFA39E 100%);
+--gradient-primary-reverse: linear-gradient(135deg, #FFA39E 0%, #FF7875 50%, #FF4D4F 100%);
+
+/* 金色系（价值点缀） */
+--color-gold: #D4A017;
+--color-gold-light: #F2D06B;
+--color-gold-dark: #B8860B;
+--gradient-gold: linear-gradient(135deg, #D4A017 0%, #F2D06B 50%, #D4A017 100%);
+
+/* 功能语义色 */
+--color-success: #52C41A;
+--color-success-light: #95DE64;
+--color-success-bg: rgba(82, 196, 26, 0.1);
+
+--color-warning: #FAAD14;
+--color-warning-light: #FFC53D;
+--color-warning-bg: rgba(250, 173, 20, 0.1);
+
+--color-info: #1890FF;
+--color-info-light: #69B1FF;
+--color-info-bg: rgba(24, 144, 255, 0.1);
+
+--color-danger: #FF4D4F;
+--color-danger-light: #FF7875;
+--color-danger-bg: rgba(255, 77, 79, 0.1);
+
+/* 中性色 - 背景色 */
+--color-bg-page: #F5F5F5;
+--color-bg-card: #FFFFFF;
+--color-bg-tertiary: #FAFAFA;
+--color-bg-dark: #1A1A2E;
+--color-bg-overlay: rgba(0, 0, 0, 0.5);
+
+/* 中性色 - 文字色 */
+--color-text-primary: #333333;
+--color-text-secondary: #666666;
+--color-text-tertiary: #999999;
+--color-text-disabled: #CCCCCC;
+--color-text-white: #FFFFFF;
+
+/* 中性色 - 边框色 */
+--color-border: #E8E8E8;
+--color-border-light: #F0F0F0;
+--color-divider: #EEEEEE;
+
+/* ===== 2. 字体系统 ===== */
+
+/* 字体家族 */
+--font-family-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+--font-family-number: 'DIN Alternate', 'Roboto Condensed', 'Helvetica Neue Bold', Arial, sans-serif;
+--font-family-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+
+/* 字号规范（rpx单位） */
+--font-size-h1: 48rpx;     /* 大标题 */
+--font-size-h2: 40rpx;     /* 页面标题 */
+--font-size-h3: 36rpx;     /* 区块标题 */
+--font-size-h4: 32rpx;     /* 卡片标题 */
+--font-size-body: 28rpx;   /* 主要正文（基准） */
+--font-size-body-sm: 26rpx;/* 小正文 */
+--font-size-caption: 24rpx;/* 辅助文字 */
+
+/* 特殊字号 */
+--font-size-price-lg: 48rpx;  /* 大价格（出价面板） */
+--font-size-price-md: 36rpx;  /* 中价格（列表卡片） */
+--font-size-price-sm: 28rpx;  /* 小价格（详情页） */
+--font-size-countdown: 56rpx; /* 倒计时数字 */
+--font-badge: 22rpx;          /* 徽章文字 */
+
+/* 字重规范 */
+--font-weight-regular: 400;
+--font-weight-medium: 500;
+--font-weight-semibold: 600;
+--font-weight-bold: 700;
+
+/* ===== 3. 间距系统（8pt基准网格）===== */
+
+--spacing-xs: 8rpx;     /* 最小间距 */
+--spacing-sm: 16rpx;    /* 小间距 */
+--spacing-md: 24rpx;    /* 中间距 */
+--spacing-lg: 32rpx;    /* 大间距 */
+--spacing-xl: 48rpx;    /* 超大间距 */
+--spacing-xxl: 64rpx;   /* 特大间距 */
+
+/* 组件间距 */
+--spacing-card-padding: 24rpx;   /* 卡片内边距 */
+--spacing-card-gap: 20rpx;       /* 卡片间距 */
+--spacing-section-gap: 32rpx;    /* 区块间距 */
+--spacing-page-padding: 32rpx;   /* 页面边距 */
+--spacing-safe-bottom: 68rpx;    /* 安全区底部 */
+--spacing-safe-top: 88rpx;       /* 安全区顶部 */
+
+/* ===== 4. 圆角系统 ===== */
+
+--radius-xs: 8rpx;     /* 小圆角 */
+--radius-sm: 12rpx;    /* 输入框、小卡片 */
+--radius-md: 16rpx;    /* 中卡片、面板 */
+--radius-lg: 24rpx;    /* 大卡片、弹窗 */
+--radius-xl: 32rpx;    /* 特殊卡片、底部面板 */
+--radius-full: 50%;    /* 圆形 */
+
+/* ===== 5. 阴影系统 ===== */
+
+/* 卡片阴影 */
+--shadow-card: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+--shadow-card-hover: 0 8rpx 24rpx rgba(0, 0, 0, 0.12);
+
+/* 弹窗/面板阴影 */
+--shadow-popup: 0 -8rpx 32rpx rgba(0, 0, 0, 0.15);
+--shadow-modal: 0 16rpx 48rpx rgba(0, 0, 0, 0.25);
+
+/* 按钮阴影 */
+--shadow-button: 0 4rpx 12rpx rgba(255, 77, 79, 0.3);
+--shadow-button-active: 0 2rpx 6rpx rgba(255, 77, 79, 0.2);
+
+/* 浮动元素阴影（直播间） */
+--shadow-float: 0 4rpx 20rpx rgba(0, 0, 0, 0.3);
+
+/* ===== 6. 过渡动画 ===== */
+
+/* 速度曲线 */
+--ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+--ease-in: cubic-bezier(0.4, 0, 1, 1);
+--ease-out: cubic-bezier(0, 0, 0.2, 1);
+--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+--ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+/* 时长 */
+--duration-fast: 150ms;
+--duration-normal: 250ms;
+--duration-slow: 400ms;
+--duration-bounce: 500ms;
+
+/* 渐变色变量 */
+--gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+--gradient-success: linear-gradient(135deg, var(--color-success) 0%, var(--color-success-light) 100%);
+--gradient-warning: linear-gradient(135deg, var(--color-warning) 0%, var(--color-warning-light) 100%);
+--gradient-gold: linear-gradient(135deg, #D4A017 0%, #F2D06B 50%, #D4A017 100%);
+--gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+--gradient-orange: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+--gradient-dark: linear-gradient(135deg, #1A1A2E 0%, #2D2D44 100%);
+
+/* 毛玻璃变量 */
+--glass-bg: rgba(255, 255, 255, 0.15);
+--glass-bg-dark: rgba(0, 0, 0, 0.4);
+--glass-blur: blur(20rpx);
+--glass-border: 1rpx solid rgba(255, 255, 255, 0.2);
+
+/* 竞拍相关色彩 */
+--auction-gold: #FFD700;
+--auction-gold-dark: #FFA500;
+--gradient-auction-gold: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+
+/* 叠加层透明度 */
+--overlay-light: rgba(0, 0, 0, 0.3);
+--overlay-medium: rgba(0, 0, 0, 0.5);
+--overlay-heavy: rgba(0, 0, 0, 0.7);
+
+/* ===== 补充变量 ===== */
+
+/* 直播间专用色 */
+--color-live-red: #FF2D2D;
+--color-live-red-glow: rgba(255, 45, 45, 0.4);
+--gradient-live-header: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+--gradient-live-bottom: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+
+/* 竞拍状态色 */
+--color-auction-live: #FF2D2D;
+--color-auction-upcoming: #1890FF;
+--color-auction-ended: #999999;
+--color-auction-preview: #FAAD14;
+
+/* 价格渐变 */
+--gradient-price: linear-gradient(135deg, #FF4D4F 0%, #FF7875 100%);
+--gradient-price-gold: linear-gradient(135deg, #D4A017 0%, #F2D06B 100%);
+
+/* 输入框焦点色 */
+--color-input-focus: rgba(255, 77, 79, 0.2);
+--color-input-border-focus: #FF4D4F;
+
+/* Tab 指示器 */
+--color-tab-indicator: #FF4D4F;
+
+/* 菜单项 */
+--color-menu-arrow: #CCCCCC;
+--color-menu-hover: #F8F8F8;
+
+/* VIP 徽章 */
+--gradient-vip: linear-gradient(135deg, #D4A017 0%, #F2D06B 50%, #D4A017 100%);

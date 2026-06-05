@@ -1,0 +1,130 @@
+<!-- 出价历史页面 -->
+<view class="page-container">
+  <!-- 统计数据卡片 -->
+  <view class="stats-card">
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-value">{{stats.totalBids || 0}}</text>
+        <text class="stat-label">总出价</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{stats.wonBids || 0}}</text>
+        <text class="stat-label">中标次数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">¥{{stats.totalAmount || 0}}</text>
+        <text class="stat-label">总金额</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 状态筛选 -->
+  <view class="filter-section">
+    <scroll-view scroll-x class="filter-scroll">
+      <view class="filter-tabs">
+        <view 
+          class="filter-tab {{statusFilter === 'all' ? 'active' : ''}}" 
+          bind:tap="onStatusFilterChange" 
+          data-status="all"
+        >
+          <text>全部</text>
+        </view>
+        <view 
+          class="filter-tab {{statusFilter === 'active' ? 'active' : ''}}" 
+          bind:tap="onStatusFilterChange" 
+          data-status="active"
+        >
+          <text>竞拍中</text>
+        </view>
+        <view 
+          class="filter-tab {{statusFilter === 'won' ? 'active' : ''}}" 
+          bind:tap="onStatusFilterChange" 
+          data-status="won"
+        >
+          <text>已获胜</text>
+        </view>
+        <view 
+          class="filter-tab {{statusFilter === 'lost' ? 'active' : ''}}" 
+          bind:tap="onStatusFilterChange" 
+          data-status="lost"
+        >
+          <text>未获胜</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 出价列表 -->
+  <view class="bid-list">
+    <!-- 列表项 -->
+    <view 
+      class="bid-item" 
+      wx:for="{{bidList}}" 
+      wx:key="id"
+      bind:tap="onBidItemTap"
+      data-auction-id="{{item.auctionId}}"
+      data-merchant-id="{{item.merchantId}}"
+    >
+      <!-- 商品图片 -->
+      <view class="bid-image-wrapper">
+        <image 
+          wx:if="{{item.auctionImage}}" 
+          class="bid-image" 
+          src="{{item.auctionImage}}" 
+          mode="aspectFill"
+        />
+        <view wx:else class="bid-image-placeholder">
+          <text class="placeholder-icon">🖼️</text>
+        </view>
+      </view>
+
+      <!-- 出价信息 -->
+      <view class="bid-info">
+        <text class="bid-title">{{item.auctionTitle}}</text>
+        <view class="bid-price-row">
+          <text class="bid-amount">我的出价: ¥{{item.amount}}</text>
+          <text class="current-price" wx:if="{{item.currentPrice !== item.amount}}">当前价: ¥{{item.currentPrice}}</text>
+        </view>
+        <view class="bid-meta">
+          <text class="bid-time">{{item.time}}</text>
+          <view class="bid-status {{item.statusClass}}">
+            <text>{{item.statusText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 状态指示器 -->
+      <view class="bid-indicator">
+        <text class="indicator-icon" wx:if="{{item.status === 'won'}}">🏆</text>
+        <text class="indicator-icon" wx:elif="{{item.status === 'lost'}}">😔</text>
+        <text class="indicator-icon" wx:elif="{{item.status === 'active'}}">🔥</text>
+        <text class="indicator-icon" wx:else>⏹️</text>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{loadingMore}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <!-- 没有更多 -->
+    <view class="no-more" wx:if="{{!hasMore && bidList.length > 0}}">
+      <text class="no-more-text">没有更多了</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && bidList.length === 0}}">
+      <text class="empty-icon">📋</text>
+      <text class="empty-title" wx:if="{{statusFilter === 'all'}}">暂无出价记录</text>
+      <text class="empty-title" wx:elif="{{statusFilter === 'active'}}">暂无竞拍中的出价</text>
+      <text class="empty-title" wx:elif="{{statusFilter === 'won'}}">暂无获胜的出价</text>
+      <text class="empty-title" wx:elif="{{statusFilter === 'lost'}}">暂无未获胜的出价</text>
+      <text class="empty-desc" wx:if="{{statusFilter === 'all'}}">参与竞拍后，您的出价记录将显示在这里</text>
+      <text class="empty-desc" wx:else>切换其他标签查看更多出价记录</text>
+      <view class="empty-action" bind:tap="onBack" wx:if="{{statusFilter === 'all'}}">
+        <text>去逛逛</text>
+      </view>
+    </view>
+  </view>
+</view>

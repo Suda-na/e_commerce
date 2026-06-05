@@ -1,0 +1,94 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/discover/index",
+    "pages/discover/detail",
+    "pages/orders/list",
+    "pages/orders/detail",
+    "pages/profile/index",
+    "pages/profile/edit-profile",
+    "pages/profile/bid-history",
+    "pages/profile/change-password",
+    "pages/profile/address-form",
+    "pages/profile/favorites",
+    "pages/profile/notification",
+    "pages/profile/help-feedback",
+    "pages/profile/about-us"
+  ],
+  "subpackages": [
+    {
+      "root": "pages/live",
+      "name": "live",
+      "pages": [
+        "live-room"
+      ]
+    },
+    {
+      "root": "pages/test",
+      "name": "test",
+      "pages": [
+        "test"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/discover/index": {
+      "network": "all",
+      "packages": ["live"]
+    }
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "直播竞拍大师",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F5F5F5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#FF4D4F",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/discover/index",
+        "text": "发现",
+        "iconPath": "assets/icons/tab-discover.png",
+        "selectedIconPath": "assets/icons/tab-discover-active.png"
+      },
+      {
+        "pagePath": "pages/orders/list",
+        "text": "订单",
+        "iconPath": "assets/icons/tab-order.png",
+        "selectedIconPath": "assets/icons/tab-order-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "assets/icons/tab-profile.png",
+        "selectedIconPath": "assets/icons/tab-profile-active.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于推荐附近的直播竞拍"
+    }
+  },
+  "requiredPrivateInfos": ["chooseAddress"],
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "rendererOptions": {
+    "skyline": {
+      "defaultDisplayBlock": true,
+      "disableABTest": true,
+      "sdkVersionBegin": "3.0.0",
+      "sdkVersionEnd": "15.255.255"
+    }
+  },
+  "componentFramework": "glass-easel",
+  "lazyCodeLoading": "requiredComponents"
+}

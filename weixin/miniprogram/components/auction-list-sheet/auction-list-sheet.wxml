@@ -1,0 +1,114 @@
+<!--auction-list-sheet.wxml-->
+<bottom-sheet 
+  visible="{{visible}}" 
+  title="竞拍列表" 
+  height="85%" 
+  maxHeight="85%"
+  bind:close="onClose"
+>
+  <view class="auction-list-sheet" bind:touchmove="preventTouchMove">
+    <!-- 搜索栏 -->
+    <view class="search-bar">
+      <view class="search-input-wrapper">
+        <view class="search-icon"></view>
+        <input 
+          class="search-input"
+          placeholder="搜索竞拍商品"
+          value="{{searchKeyword}}"
+          bindinput="onSearchInput"
+          bindconfirm="onSearchConfirm"
+          confirm-type="search"
+        />
+        <view 
+          class="clear-btn" 
+          wx:if="{{searchKeyword}}" 
+          bind:tap="onClearSearch"
+        >
+          <text class="clear-icon">×</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 分类Tab -->
+    <view class="category-tabs">
+      <scroll-view 
+        class="tabs-scroll" 
+        scroll-x 
+        enhanced 
+        show-scrollbar="{{false}}"
+      >
+        <view class="tabs-wrapper">
+          <view 
+            class="tab-item {{activeCategory === item.id ? 'active' : ''}}"
+            wx:for="{{categories}}" 
+            wx:key="id"
+            data-id="{{item.id}}"
+            bind:tap="onTapCategory"
+          >
+            <text class="tab-text">{{item.name}}</text>
+            <view class="tab-count" wx:if="{{item.count > 0}}">
+              <text class="count-text">{{item.count}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    
+    <!-- 竞拍列表 -->
+    <scroll-view 
+      class="auction-list-scroll"
+      scroll-y
+      enhanced
+      show-scrollbar="{{false}}"
+      bindscrolltolower="loadMore"
+      refresher-enabled
+      refresher-triggered="{{isLoading}}"
+      bindrefresherrefresh="onRefresh"
+    >
+      <!-- 加载状态 -->
+      <view class="loading-state" wx:if="{{isLoading && auctionList.length === 0}}">
+        <view class="loading-spinner"></view>
+        <text class="loading-text">加载中...</text>
+      </view>
+      
+      <!-- 空状态 -->
+      <view class="empty-state" wx:elif="{{!isLoading && auctionList.length === 0}}">
+        <view class="empty-icon"></view>
+        <text class="empty-text">暂无竞拍商品</text>
+        <text class="empty-hint">换个分类试试</text>
+      </view>
+      
+      <!-- 竞拍卡片列表 -->
+      <view class="auction-grid" wx:else>
+        <view 
+          class="auction-grid-item"
+          wx:for="{{auctionList}}" 
+          wx:key="id"
+        >
+          <auction-card 
+            auction="{{item}}"
+            mode="grid"
+            bind:tap="onTapCard"
+            bind:bid="onTapBid"
+          />
+        </view>
+      </view>
+      
+      <!-- 加载更多 -->
+      <view class="load-more" wx:if="{{isLoadingMore}}">
+        <view class="load-more-spinner"></view>
+        <text class="load-more-text">加载更多...</text>
+      </view>
+      
+      <!-- 没有更多 -->
+      <view class="no-more" wx:elif="{{!hasMore && auctionList.length > 0}}">
+        <text class="no-more-text">没有更多了</text>
+      </view>
+    </scroll-view>
+    
+    <!-- 底部统计 -->
+    <view class="bottom-stats">
+      <text class="stats-text">共 {{totalCount}} 件竞拍商品</text>
+    </view>
+  </view>
+</bottom-sheet>

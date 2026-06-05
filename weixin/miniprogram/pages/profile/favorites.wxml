@@ -1,0 +1,104 @@
+<!-- 我的收藏页面 - 收藏商家 -->
+<view class="page-container">
+  <!-- 内容区域 -->
+  <view class="content-area">
+    <!-- 加载状态 -->
+    <view class="loading-container" wx:if="{{loading}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:elif="{{isEmpty}}">
+      <view class="empty-icon-wrapper">
+        <text class="empty-icon">❤️</text>
+      </view>
+      <text class="empty-title">暂无收藏</text>
+      <text class="empty-desc">您还没有收藏任何商家，去发现页面看看吧</text>
+      <view class="empty-action" bind:tap="goToDiscover">
+        <text class="action-text">去发现</text>
+      </view>
+    </view>
+
+    <!-- 收藏列表 -->
+    <view class="favorites-list" wx:else>
+      <!-- 列表头部信息 -->
+      <view class="list-header">
+        <text class="list-count">共 {{total}} 个商家</text>
+        <view class="list-header-right">
+          <view class="edit-btn" bind:tap="toggleEditMode" wx:if="{{favorites.length > 0}}">
+            <text class="edit-text">{{isEditing ? '完成' : '编辑'}}</text>
+          </view>
+          <view class="clear-all" bind:tap="clearAll" wx:if="{{!isEditing}}">
+            <text class="clear-text">清空</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 商家列表 -->
+      <view class="item-list">
+        <view 
+          class="favorite-item {{selectedIds.indexOf(item.id) > -1 ? 'selected' : ''}}"
+          wx:for="{{favorites}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          data-merchantid="{{item.merchantId}}"
+          bind:tap="onTapItem"
+        >
+          <!-- 编辑模式下的选择框 -->
+          <view class="checkbox-wrapper" wx:if="{{isEditing}}">
+            <view class="checkbox {{selectedIds.indexOf(item.id) > -1 ? 'checked' : ''}}">
+              <text class="check-icon" wx:if="{{selectedIds.indexOf(item.id) > -1}}">✓</text>
+            </view>
+          </view>
+
+          <!-- 商家头像 -->
+          <view class="merchant-avatar-wrapper">
+            <image 
+              class="merchant-avatar" 
+              src="{{item.merchantAvatar || '/assets/icons/default-avatar.png'}}" 
+              mode="aspectFill"
+              lazy-load
+            />
+          </view>
+
+          <!-- 商家信息 -->
+          <view class="item-info">
+            <text class="item-name">{{item.merchantName || '未知商家'}}</text>
+            <text class="item-time">收藏于 {{formatTime(item.createdAt)}}</text>
+          </view>
+
+          <!-- 非编辑模式下的删除按钮 -->
+          <view class="delete-btn" wx:if="{{!isEditing}}" data-merchantid="{{item.merchantId}}" catch:tap="deleteItem">
+            <text class="delete-icon">×</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 底部提示 -->
+      <view class="list-footer">
+        <text class="footer-text">— 已显示全部收藏 —</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 编辑模式底部操作栏 -->
+  <view class="edit-toolbar" wx:if="{{isEditing}}">
+    <view class="toolbar-left">
+      <view class="select-all" bind:tap="toggleSelectAll">
+        <view class="checkbox {{selectAll ? 'checked' : ''}}">
+          <text class="check-icon" wx:if="{{selectAll}}">✓</text>
+        </view>
+        <text class="select-all-text">全选</text>
+      </view>
+      <text class="selected-count" wx:if="{{selectedIds.length > 0}}">
+        已选 {{selectedIds.length}} 个
+      </text>
+    </view>
+    <view class="toolbar-right">
+      <view class="delete-selected" bind:tap="deleteSelected">
+        <text class="delete-text">删除</text>
+      </view>
+    </view>
+  </view>
+</view>

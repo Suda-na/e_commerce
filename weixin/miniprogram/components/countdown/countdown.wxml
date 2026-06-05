@@ -1,0 +1,22 @@
+<!--countdown.wxml - 倒计时组件-->
+<view class="countdown-wrapper" wx:if="{{!isFinished}}">
+  <view class="countdown-segment" wx:if="{{days > 0}}">
+    <text class="countdown-num">{{days}}</text>
+    <text class="countdown-unit">天</text>
+  </view>
+  <text class="countdown-separator" wx:if="{{days > 0}}">:</text>
+  <view class="countdown-segment">
+    <text class="countdown-num">{{hoursText}}</text>
+  </view>
+  <text class="countdown-separator">:</text>
+  <view class="countdown-segment">
+    <text class="countdown-num">{{minutesText}}</text>
+  </view>
+  <text class="countdown-separator">:</text>
+  <view class="countdown-segment">
+    <text class="countdown-num">{{secondsText}}</text>
+  </view>
+</view>
+<view class="countdown-finished" wx:else>
+  <text>已结束</text>
+</view>

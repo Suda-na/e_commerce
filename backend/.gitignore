@@ -1,0 +1,70 @@
+# 环境变量文件（包含敏感信息）
+.env
+.env.local
+.env.*.local
+
+# 日志文件和目录
+logs/
+*.log
+
+# 编译输出
+dist/
+
+# 依赖目录
+node_modules/
+
+# TypeScript构建信息
+tsconfig.tsbuildinfo
+
+# 错误日志
+ts_errors.txt
+
+# IDE配置文件
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 临时文件
+*.tmp
+*.bak
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 安全相关文件（生产环境配置）
+security.env
+security.env.local
+
+# 数据库迁移备份
+*.sql.bak
+*.dump
+
+# 本地开发配置
+config.local.js
+config.local.ts
+local.json
+
+# 测试覆盖率报告
+coverage/
+.nyc_output/
+
+# Docker相关（如果使用）
+docker-compose.override.yml
+
+# 密钥文件
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# 本地存储文件
+uploads/
+storage/
+
+# 临时数据库文件
+*.sqlite
+*.sqlite3
+*.db

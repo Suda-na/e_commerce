@@ -1,0 +1,4 @@
+<!--toast.wxml-->
+<view class="toast">
+  <slot></slot>
+</view>

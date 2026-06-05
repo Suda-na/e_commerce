@@ -1,0 +1,327 @@
+@import '../../styles/variables.less';
+
+/* skeleton.less - 骨架屏组件样式 */
+
+/* 闪烁动画 */
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+/* 更平滑的闪烁动画 */
+@keyframes shimmerSmooth {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* 渐入动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 骨架屏容器 */
+.skeleton {
+  width: 100%;
+
+  &.loading {
+    display: block;
+  }
+
+  &.loaded {
+    display: none;
+  }
+
+  &.animate {
+    .skeleton-block {
+      background: linear-gradient(
+        90deg,
+        @background-color 25%,
+        @background-color-dark 37%,
+        @background-color 63%
+      );
+      background-size: 200% 100%;
+      animation: shimmerSmooth 1.8s ease-in-out infinite;
+    }
+  }
+
+  &:not(.animate) {
+    .skeleton-block {
+      background: @background-color;
+    }
+  }
+}
+
+/* 内容容器 */
+.skeleton-content {
+  &.hidden {
+    display: none;
+  }
+
+  &.visible {
+    animation: fadeIn @animation-duration-normal ease;
+  }
+}
+
+/* 基础块样式 */
+.skeleton-block {
+  border-radius: @border-radius-sm;
+
+  &.title-block {
+    height: 36rpx;
+    width: 100%;
+    margin-bottom: @spacing-sm;
+
+    &.short {
+      width: 60%;
+    }
+  }
+
+  &.paragraph-block {
+    height: 24rpx;
+    width: 100%;
+    margin-bottom: 12rpx;
+
+    &.short {
+      width: 40%;
+    }
+  }
+
+  &.image-block {
+    width: 100%;
+    height: 200rpx;
+    border-radius: @border-radius-md;
+
+    &.large {
+      height: 400rpx;
+    }
+  }
+
+  &.price-block {
+    height: 40rpx;
+    width: 160rpx;
+
+    &.large {
+      height: 60rpx;
+      width: 200rpx;
+    }
+
+    &.small {
+      height: 30rpx;
+      width: 120rpx;
+    }
+  }
+
+  &.button-block {
+    height: 60rpx;
+    width: 160rpx;
+    border-radius: 30rpx;
+  }
+
+  &.info-block {
+    height: 80rpx;
+    width: 100%;
+    margin-bottom: @spacing-sm;
+    border-radius: @border-radius-md;
+  }
+
+  &.number-block {
+    height: 48rpx;
+    width: 100rpx;
+  }
+
+  &.label-block {
+    height: 24rpx;
+    width: 80rpx;
+    margin-top: @spacing-xs;
+  }
+
+  &.icon-block {
+    width: 48rpx;
+    height: 48rpx;
+    border-radius: @border-radius-round;
+  }
+
+  &.text-block {
+    height: 32rpx;
+    flex: 1;
+    margin-left: @spacing-md;
+  }
+}
+
+/* 头像样式 */
+.skeleton-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  flex-shrink: 0;
+
+  &.circle {
+    border-radius: @border-radius-round;
+  }
+
+  &.square {
+    border-radius: @border-radius-md;
+  }
+
+  &.large {
+    width: 120rpx;
+    height: 120rpx;
+  }
+
+  background: linear-gradient(
+    90deg,
+    @background-color 25%,
+    @background-color-dark 37%,
+    @background-color 63%
+  );
+  background-size: 200% 100%;
+}
+
+.animate .skeleton-avatar {
+  animation: shimmerSmooth 1.8s ease-in-out infinite;
+}
+
+/* ========== 默认骨架屏 ========== */
+.skeleton-default {
+  padding: @spacing-lg;
+}
+
+/* ========== 列表骨架屏 ========== */
+.skeleton-list {
+  padding: @spacing-md;
+}
+
+.skeleton-list-item {
+  display: flex;
+  align-items: flex-start;
+  padding: @spacing-md 0;
+  border-bottom: @border-width-thin solid @background-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.skeleton-list-content {
+  flex: 1;
+  margin-left: @spacing-md;
+}
+
+/* ========== 卡片骨架屏 ========== */
+.skeleton-card-list {
+  padding: @spacing-md;
+}
+
+.skeleton-card {
+  background: @white;
+  border-radius: @border-radius-lg;
+  margin-bottom: @spacing-md;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.skeleton-card-image {
+  padding: 0;
+}
+
+.skeleton-card-content {
+  padding: @spacing-md;
+}
+
+.skeleton-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: @spacing-sm;
+}
+
+/* ========== 详情骨架屏 ========== */
+.skeleton-detail {
+  padding: 0;
+}
+
+.skeleton-detail-image {
+  width: 100%;
+}
+
+.skeleton-detail-title {
+  padding: @spacing-lg;
+}
+
+.skeleton-detail-price {
+  display: flex;
+  align-items: center;
+  gap: @spacing-md;
+  padding: 0 @spacing-lg @spacing-lg;
+}
+
+.skeleton-detail-info {
+  padding: 0 @spacing-lg;
+}
+
+/* ========== 个人中心骨架屏 ========== */
+.skeleton-profile {
+  padding: @spacing-md;
+}
+
+.skeleton-profile-header {
+  display: flex;
+  align-items: center;
+  padding: @spacing-xl @spacing-lg;
+  background: @gradient-purple;
+  border-radius: @border-radius-lg;
+  margin-bottom: @spacing-md;
+}
+
+.skeleton-profile-info {
+  flex: 1;
+  margin-left: @spacing-md;
+
+  .skeleton-block {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.skeleton-profile-stats {
+  display: flex;
+  justify-content: space-around;
+  background: @white;
+  border-radius: @border-radius-lg;
+  padding: @spacing-lg;
+  margin-bottom: @spacing-md;
+}
+
+.skeleton-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.skeleton-profile-menu {
+  background: @white;
+  border-radius: @border-radius-lg;
+  padding: @spacing-sm @spacing-lg;
+}
+
+.skeleton-menu-item {
+  display: flex;
+  align-items: center;
+  padding: @spacing-md 0;
+  border-bottom: @border-width-thin solid @background-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}

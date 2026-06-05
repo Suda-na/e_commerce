@@ -1,0 +1,144 @@
+<!--pages/test/test.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">智能提示系统测试</text>
+    <text class="subtitle">5种状态切换测试</text>
+  </view>
+  
+  <!-- 状态切换按钮 -->
+  <view class="section">
+    <text class="section-title">状态切换</text>
+    <view class="state-buttons">
+      <button 
+        class="state-btn {{currentTipType === 'default' ? 'active' : ''}}" 
+        data-state="default"
+        bindtap="switchState"
+      >
+        默认
+      </button>
+      <button 
+        class="state-btn {{currentTipType === 'high-bid' ? 'active' : ''}}" 
+        data-state="high-bid"
+        bindtap="switchState"
+      >
+        高于当前价
+      </button>
+      <button 
+        class="state-btn {{currentTipType === 'highest' ? 'active' : ''}}" 
+        data-state="highest"
+        bindtap="switchState"
+      >
+        已是最高价
+      </button>
+      <button 
+        class="state-btn {{currentTipType === 'ending-soon' ? 'active' : ''}}" 
+        data-state="ending-soon"
+        bindtap="switchState"
+      >
+        即将结束
+      </button>
+      <button 
+        class="state-btn {{currentTipType === 'outbid' ? 'active' : ''}}" 
+        data-state="outbid"
+        bindtap="switchState"
+      >
+        已被超越
+      </button>
+      <button 
+        class="state-btn {{currentTipType === 'cap-warning' ? 'active' : ''}}" 
+        data-state="cap-warning"
+        bindtap="switchState"
+      >
+        封顶警告
+      </button>
+    </view>
+  </view>
+  
+  <!-- 当前状态显示 -->
+  <view class="section">
+    <text class="section-title">当前状态</text>
+    <view class="tip-preview {{currentTipType}}">
+      <view class="tip-header">
+        <text class="tip-icon">{{currentTipIcon}}</text>
+        <text class="tip-type">{{currentTipType}}</text>
+      </view>
+      <text class="tip-text">{{currentTipText}}</text>
+    </view>
+  </view>
+  
+  <!-- 状态信息 -->
+  <view class="section">
+    <text class="section-title">状态信息</text>
+    <view class="info-grid">
+      <view class="info-item">
+        <text class="info-label">当前状态:</text>
+        <text class="info-value">{{currentTipType}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">图标:</text>
+        <text class="info-value">{{currentTipIcon}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">文案:</text>
+        <text class="info-value">{{currentTipText}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">触发条件:</text>
+        <text class="info-value">{{currentTrigger}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 测试控制 -->
+  <view class="section">
+    <text class="section-title">测试控制</text>
+    <view class="test-buttons">
+      <button class="test-btn primary" bindtap="runAllTests">运行所有测试</button>
+      <button class="test-btn secondary" bindtap="verifyColors">验证颜色</button>
+      <button class="test-btn secondary" bindtap="exportTestReport">导出报告</button>
+    </view>
+  </view>
+  
+  <!-- 测试结果 -->
+  <view class="section">
+    <text class="section-title">测试结果</text>
+    <view class="test-results">
+      <view class="result-summary">
+        <text class="result-count">通过: {{testResults.pass}}</text>
+        <text class="result-count fail">失败: {{testResults.fail}}</text>
+        <text class="result-count">总数: {{testResults.total}}</text>
+      </view>
+      <view class="result-list">
+        <view 
+          wx:for="{{testResults.details}}" 
+          wx:key="index" 
+          class="result-item {{item.pass ? 'pass' : 'fail'}}"
+        >
+          <text class="result-icon">{{item.pass ? '✓' : '✗'}}</text>
+          <text class="result-name">{{item.name}}</text>
+          <text class="result-detail">{{item.detail}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 颜色验证 -->
+  <view class="section">
+    <text class="section-title">颜色验证</text>
+    <view class="color-grid">
+      <view wx:for="{{colorTests}}" wx:key="name" class="color-item">
+        <text class="color-name">{{item.name}}</text>
+        <view class="color-preview" style="background-color: {{item.color}};"></view>
+        <text class="color-value">{{item.color}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 测试报告 -->
+  <view wx:if="{{testReport}}" class="section">
+    <text class="section-title">测试报告</text>
+    <view class="report-box">
+      <text class="report-text">{{testReport}}</text>
+    </view>
+  </view>
+</view>

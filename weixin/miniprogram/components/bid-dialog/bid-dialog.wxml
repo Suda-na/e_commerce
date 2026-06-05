@@ -1,0 +1,101 @@
+<!--bid-dialog.wxml-->
+<bottom-sheet 
+  visible="{{visible}}" 
+  title="出价" 
+  height="auto" 
+  maxHeight="75%"
+  bind:close="onClose"
+>
+  <view class="bid-dialog" bind:touchmove="preventTouchMove">
+    <!-- 商品信息 -->
+    <view class="auction-info">
+      <image 
+        class="auction-image" 
+        src="{{auction.images[0] || 'https://via.placeholder.com/300x300/f0f0f0/999999?text=商品图片'}}" 
+        mode="aspectFill"
+      />
+      <view class="auction-detail">
+        <text class="auction-title">{{auction.title}}</text>
+        <view class="auction-price-row">
+          <text class="price-label">当前价</text>
+          <text class="price-value">¥{{auction.currentPrice}}</text>
+        </view>
+        <view class="auction-meta">
+          <text class="bid-count">{{auction.bidCount}}次出价</text>
+          <text class="participant-count">{{auction.participantCount}}人参与</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 出价金额 -->
+    <view class="bid-amount-section">
+      <view class="section-title">
+        <text class="title-text">出价金额</text>
+      </view>
+      
+      <!-- 金额输入框 -->
+      <view class="amount-input-wrapper">
+        <view class="amount-prefix">
+          <text class="prefix-text">¥</text>
+        </view>
+        <input 
+          class="amount-input"
+          type="digit"
+          placeholder="输入出价金额"
+          value="{{bidAmountText}}"
+          bindinput="onBidInput"
+          focus="{{visible}}"
+        />
+        <view class="amount-controls">
+          <view class="control-btn decrease" bind:tap="onTapDecrease">
+            <text class="control-icon">-</text>
+          </view>
+          <view class="control-btn increase" bind:tap="onTapIncrease">
+            <text class="control-icon">+</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 快捷加价 -->
+      <view class="quick-add-section">
+        <text class="quick-add-label">快捷加价</text>
+        <view class="quick-add-options">
+          <view 
+            class="quick-add-btn" 
+            wx:for="{{quickAddOptions}}" 
+            wx:key="*this"
+            data-amount="{{item}}"
+            bind:tap="onTapQuickAdd"
+          >
+            <text class="quick-add-text">+¥{{item}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 提示信息 -->
+      <view class="hint-message" wx:if="{{hintMessage}}">
+        <text class="hint-text">{{hintMessage}}</text>
+      </view>
+      
+      <!-- 错误信息 -->
+      <view class="error-message" wx:if="{{errorMessage}}">
+        <text class="error-text">{{errorMessage}}</text>
+      </view>
+    </view>
+    
+    <!-- 提交按钮 -->
+    <view class="submit-section">
+      <view 
+        class="submit-btn {{isSubmitting ? 'submitting' : ''}}" 
+        bind:tap="onSubmitBid"
+      >
+        <view class="submit-spinner" wx:if="{{isSubmitting}}"></view>
+        <text class="submit-text">{{isSubmitting ? '提交中...' : '确认出价'}}</text>
+      </view>
+      
+      <view class="submit-hint">
+        <text class="hint-text">出价即表示同意《竞拍规则》</text>
+      </view>
+    </view>
+  </view>
+</bottom-sheet>

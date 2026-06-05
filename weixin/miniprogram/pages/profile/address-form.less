@@ -1,0 +1,264 @@
+@import '../../styles/variables.less';
+
+/* 收货地址页面样式 */
+.page-container {
+  min-height: 100vh;
+  background-color: @background-color;
+  padding-bottom: @safe-area-inset-bottom;
+}
+
+/* 表单容器 */
+.form-container {
+  padding: @spacing-md;
+}
+
+/* 区域卡片 */
+.section-card {
+  background-color: @white;
+  border-radius: @border-radius-lg;
+  padding: @spacing-lg;
+  margin-bottom: @spacing-md;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: @font-weight-bold;
+  color: @text-color;
+  margin-bottom: @spacing-lg;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  position: relative;
+  padding-left: 20rpx;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6rpx;
+    height: 28rpx;
+    background: @gradient-primary;
+    border-radius: 3rpx;
+  }
+}
+
+/* 表单组 */
+.form-group {
+  margin-bottom: @spacing-lg;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.input-label {
+  font-size: @font-size-md;
+  color: @text-color;
+  font-weight: @font-weight-medium;
+  margin-bottom: @spacing-sm;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: #f8f8f8;
+  border-radius: @border-radius-md;
+  border: @border-width-normal solid #e8e8e8;
+  padding: 0 @spacing-md;
+  height: 96rpx;
+  transition: all @animation-duration-normal ease;
+}
+
+.input-wrapper.input-error {
+  border-color: @primary-color;
+  background-color: @primary-color-bg;
+}
+
+.input-wrapper:focus-within {
+  border-color: @primary-color;
+  background-color: @white;
+}
+
+.form-input {
+  flex: 1;
+  height: 100%;
+  font-size: 30rpx;
+  color: @text-color;
+}
+
+.form-input::placeholder {
+  color: @text-color-disabled;
+}
+
+/* 文本域 */
+.textarea-wrapper {
+  height: auto;
+  min-height: 120rpx;
+  padding: 20rpx @spacing-md;
+  align-items: flex-start;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 80rpx;
+  font-size: 30rpx;
+  color: @text-color;
+  line-height: 1.6;
+}
+
+.form-textarea::placeholder {
+  color: @text-color-disabled;
+}
+
+/* 选择器 */
+.picker-wrapper {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:active {
+    background-color: @background-color;
+  }
+}
+
+.picker-text {
+  flex: 1;
+  font-size: 30rpx;
+  color: @text-color;
+}
+
+.picker-text.placeholder {
+  color: @text-color-disabled;
+}
+
+.picker-arrow {
+  font-size: @font-size-xl;
+  color: #cccccc;
+  margin-left: @spacing-sm;
+}
+
+/* 错误信息 */
+.error-message {
+  margin-top: 12rpx;
+  padding-left: @spacing-xs;
+}
+
+.error-message text {
+  font-size: @font-size-sm;
+  color: @primary-color;
+}
+
+/* 温馨提示 */
+.tips-section {
+  background-color: @white;
+  border-radius: @border-radius-lg;
+  padding: @spacing-lg;
+  margin-top: @spacing-xs;
+}
+
+.tips-title {
+  font-size: @font-size-md;
+  color: @text-color;
+  font-weight: @font-weight-medium;
+  margin-bottom: 20rpx;
+}
+
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: @spacing-sm;
+}
+
+.tip-item:last-child {
+  margin-bottom: 0;
+}
+
+.tip-icon {
+  width: 24rpx;
+  height: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: @spacing-sm;
+  color: @text-color-disabled;
+  font-size: @font-size-sm;
+  margin-top: 4rpx;
+}
+
+.tip-text {
+  font-size: 26rpx;
+  color: @text-color-secondary;
+  line-height: @line-height-normal;
+}
+
+/* 操作按钮 */
+.action-section {
+  padding: @spacing-lg @spacing-md 80rpx;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: @gradient-primary;
+  color: @white;
+  font-size: @font-size-lg;
+  font-weight: @font-weight-bold;
+  border-radius: 50rpx;
+  border: none;
+  box-shadow: 0 8rpx 24rpx rgba(255, 77, 79, 0.35);
+  transition: all @animation-duration-normal ease;
+
+  &:active {
+    transform: translateY(2rpx);
+    box-shadow: 0 4rpx 12rpx rgba(255, 77, 79, 0.35);
+  }
+}
+
+.submit-btn.disabled {
+  background: linear-gradient(135deg, #cccccc 0%, #dddddd 100%);
+  box-shadow: none;
+  color: @text-color-disabled;
+}
+
+.submit-btn:not(.disabled):active {
+  transform: translateY(2rpx);
+  box-shadow: 0 4rpx 12rpx rgba(255, 77, 79, 0.35);
+}
+
+.clear-btn {
+  width: 100%;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: @text-color-disabled;
+  font-size: @font-size-md;
+  border-radius: 50rpx;
+  border: none;
+  margin-top: 20rpx;
+
+  &:active {
+    background-color: @background-color;
+  }
+}
+
+/* 加载动画 */
+.loading-spinner {
+  width: 36rpx;
+  height: 36rpx;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  border-top: 4rpx solid @white;
+  border-radius: @border-radius-round;
+  animation: spin 1s linear infinite;
+  margin-right: @spacing-sm;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

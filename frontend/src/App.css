@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Core palette */
+  --color-bg-dark: #0a0e27;
+  --color-bg-dark-alt: #141833;
+  --color-bg-dark-end: #0f1229;
+  --color-gold-primary: #d4a017;
+  --color-gold-light: #f0c040;
+  --color-gold-glow: rgba(212, 160, 23, 0.3);
+  
+  /* Ant Design overrides */
+  --ant-primary-color: #d4a017;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Dark scrollbar for dark backgrounds */
+.ant-layout-sider ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.ant-layout-sider ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Menu dark theme overrides */
+.ant-layout-sider .ant-menu-dark {
+  background: transparent;
+}
+
+.ant-layout-sider .ant-menu-dark .ant-menu-item {
+  margin: 4px 0;
+  border-radius: 8px;
+  height: 44px;
+  line-height: 44px;
+}
+
+.ant-layout-sider .ant-menu-dark .ant-menu-item-selected {
+  background: rgba(212, 160, 23, 0.15) !important;
+  color: #f0c040 !important;
+}
+
+.ant-layout-sider .ant-menu-dark .ant-menu-item:hover:not(.ant-menu-item-selected) {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ant-layout-sider .ant-menu-dark .ant-menu-item .ant-menu-item-icon {
+  font-size: 16px;
+}
+
+/* Card enhancements */
+.ant-card {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.2s ease;
+}
+
+.ant-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Table enhancements */
+.ant-table-thead > tr > th {
+  font-weight: 600;
+  background: #fafafa;
+}
+
+/* Button primary gradient */
+.ant-btn-primary {
+  background: linear-gradient(135deg, #d4a017 0%, #e8b830 100%);
+  border-color: #d4a017;
+  box-shadow: 0 2px 8px rgba(212, 160, 23, 0.2);
+}
+
+.ant-btn-primary:hover {
+  background: linear-gradient(135deg, #c49315 0%, #d4a017 100%);
+  border-color: #c49315;
+  box-shadow: 0 4px 12px rgba(212, 160, 23, 0.3);
+}
+
+/* Input focus */
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+  border-color: #d4a017;
+  box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.1);
+}
+
+.ant-select-focused .ant-select-selector {
+  border-color: #d4a017 !important;
+  box-shadow: 0 0 0 2px rgba(212, 160, 23, 0.1) !important;
+}
+
+/* Tag styles */
+.ant-tag {
+  border-radius: 6px;
+}
+
+/* Pulse animation for active auctions */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes delayBadgeFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Stat card number animation */
+.ant-statistic-content-value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ant-layout-sider {
+    position: fixed !important;
+    z-index: 1000;
+  }
+}
+
+/* Modal enhancements */
+.ant-modal-content {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ant-modal-header {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* Login page input styling override */
+.login-input .ant-input {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #fff !important;
+}
+
+.login-input .ant-input::placeholder {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Loading spinner */
+.ant-spin-dot-item {
+  background-color: #d4a017;
+}
+
+/* Badge pulse */
+.ant-badge-status-processing::after {
+  border-color: #52c41a;
+}
+
+/* Popconfirm */
+.ant-popconfirm .ant-popover-buttons .ant-btn-primary {
+  background: linear-gradient(135deg, #d4a017 0%, #e8b830 100%);
+  border-color: #d4a017;
+}
+
+/* Empty state */
+.ant-empty-description {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+/* Avatar */
+.ant-avatar {
+  font-weight: 600;
+}
+
+/* Divider */
+.ant-divider-horizontal.ant-divider-with-text {
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 12px;
+}
+
+/* Form labels */
+.ant-form-item-label > label {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.75);
+}

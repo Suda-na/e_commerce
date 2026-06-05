@@ -1,0 +1,361 @@
+/* mixins.less */
+/* 样式混入 */
+
+/* 弹性布局混入 */
+.flex(@direction: row, @justify: flex-start, @align: stretch) {
+  display: flex;
+  flex-direction: @direction;
+  justify-content: @justify;
+  align-items: @align;
+}
+
+.flex-center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between() {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-around() {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.flex-column() {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row() {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-wrap() {
+  flex-wrap: wrap;
+}
+
+.flex-1() {
+  flex: 1;
+}
+
+/* 文本溢出混入 */
+.text-ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-ellipsis-lines(@lines: 2) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @lines;
+  overflow: hidden;
+}
+
+/* 边框混入 */
+.border(@width: 1rpx, @style: solid, @color: @border-color) {
+  border: @width @style @color;
+}
+
+.border-top(@width: 1rpx, @style: solid, @color: @border-color) {
+  border-top: @width @style @color;
+}
+
+.border-bottom(@width: 1rpx, @style: solid, @color: @border-color) {
+  border-bottom: @width @style @color;
+}
+
+.border-left(@width: 1rpx, @style: solid, @color: @border-color) {
+  border-left: @width @style @color;
+}
+
+.border-right(@width: 1rpx, @style: solid, @color: @border-color) {
+  border-right: @width @style @color;
+}
+
+/* 圆角混入 */
+.border-radius(@radius: @border-radius-md) {
+  border-radius: @radius;
+}
+
+.border-radius-top(@radius: @border-radius-md) {
+  border-top-left-radius: @radius;
+  border-top-right-radius: @radius;
+}
+
+.border-radius-bottom(@radius: @border-radius-md) {
+  border-bottom-left-radius: @radius;
+  border-bottom-right-radius: @radius;
+}
+
+.border-radius-left(@radius: @border-radius-md) {
+  border-top-left-radius: @radius;
+  border-bottom-left-radius: @radius;
+}
+
+.border-radius-right(@radius: @border-radius-md) {
+  border-top-right-radius: @radius;
+  border-bottom-right-radius: @radius;
+}
+
+/* 阴影混入 */
+.box-shadow(@shadow: @shadow-md) {
+  box-shadow: @shadow;
+}
+
+/* 背景混入 */
+.background-color(@color: @background-color) {
+  background-color: @color;
+}
+
+.background-gradient(@direction: to bottom, @start-color, @end-color) {
+  background: linear-gradient(@direction, @start-color, @end-color);
+}
+
+/* 尺寸混入 */
+.width(@width) {
+  width: @width;
+}
+
+.height(@height) {
+  height: @height;
+}
+
+.min-width(@width) {
+  min-width: @width;
+}
+
+.min-height(@height) {
+  min-height: @height;
+}
+
+.max-width(@width) {
+  max-width: @width;
+}
+
+.max-height(@height) {
+  max-height: @height;
+}
+
+.size(@width, @height) {
+  width: @width;
+  height: @height;
+}
+
+.square(@size) {
+  width: @size;
+  height: @size;
+}
+
+.circle(@size) {
+  width: @size;
+  height: @size;
+  border-radius: 50%;
+}
+
+/* 间距混入 */
+.margin(@top, @right, @bottom, @left) {
+  margin-top: @top;
+  margin-right: @right;
+  margin-bottom: @bottom;
+  margin-left: @left;
+}
+
+.margin-all(@spacing) {
+  margin: @spacing;
+}
+
+.margin-horizontal(@spacing) {
+  margin-left: @spacing;
+  margin-right: @spacing;
+}
+
+.margin-vertical(@spacing) {
+  margin-top: @spacing;
+  margin-bottom: @spacing;
+}
+
+.padding(@top, @right, @bottom, @left) {
+  padding-top: @top;
+  padding-right: @right;
+  padding-bottom: @bottom;
+  padding-left: @left;
+}
+
+.padding-all(@spacing) {
+  padding: @spacing;
+}
+
+.padding-horizontal(@spacing) {
+  padding-left: @spacing;
+  padding-right: @spacing;
+}
+
+.padding-vertical(@spacing) {
+  padding-top: @spacing;
+  padding-bottom: @spacing;
+}
+
+/* 定位混入 */
+.position(@position: relative, @top: auto, @right: auto, @bottom: auto, @left: auto) {
+  position: @position;
+  top: @top;
+  right: @right;
+  bottom: @bottom;
+  left: @left;
+}
+
+.absolute(@top: auto, @right: auto, @bottom: auto, @left: auto) {
+  position: absolute;
+  top: @top;
+  right: @right;
+  bottom: @bottom;
+  left: @left;
+}
+
+.fixed(@top: auto, @right: auto, @bottom: auto, @left: auto) {
+  position: fixed;
+  top: @top;
+  right: @right;
+  bottom: @bottom;
+  left: @left;
+}
+
+.relative() {
+  position: relative;
+}
+
+/* 透明度混入 */
+.opacity(@opacity: 1) {
+  opacity: @opacity;
+}
+
+/* 变换混入 */
+.transform(@transform) {
+  transform: @transform;
+}
+
+.translate(@x: 0, @y: 0) {
+  transform: translate(@x, @y);
+}
+
+.translateX(@x: 0) {
+  transform: translateX(@x);
+}
+
+.translateY(@y: 0) {
+  transform: translateY(@y);
+}
+
+.scale(@scale: 1) {
+  transform: scale(@scale);
+}
+
+.rotate(@rotate: 0deg) {
+  transform: rotate(@rotate);
+}
+
+/* 过渡混入 */
+.transition(@property: all, @duration: @animation-duration-normal, @timing-function: ease, @delay: 0s) {
+  transition: @property @duration @timing-function @delay;
+}
+
+/* 动画混入 */
+.animation(@name, @duration: @animation-duration-normal, @timing-function: ease, @delay: 0s, @iteration-count: 1, @direction: normal, @fill-mode: none) {
+  animation: @name @duration @timing-function @delay @iteration-count @direction @fill-mode;
+}
+
+/* 响应式混入 */
+.respond-to(@breakpoint, @rules) {
+  @media (min-width: @breakpoint) {
+    @rules();
+  }
+}
+
+/* 安全区域混入 */
+.safe-area-top() {
+  padding-top: @safe-area-inset-top;
+}
+
+.safe-area-bottom() {
+  padding-bottom: @safe-area-inset-bottom;
+}
+
+.safe-area-left() {
+  padding-left: @safe-area-inset-left;
+}
+
+.safe-area-right() {
+  padding-right: @safe-area-inset-right;
+}
+
+/* ===== 补充混入 ===== */
+
+/* 固定底部操作栏 */
+.fixed-bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: @white;
+  padding: @spacing-md @spacing-lg;
+  padding-bottom: calc(@spacing-md + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.08);
+  z-index: 100;
+}
+
+/* 表单输入框通用样式 */
+.form-input-base {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 @spacing-md;
+  font-size: @font-size-md;
+  color: @text-color;
+  background-color: @white;
+  border: 2rpx solid @border-color;
+  border-radius: @border-radius-sm;
+  transition: border-color @animation-duration-fast ease;
+
+  &:focus {
+    border-color: @color-input-border-focus;
+    background-color: @color-input-focus;
+  }
+}
+
+/* 价格显示通用 */
+.price-display {
+  font-family: 'DIN Alternate', 'Roboto Condensed', 'Helvetica Neue Bold', Arial, sans-serif;
+  font-weight: @font-weight-bold;
+  color: @primary-color;
+}
+
+/* 状态标签通用 */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  border-radius: @border-radius-xs;
+  font-size: @font-size-xs;
+  font-weight: @font-weight-medium;
+  line-height: 1.5;
+}
+
+/* 列表项通用 */
+.list-item-base {
+  display: flex;
+  align-items: center;
+  padding: @spacing-md @spacing-md;
+  background-color: @white;
+  transition: background-color @animation-duration-fast ease;
+
+  &:active {
+    background-color: @color-menu-hover;
+  }
+}

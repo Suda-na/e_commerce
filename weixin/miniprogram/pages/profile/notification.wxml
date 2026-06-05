@@ -1,0 +1,154 @@
+<!-- 消息通知页面 -->
+<view class="container">
+  <!-- 顶部统计卡片 -->
+  <view class="stats-card">
+    <view class="stats-header">
+      <text class="stats-title">通知统计</text>
+      <view class="edit-btn" bindtap="toggleEditMode">
+        <text>{{editMode ? '完成' : '编辑'}}</text>
+      </view>
+    </view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-number">{{stats.total}}</text>
+        <text class="stat-label">全部通知</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number unread">{{stats.unread}}</text>
+        <text class="stat-label">未读消息</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number today">{{stats.today}}</text>
+        <text class="stat-label">今日通知</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选标签 -->
+  <scroll-view class="filter-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="filter-list">
+      <view 
+        wx:for="{{filterOptions}}" 
+        wx:key="value"
+        class="filter-item {{currentFilter === item.value ? 'active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="onFilterChange"
+      >
+        <text>{{item.label}}</text>
+        <view class="filter-badge" wx:if="{{item.value === 'all' && stats.unread > 0}}">
+          <text>{{stats.unread}}</text>
+        </view>
+        <view class="filter-badge" wx:elif="{{item.value !== 'all' && stats.byCategory[item.value] > 0}}">
+          <text>{{stats.byCategory[item.value]}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 操作栏 -->
+  <view class="action-bar">
+    <view class="action-left">
+      <text class="action-count" wx:if="{{notifications.length > 0}}">
+        共 {{notifications.length}} 条通知
+      </text>
+    </view>
+    <view class="action-right">
+      <view class="action-btn" bindtap="onMarkAllRead" wx:if="{{stats.unread > 0}}">
+        <text>全部已读</text>
+      </view>
+      <view class="action-btn danger" bindtap="onClearAll" wx:if="{{stats.total > 0}}">
+        <text>清空</text>
+      </view>
+    </view>
+  </view>
+
+
+
+  <!-- 编辑模式操作栏 -->
+  <view class="edit-bar" wx:if="{{editMode}}">
+    <view class="edit-left">
+      <view class="select-btn" bindtap="onSelectAll">
+        <view class="checkbox {{selectedIds.length === notifications.length && notifications.length > 0 ? 'checked' : ''}}"></view>
+        <text>全选</text>
+      </view>
+      <text class="selected-count" wx:if="{{selectedIds.length > 0}}">
+        已选 {{selectedIds.length}} 项
+      </text>
+    </view>
+    <view class="edit-right">
+      <view class="delete-btn" bindtap="onDeleteSelected">
+        <text>删除</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 通知列表 -->
+  <scroll-view 
+    class="notification-list" 
+    scroll-y 
+    enhanced
+    show-scrollbar="{{false}}"
+    bindscrolltolower="onLoadMore"
+  >
+    <!-- 加载状态 -->
+    <view class="loading-container" wx:if="{{loading}}">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:elif="{{isEmpty}}">
+      <view class="empty-icon">🔔</view>
+      <text class="empty-title">暂无通知</text>
+      <text class="empty-desc">您还没有收到任何通知消息</text>
+    </view>
+
+    <!-- 通知列表 -->
+    <view wx:else>
+      <view 
+        wx:for="{{notifications}}" 
+        wx:key="id"
+        class="notification-item {{item.read ? 'read' : 'unread'}} {{selectedIds.indexOf(item.id) !== -1 ? 'selected' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="{{editMode ? 'onSelectNotification' : 'onNotificationTap'}}"
+        bindlongpress="onNotificationLongPress"
+      >
+        <!-- 编辑模式选择框 -->
+        <view class="checkbox-wrapper" wx:if="{{editMode}}">
+          <view class="checkbox {{selectedIds.indexOf(item.id) !== -1 ? 'checked' : ''}}"></view>
+        </view>
+
+        <!-- 通知图标 -->
+        <view class="notification-icon" style="background-color: {{colors[item.type] || '#999999'}}">
+          <text>{{icons[item.type] || '🔔'}}</text>
+        </view>
+
+        <!-- 通知内容 -->
+        <view class="notification-content">
+          <view class="notification-header">
+            <text class="notification-title {{!item.read ? 'bold' : ''}}">{{item.title}}</text>
+            <text class="notification-time">{{item.timeText}}</text>
+          </view>
+          <text class="notification-message">{{item.message}}</text>
+          <view class="notification-footer" wx:if="{{item.auctionTitle || item.amount}}">
+            <text class="auction-tag">{{typeNames[item.type] || '通知'}}</text>
+            <text class="auction-title" wx:if="{{item.auctionTitle}}">{{item.auctionTitle}}</text>
+            <text class="auction-amount" wx:if="{{item.amount}}">¥{{item.amount}}</text>
+          </view>
+        </view>
+
+        <!-- 未读标记 -->
+        <view class="unread-dot" wx:if="{{!item.read && !editMode}}"></view>
+      </view>
+
+      <!-- 加载更多 -->
+      <view class="load-more" wx:if="{{loadingMore}}">
+        <view class="loading-spinner small"></view>
+        <text class="loading-text">加载更多...</text>
+      </view>
+      <view class="no-more" wx:elif="{{!hasMore && notifications.length > 0}}">
+        <text>— 没有更多通知 —</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

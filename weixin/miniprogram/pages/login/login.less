@@ -1,0 +1,286 @@
+/* pages/login/login.less */
+@import '../../styles/variables.less';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFF5F5 0%, @white 40%, #FFF8F8 100%);
+  padding: 0 @spacing-xxl;
+  box-sizing: border-box;
+}
+
+/* Logo 区域 */
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 160rpx;
+  padding-bottom: 80rpx;
+}
+
+.logo {
+  width: 160rpx;
+  height: 160rpx;
+  margin-bottom: @spacing-lg;
+  border-radius: @border-radius-xxl;
+  box-shadow: 0 @spacing-sm @spacing-lg rgba(255, 77, 79, 0.2);
+}
+
+.app-name {
+  font-size: @font-size-heading;
+  font-weight: @font-weight-bold;
+  color: @text-color;
+  margin-bottom: @spacing-sm;
+}
+
+.app-slogan {
+  font-size: @font-size-md;
+  color: @text-color-disabled;
+}
+
+/* 表单区域 */
+.form-area {
+  width: 100%;
+}
+
+/* 输入组 */
+.input-group {
+  margin-bottom: @spacing-lg;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100rpx;
+  background: @white;
+  border: @border-width-normal solid #E8E8E8;
+  border-radius: @border-radius-lg;
+  padding: 0 @spacing-lg;
+  transition: all @animation-duration-normal ease;
+
+  &.focused {
+    border-color: @primary-color;
+    box-shadow: 0 0 0 @border-width-thick @primary-color-bg;
+    background-color: #FFFAFA;
+  }
+
+  &.error {
+    border-color: @primary-color;
+    background: #FFF5F5;
+  }
+}
+
+.input-icon {
+  width: @font-size-xxl;
+  height: @font-size-xxl;
+  margin-right: @spacing-md;
+  opacity: 0.6;
+}
+
+.input-field {
+  flex: 1;
+  height: 100%;
+  font-size: 30rpx;
+  color: @text-color;
+}
+
+.placeholder {
+  color: #CCCCCC;
+  font-size: 30rpx;
+}
+
+.eye-icon {
+  width: 44rpx;
+  height: 44rpx;
+  padding: 10rpx;
+  opacity: 0.6;
+}
+
+.error-text {
+  display: block;
+  font-size: @font-size-sm;
+  color: @primary-color;
+  margin-top: 12rpx;
+  padding-left: @spacing-sm;
+}
+
+/* 记住我 */
+.remember-area {
+  display: flex;
+  align-items: center;
+  margin-bottom: @spacing-xxl;
+}
+
+.remember-checkbox {
+  transform: scale(0.8);
+  margin-right: 12rpx;
+}
+
+.remember-text {
+  font-size: 26rpx;
+  color: @text-color-secondary;
+}
+
+/* 登录按钮 */
+.login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 96rpx;
+  background: @gradient-primary;
+  border-radius: @spacing-xxl;
+  color: @white;
+  font-size: @font-size-lg;
+  font-weight: @font-weight-bold;
+  border: none;
+  box-shadow: 0 @spacing-sm @spacing-md rgba(255, 77, 79, 0.3);
+  transition: all @animation-duration-normal ease;
+
+  &::after {
+    border: none;
+  }
+
+  &:active {
+    transform: scale(0.97);
+    box-shadow: 0 @spacing-xs @border-radius-md rgba(255, 77, 79, 0.3);
+  }
+
+  &.loading {
+    background: linear-gradient(135deg, @primary-color-light 0%, #FFA9A9 100%);
+    box-shadow: 0 @spacing-xs @border-radius-md rgba(255, 77, 79, 0.2);
+  }
+
+  &[disabled] {
+    opacity: 0.7;
+  }
+}
+
+.loading-spinner {
+  width: @font-size-xl;
+  height: @font-size-xl;
+  border: @border-width-thick solid rgba(255, 255, 255, 0.3);
+  border-top-color: @white;
+  border-radius: @border-radius-round;
+  margin-right: @spacing-sm;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 注册链接 */
+.register-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: @spacing-xl;
+  padding: @font-size-xs 0;
+}
+
+.link-text {
+  font-size: @font-size-md;
+  color: @text-color-disabled;
+}
+
+.link-highlight {
+  font-size: @font-size-md;
+  color: @primary-color;
+  margin-left: @spacing-xs;
+}
+
+/* 其他登录方式 */
+.other-login {
+  margin-top: 80rpx;
+  padding-bottom: @spacing-xl;
+  padding-bottom: calc(@spacing-xl + @safe-area-inset-bottom);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin-bottom: @spacing-xxl;
+}
+
+.divider-line {
+  flex: 1;
+  height: @border-width-normal;
+  background: #E8E8E8;
+}
+
+.divider-text {
+  padding: 0 @spacing-lg;
+  font-size: @font-size-sm;
+  color: #CCCCCC;
+}
+
+.social-login {
+  display: flex;
+  justify-content: center;
+}
+
+.wechat-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 400rpx;
+  height: 88rpx;
+  background: #07C160;
+  border-radius: 44rpx;
+  color: @white;
+  font-size: @font-size-md;
+  font-weight: @font-weight-bold;
+  border: none;
+  box-shadow: 0 @spacing-xs @spacing-sm rgba(7, 193, 96, 0.3);
+  transition: all @animation-duration-normal ease;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: @border-radius-round;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+  }
+
+  &:active::after {
+    width: 400rpx;
+    height: 400rpx;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.wechat-icon {
+  width: @font-size-xxl;
+  height: @font-size-xxl;
+  margin-right: @spacing-sm;
+}
+
+/* 版本信息 */
+.version-area {
+  position: fixed;
+  bottom: 60rpx;
+  bottom: calc(60rpx + @safe-area-inset-bottom);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.version-text {
+  font-size: @font-size-sm;
+  color: #CCCCCC;
+}

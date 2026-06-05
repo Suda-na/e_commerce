@@ -1,0 +1,418 @@
+@import '../../styles/variables.less';
+
+/**
+ * 订单列表页面样式
+ * 订单卡片、状态筛选、空状态
+ */
+
+/* ==================== 页面容器 ==================== */
+
+.orders-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: @background-color;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ==================== 页面标题 ==================== */
+
+.page-header {
+  padding: @spacing-md @spacing-lg @spacing-sm;
+  background-color: @white;
+  border-bottom: @border-width-thin solid @border-color;
+}
+
+.page-title {
+  font-size: @font-size-xl;
+  font-weight: @font-weight-heavy;
+  color: #1a1a2e;
+  display: block;
+}
+
+.page-subtitle {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+  margin-top: @spacing-xs;
+  display: block;
+}
+
+/* ==================== 状态筛选Tab ==================== */
+
+.status-tabs {
+  background-color: @white;
+  padding: @spacing-sm 0;
+  border-bottom: @border-width-thin solid @border-color;
+}
+
+.tabs-scroll {
+  white-space: nowrap;
+}
+
+.tabs-wrapper {
+  display: inline-flex;
+  padding: 0 @spacing-md;
+  gap: @spacing-sm;
+}
+
+.tab-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: @spacing-sm @spacing-lg;
+  border-radius: 40rpx;
+  background-color: @background-color;
+  transition: all @animation-duration-normal cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.active {
+    background-color: @primary-color;
+    box-shadow: 0 4rpx 12rpx rgba(255, 77, 79, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.95);
+    opacity: 0.85;
+  }
+}
+
+.tab-text {
+  font-size: 26rpx;
+  color: @text-color-secondary;
+  font-weight: @font-weight-medium;
+
+  .tab-item.active & {
+    color: @white;
+    font-weight: @font-weight-bold;
+  }
+}
+
+.tab-indicator {
+  width: 40rpx;
+  height: 6rpx;
+  background-color: @white;
+  border-radius: 3rpx;
+  margin-top: @spacing-xs;
+}
+
+/* ==================== 订单列表 ==================== */
+
+.order-list {
+  flex: 1;
+  padding: @spacing-md;
+}
+
+/* ==================== 加载状态 ==================== */
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: @border-width-thick solid @border-color;
+  border-top-color: @primary-color;
+  border-radius: @border-radius-round;
+  animation: spin 0.8s linear infinite;
+
+  &.small {
+    width: 40rpx;
+    height: 40rpx;
+    border-width: 3rpx;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 26rpx;
+  color: @text-color-disabled;
+  margin-top: @spacing-md;
+}
+
+/* ==================== 空状态 ==================== */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: @spacing-md;
+}
+
+.empty-title {
+  font-size: 30rpx;
+  font-weight: @font-weight-bold;
+  color: @text-color;
+  margin-bottom: 12rpx;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: @text-color-disabled;
+  text-align: center;
+  padding: 0 @spacing-xxxl;
+  margin-bottom: @spacing-lg;
+}
+
+.empty-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: @spacing-sm @spacing-xxl;
+  background: @gradient-primary;
+  border-radius: 40rpx;
+  transition: all 0.25s ease;
+  box-shadow: 0 4rpx 16rpx rgba(255, 77, 79, 0.3);
+
+  &:active {
+    transform: scale(0.95);
+    box-shadow: 0 2rpx 8rpx rgba(255, 77, 79, 0.3);
+  }
+}
+
+.action-text {
+  font-size: @font-size-md;
+  color: @white;
+  font-weight: @font-weight-bold;
+}
+
+/* ==================== 订单网格 ==================== */
+
+.order-grid {
+  display: flex;
+  flex-direction: column;
+  gap: @spacing-md;
+}
+
+/* ==================== 订单卡片 ==================== */
+
+.order-card {
+  background-color: @white;
+  border-radius: 20rpx;
+  box-shadow: @shadow-lg;
+  overflow: hidden;
+  transition: all 0.25s ease;
+  animation: listItemIn 0.35s ease-out both;
+
+  &:nth-child(1) { animation-delay: 0s; }
+  &:nth-child(2) { animation-delay: 0.08s; }
+  &:nth-child(3) { animation-delay: 0.16s; }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: @shadow-md;
+  }
+}
+
+/* 订单头部 */
+.order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: @spacing-md;
+  border-bottom: @border-width-thin solid @border-color;
+}
+
+.order-no {
+  display: flex;
+  align-items: center;
+  gap: @spacing-xs;
+}
+
+.order-no-label {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+}
+
+.order-no-value {
+  font-size: @font-size-sm;
+  color: @text-color;
+  font-weight: @font-weight-medium;
+}
+
+.order-status {
+  padding: @spacing-xs @spacing-sm;
+  border-radius: 20rpx;
+}
+
+.status-text {
+  font-size: 22rpx;
+  color: @white;
+  font-weight: @font-weight-bold;
+}
+
+/* 订单内容 */
+.order-content {
+  display: flex;
+  padding: @spacing-md;
+  gap: @spacing-md;
+}
+
+.product-image-wrapper {
+  flex-shrink: 0;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: @border-radius-lg;
+  overflow: hidden;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  background-color: @border-color;
+}
+
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.product-name {
+  font-size: @font-size-md;
+  font-weight: @font-weight-bold;
+  color: #1a1a2e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-auction {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+}
+
+.order-amount {
+  display: flex;
+  align-items: center;
+  gap: @spacing-xs;
+  margin-top: @spacing-xs;
+}
+
+.amount-label {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+}
+
+.amount-value {
+  font-size: @font-size-lg;
+  font-weight: @font-weight-heavy;
+  color: @primary-color;
+  font-family: 'DIN Alternate', 'Helvetica Neue', sans-serif;
+}
+
+/* 订单底部 */
+.order-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: @spacing-md;
+  border-top: @border-width-thin solid @border-color;
+}
+
+.order-time {
+  font-size: 22rpx;
+  color: @text-color-disabled;
+}
+
+.order-actions {
+  display: flex;
+  gap: @spacing-sm;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx @spacing-md;
+  border-radius: @border-radius-xxl;
+  transition: all 0.25s ease;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.pay-btn {
+  background: @gradient-primary;
+  box-shadow: 0 4rpx 12rpx rgba(255, 77, 79, 0.3);
+
+  .btn-text {
+    color: @white;
+    font-size: @font-size-sm;
+    font-weight: @font-weight-bold;
+  }
+}
+
+.cancel-btn {
+  background-color: @background-color;
+  border: @border-width-thin solid @border-color-dark;
+
+  .btn-text {
+    color: @text-color-secondary;
+    font-size: @font-size-sm;
+    font-weight: @font-weight-medium;
+  }
+}
+
+.detail-btn {
+  background-color: @background-color;
+  border: @border-width-thin solid @border-color-dark;
+
+  .btn-text {
+    color: @text-color;
+    font-size: @font-size-sm;
+    font-weight: @font-weight-medium;
+  }
+}
+
+/* ==================== 加载更多 ==================== */
+
+.load-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: @spacing-lg 0;
+  gap: 12rpx;
+}
+
+.load-more-text {
+  font-size: @font-size-sm;
+  color: @text-color-disabled;
+}
+
+.no-more {
+  text-align: center;
+  padding: @spacing-lg 0 @spacing-xxl;
+}
+
+.no-more-text {
+  font-size: @font-size-sm;
+  color: #ccc;
+}
+
+/* ==================== 入场动画 ==================== */
+
+@keyframes listItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(@spacing-md);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,4 @@
+<!--product-card.wxml-->
+<view class="product-card">
+  <slot></slot>
+</view>
