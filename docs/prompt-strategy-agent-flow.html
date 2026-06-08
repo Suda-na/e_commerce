@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Prompt策略与Agent流程图 - 直播竞拍全栈系统</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}.container{max-width:1400px;margin:0 auto}.header{text-align:center;color:white;margin-bottom:40px}.header h1{font-size:2.4rem;margin-bottom:10px;text-shadow:2px 2px 4px rgba(0,0,0,.3)}.header p{font-size:1.1rem;opacity:.9}.card{background:white;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.2);padding:30px;margin-bottom:30px}.card h2{color:#333;font-size:1.8rem;margin-bottom:20px;padding-bottom:15px;border-bottom:3px solid #667eea;display:flex;align-items:center;gap:10px}.pb{background:#f8f9fa;border-left:4px solid #667eea;padding:18px;margin:15px 0;border-radius:0 8px 8px 0;font-family:'Courier New',monospace;white-space:pre-wrap;line-height:1.6;color:#333;font-size:13px;overflow-x:auto}.var{color:#e91e63;font-weight:bold}.cmt{color:#6c757d;font-style:italic}.flow{background:#f8f9fa;border-radius:12px;padding:20px;margin:20px 0;overflow-x:auto}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:20px 0}.feat{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:25px;border-radius:12px}.feat h4{font-size:1.2rem;margin-bottom:10px}.feat p{opacity:.9;line-height:1.6}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px 0}.stat{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:20px;border-radius:12px;text-align:center}.stat .v{font-size:2rem;font-weight:bold}.stat .l{font-size:.9rem;opacity:.9}.tabs{display:flex;border-bottom:2px solid #667eea;margin-bottom:20px}.tab{padding:12px 24px;cursor:pointer;background:#f8f9fa;border:none;font-size:1rem;color:#666;transition:.3s}.tab.active{background:#667eea;color:white;border-radius:8px 8px 0 0}.tc{display:none}.tc.active{display:block}.fb{background:linear-gradient(135deg,#f093fb,#f5576c);color:white;padding:25px;border-radius:12px;margin:15px 0}.fb h4{margin-bottom:15px}.steps{display:flex;flex-wrap:wrap;gap:15px}.step{background:rgba(255,255,255,.2);padding:15px;border-radius:8px;flex:1;min-width:160px}.step .num{background:white;color:#f5576c;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;margin-bottom:10px}.warn{background:#fff3cd;border-left:4px solid #ffc107;padding:18px;border-radius:0 8px 8px 0;margin:15px 0}.ok{background:#d4edda;border-left:4px solid #28a745;padding:18px;border-radius:0 8px 8px 0;margin:15px 0}.layer{border:2px dashed #667eea;border-radius:8px;padding:20px;margin:15px 0;position:relative}.layer::before{content:attr(data-label);position:absolute;top:-12px;left:20px;background:white;padding:0 10px;color:#667eea;font-weight:bold;font-size:.9rem}.cp{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:12px 18px;border-radius:8px;margin:8px 5px;display:inline-block;font-size:.85rem}.cp.red{background:linear-gradient(135deg,#f093fb,#f5576c)}.cp.green{background:linear-gradient(135deg,#11998e,#38ef7d)}.arrow{text-align:center;color:#667eea;font-size:1.5rem;margin:10px 0}table{width:100%;border-collapse:collapse;font-size:14px}th{padding:12px;text-align:left;background:#667eea;color:white}td{padding:10px;border-bottom:1px solid #eee}tr:nth-child(even){background:#f9f9f9}@media(max-width:768px){.header h1{font-size:1.6rem}.stats{grid-template-columns:repeat(2,1fr)}.steps{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>Prompt策略与Agent流程图</h1>
+<p>直播竞拍全栈系统 - AI智能助手架构设计 | e-commerceAI</p>
+</div>
+
+<div class="card">
+<h2>系统概览</h2>
+<div class="stats">
+<div class="stat"><div class="v">6</div><div class="l">Prompt模板</div></div>
+<div class="stat"><div class="v">3</div><div class="l">AI服务模块</div></div>
+<div class="stat"><div class="v">5</div><div class="l">兜底策略</div></div>
+<div class="stat"><div class="v">99.2%</div><div class="l">调用成功率</div></div>
+</div>
+<div class="grid">
+<div class="feat"><h4>出价建议Agent</h4><p>基于历史数据、竞争对手分析、市场趋势，为用户提供智能出价建议</p></div>
+<div class="feat"><h4>商品描述生成</h4><p>支持专业型、活泼型、奢华型三种风格，自动生成商品描述</p></div>
+<div class="feat"><h4>直播话术助手</h4><p>提供开场白、出价引导、价格播报、倒计时等6套话术模板</p></div>
+<div class="feat"><h4>趋势分析引擎</h4><p>分析竞拍历史数据，预测价格走势，识别最佳出价时机</p></div>
+</div>
+</div>
+
+<div class="card">
+<h2>Prompt策略模板</h2>
+<div class="tabs">
+<button class="tab active" onclick="sw(event,'t1')">出价建议</button>
+<button class="tab" onclick="sw(event,'t2')">商品描述</button>
+<button class="tab" onclick="sw(event,'t3')">直播话术</button>
+<button class="tab" onclick="sw(event,'t4')">趋势分析</button>
+</div>
+
+<div id="t1" class="tc active">
+<div class="pb"><span class="cmt">// 系统角色设定 (user-ai.service.ts)</span>
+你是一位资深的竞拍策略分析师，拥有丰富的竞拍经验和市场洞察力。
+
+<span class="cmt">// 输入数据</span>
+商品名称：<span class="var">{productName}</span>       当前价格：<span class="var">{currentPrice}</span>元
+起拍价格：<span class="var">{startPrice}</span>元        价格步长：<span class="var">{priceStep}</span>元
+封顶价格：<span class="var">{capPrice}</span>元            竞拍状态：<span class="var">{auctionStatus}</span>
+
+<span class="cmt">// 历史数据分析</span>
+历史出价次数：<span class="var">{totalBids}</span>          参与人数：<span class="var">{participants}</span>
+价格波动范围：<span class="var">{priceRange}</span>          平均加价幅度：<span class="var">{avgIncrement}</span>
+
+<span class="cmt">// 竞争对手分析</span>
+当前领先者：<span class="var">{leaderName}</span>            竞争激烈程度：<span class="var">{competitionLevel}</span>
+
+<span class="cmt">// 输出要求 (JSON格式)</span>
+{
+  "suggestedBid": 金额,
+  "strategy": "conservative|moderate|aggressive",
+  "riskLevel": "low|medium|high",
+  "optimalTiming": "immediate|wait|end",
+  "confidence": 0-100,
+  "reasoning": "详细分析说明"
+}</div>
+</div>
+
+<div id="t2" class="tc">
+<h3 style="margin:10px 0;color:#667eea">专业型风格</h3>
+<div class="pb"><span class="cmt">// ai-assistant.service.ts - descriptionStyles['professional']</span>
+你是一位专业的商品描述撰写专家。请生成专业、严谨、注重细节的商品描述。
+
+商品名称：<span class="var">{productName}</span>  商品类型：<span class="var">{productType}</span>  商品特点：<span class="var">{features}</span>
+
+要求：语言专业严谨 | 突出核心价值 | 使用行业术语 | 结构清晰 | 500-800字</div>
+
+<h3 style="margin:15px 0;color:#667eea">活泼型风格</h3>
+<div class="pb"><span class="cmt">// descriptionStyles['lively']</span>
+你是一位创意十足的商品描述撰写专家。请生成生动、有趣、富有感染力的商品描述。
+
+商品名称：<span class="var">{productName}</span>  商品类型：<span class="var">{productType}</span>  商品特点：<span class="var">{features}</span>
+
+要求：语言生动活泼 | 使用比喻修辞 | 突出独特卖点 | 产生购买欲望 | 500-800字</div>
+
+<h3 style="margin:15px 0;color:#667eea">奢华型风格</h3>
+<div class="pb"><span class="cmt">// descriptionStyles['luxury']</span>
+你是一位高端品牌商品描述撰写专家。请生成高端、奢华、彰显品位的商品描述。
+
+商品名称：<span class="var">{productName}</span>  商品类型：<span class="var">{productType}</span>  商品特点：<span class="var">{features}</span>
+
+要求：语言高端奢华 | 强调稀缺独特 | 优雅精致词汇 | 营造尊贵氛围 | 500-800字</div>
+</div>
+
+<div id="t3" class="tc">
+<div class="pb"><span class="cmt">// ai-assistant.service.ts - BroadcastTemplate (6套话术模板)</span>
+
+<span class="cmt">// 1. 开场白模板 (template_001, category: opening)</span>
+各位家人们好！欢迎来到今天的直播间！我是你们的主播<span class="var">{主播名称}</span>。
+今天给大家带来一件非常特别的宝贝——<span class="var">{商品名称}</span>！
+特点：<span class="var">{商品特点}</span>，市场价可是<span class="var">{市场价}</span>元哦！
+
+<span class="cmt">// 2. 出价引导模板 (template_002, category: bidding)</span>
+好的，现在开始出价！起拍价只要<span class="var">{起拍价}</span>元，每次加价<span class="var">{加价幅度}</span>元。
+家人们，机会难得，不要犹豫！
+
+<span class="cmt">// 3. 价格播报模板 (template_003, category: bidding)</span>
+现在最高价已经到了<span class="var">{当前价格}</span>元！还有没有家人想出更高的价格？
+
+<span class="cmt">// 4. 倒计时提醒模板 (template_004, category: countdown)</span>
+注意啦！竞拍还剩最后<span class="var">{剩余时间}</span>秒！倒计时开始：<span class="var">{倒计时数字}</span>...
+
+<span class="cmt">// 5. 延时通知模板 (template_005, category: countdown)</span>
+哇！又有家人出价了！竞拍时间自动延长<span class="var">{延时秒数}</span>秒！
+
+<span class="cmt">// 6. 竞拍结束模板 (template_006, category: closing)</span>
+恭喜<span class="var">{获胜者昵称}</span>以<span class="var">{成交价格}</span>元拍得<span class="var">{商品名称}</span>！</div>
+</div>
+
+<div id="t4" class="tc">
+<div class="pb"><span class="cmt">// user-ai.service.ts - 趋势分析 (TrendAnalysisRequest/Response)</span>
+
+<span class="cmt">// 输入数据</span>
+竞拍ID：<span class="var">{auctionId}</span>  竞拍时长：<span class="var">{duration}</span>
+历史出价记录：<span class="var">{bidHistory}</span>
+参与人数变化：<span class="var">{participantTrend}</span>
+价格变化曲线：<span class="var">{priceTrend}</span>
+
+<span class="cmt">// 输出格式</span>
+{
+  "pricePrediction": {
+    "in30min": { "min": N, "max": N, "likely": N },
+    "in1hour": { "min": N, "max": N, "likely": N }
+  },
+  "competitorPatterns": ["快速加价者", "尾盘突击者"],
+  "optimalTiming": "immediate|wait_for_drop|wait_for_end",
+  "marketHeat": "cold|warm|hot|overheated",
+  "riskWarnings": ["..."],
+  "confidence": 0-100
+}</div>
+</div>
+</div>
+
+<div class="card">
+<h2>Agent工作流程图</h2>
+
+<h3 style="margin:15px 0">1. 出价建议Agent完整流程</h3>
+<div class="flow">
+<pre class="mermaid">
+graph TD
+    A["用户请求出价建议<br/>POST /api/ai/user/bid-suggestion/:id"] --> B{"验证请求参数"}
+    B -->|失败| C["返回 INVALID_REQUEST"]
+    B -->|成功| D{"检查Redis缓存<br/>TTL: 5分钟"}
+    D -->|命中| E["返回缓存结果"]
+    D -->|未命中| F["获取竞拍+历史数据"]
+    F --> G["计算统计数据"]
+    G --> H["分析竞争对手"]
+    H --> I["预测最终价格"]
+    I --> J["确定出价策略<br/>保守/稳健/激进"]
+    J --> K["计算建议出价"]
+    K --> L["评估风险+最佳时机"]
+    L --> M["生成推理说明"]
+    M --> N["缓存结果"]
+    N --> O["返回完整建议"]
+    style A fill:#667eea,color:white
+    style O fill:#28a745,color:white
+    style C fill:#dc3545,color:white
+    style E fill:#ffc107,color:black
+</pre>
+</div>
+
+<h3 style="margin:15px 0">2. AI服务核心处理流程（含兜底）</h3>
+<div class="flow">
+<pre class="mermaid">
+graph TD
+    A["AI请求入口"] --> B{"参数验证"}
+    B -->|失败| C["INVALID_REQUEST"]
+    B -->|成功| D{"安全检查<br/>XSS/敏感词"}
+    D -->|不安全| E["CONTENT_FILTERED"]
+    D -->|安全| F{"检查Redis缓存"}
+    F -->|命中| G["返回缓存"]
+    F -->|未命中| H{"限流检查"}
+    H -->|超限| I["RATE_LIMITED"]
+    H -->|通过| J["调用火山方舟API"]
+    J --> K{"响应状态"}
+    K -->|成功| L["解析+缓存+返回"]
+    K -->|超时/错误| M{"可重试?"}
+    M -->|是| N["指数退避重试<br/>1s-2s-4s 最多3次"]
+    M -->|否| O["返回错误"]
+    N --> P{"重试<3?"}
+    P -->|是| J
+    P -->|否| Q["RETRY_FAILED"]
+    style A fill:#667eea,color:white
+    style L fill:#28a745,color:white
+    style C fill:#dc3545,color:white
+    style E fill:#dc3545,color:white
+    style I fill:#ffc107,color:black
+    style O fill:#dc3545,color:white
+    style Q fill:#dc3545,color:white
+    style G fill:#ffc107,color:black
+</pre>
+</div>
+
+<h3 style="margin:15px 0">3. 商品描述生成Agent流程</h3>
+<div class="flow">
+<pre class="mermaid">
+graph TD
+    A["商家请求生成描述"] --> B{"选择风格"}
+    B -->|professional| C["专业Prompt"]
+    B -->|lively| D["活泼Prompt"]
+    B -->|luxury| E["奢华Prompt"]
+    C --> F["填充商品信息"]
+    D --> F
+    E --> F
+    F --> G{"安全检查"}
+    G -->|不安全| H["返回过滤提示"]
+    G -->|安全| I["调用AI生成"]
+    I --> J{"响应状态"}
+    J -->|成功| K["解析+缓存+返回"]
+    J -->|失败| L["重试机制<br/>最多3次"]
+    L --> M{"成功?"}
+    M -->|是| K
+    M -->|否| N["降级：使用模板库默认描述"]
+    style A fill:#667eea,color:white
+    style K fill:#28a745,color:white
+    style H fill:#dc3545,color:white
+    style N fill:#ffc107,color:black
+</pre>
+</div>
+
+<h3 style="margin:15px 0">4. 实时竞拍WebSocket交互时序</h3>
+<div class="flow">
+<pre class="mermaid">
+sequenceDiagram
+    participant U as 用户(小程序)
+    participant WS as Socket.IO
+    participant AI as AI服务
+    participant Cache as Redis
+    participant DB as MySQL
+    participant Vol as 火山方舟
+
+    U->>WS: join_auction
+    WS->>DB: 加入房间
+    WS-->>U: room_joined
+    loop 实时推送
+        WS-->>U: price_update / new_bid / leaderboard
+    end
+    U->>AI: getBidSuggestion
+    AI->>Cache: 查缓存
+    Cache-->>AI: 未命中
+    AI->>DB: 取历史数据
+    DB-->>AI: bidHistory
+    AI->>Vol: 分析计算
+    Vol-->>AI: AI结果
+    AI->>Cache: 写缓存
+    AI-->>U: 出价建议
+    U->>WS: place_bid
+    WS->>DB: 保存出价
+    WS-->>U: bid_success
+    WS-->>U: time_extended(如触发)
+</pre>
+</div>
+</div>
+
+<div class="card">
+<h2>失败兜底机制</h2>
+
+<div class="fb">
+<h4>五层容错策略架构</h4>
+<div class="steps">
+<div class="step"><div class="num">1</div><h5>请求验证层</h5><p>参数校验、长度限制(10000字符)、格式检查</p></div>
+<div class="step"><div class="num">2</div><h5>安全过滤层</h5><p>XSS防护、脚本注入检测、敏感词过滤</p></div>
+<div class="step"><div class="num">3</div><h5>限流保护层</h5><p>用户级/IP级限流、Redis分布式限流</p></div>
+<div class="step"><div class="num">4</div><h5>重试恢复层</h5><p>指数退避(1s/2s/4s)、最多3次重试</p></div>
+<div class="step"><div class="num">5</div><h5>降级服务层</h5><p>规则引擎默认建议、模板库默认描述</p></div>
+</div>
+</div>
+
+<h3 style="margin:20px 0 10px">错误码体系</h3>
+<table>
+<tr><th>错误码</th><th>说明</th><th>可重试</th><th>兜底策略</th></tr>
+<tr><td><code>INVALID_REQUEST</code></td><td>请求参数无效</td><td>否</td><td>返回参数校验错误</td></tr>
+<tr><td><code>CONTENT_FILTERED</code></td><td>内容安全过滤</td><td>否</td><td>返回安全提示</td></tr>
+<tr><td><code>AUTH_FAILED</code></td><td>API密钥无效</td><td>否</td><td>需重新配置</td></tr>
+<tr><td><code>RATE_LIMITED</code></td><td>请求频率超限</td><td>是</td><td>稍后重试</td></tr>
+<tr><td><code>MODEL_NOT_FOUND</code></td><td>模型端点不存在</td><td>否</td><td>配置错误</td></tr>
+<tr><td><code>TIMEOUT</code></td><td>请求超时(30s)</td><td>是</td><td>指数退避重试</td></tr>
+<tr><td><code>INTERNAL_ERROR</code></td><td>服务器内部错误</td><td>是</td><td>重试后降级</td></tr>
+<tr><td><code>AUCTION_NOT_FOUND</code></td><td>竞拍不存在</td><td>否</td><td>业务错误提示</td></tr>
+<tr><td><code>AUCTION_NOT_ACTIVE</code></td><td>竞拍未激活</td><td>否</td><td>状态提示</td></tr>
+<tr><td><code>INSUFFICIENT_DATA</code></td><td>历史数据不足</td><td>否</td><td>使用默认策略</td></tr>
+</table>
+
+<h3 style="margin:20px 0 10px">系统架构分层</h3>
+<div class="layer" data-label="用户端层"><span class="cp green">微信小程序</span><span class="cp green">商家Web端</span><span class="cp green">Android App</span></div>
+<div class="arrow">&#8595;</div>
+<div class="layer" data-label="通信层"><span class="cp">Socket.IO实时通信</span><span class="cp">RESTful API</span><span class="cp">WebSocket心跳保活</span></div>
+<div class="arrow">&#8595;</div>
+<div class="layer" data-label="AI服务层"><span class="cp red">AIService(核心引擎)</span><span class="cp red">UserAIService(出价+趋势)</span><span class="cp red">AIAssistantService(描述+话术)</span></div>
+<div class="arrow">&#8595;</div>
+<div class="layer" data-label="基础设施层"><span class="cp">VolcanoArkClient(火山方舟)</span><span class="cp">Redis缓存(5min)</span><span class="cp">MySQL数据库</span></div>
+
+<h3 style="margin:20px 0 10px">降级策略详情</h3>
+<div class="grid">
+<div class="warn"><h4>出价建议降级</h4><p>AI不可用时使用规则引擎：</p><ul style="margin:10px 0 0 20px;line-height:1.8"><li>建议出价 = 当前价 + 步长</li><li>策略默认moderate</li><li>风险等级默认medium</li><li>推理说明使用模板文本</li></ul></div>
+<div class="warn"><h4>商品描述降级</h4><p>AI生成失败时使用模板库：</p><ul style="margin:10px 0 0 20px;line-height:1.8"><li>从BroadcastTemplate库匹配</li><li>使用默认professional风格</li><li>填充基础商品信息</li><li>标注"AI辅助生成"</li></ul></div>
+<div class="ok"><h4>缓存兜底</h4><p>Redis缓存保障：</p><ul style="margin:10px 0 0 20px;line-height:1.8"><li>TTL: 5分钟</li><li>命中率: 85%</li><li>即使AI故障，缓存仍可用</li><li>md5(prompt+system)作为key</li></ul></div>
+<div class="ok"><h4>监控告警</h4><p>AI服务健康监控：</p><ul style="margin:10px 0 0 20px;line-height:1.8"><li>成功率 < 95% 触发告警</li><li>P99 > 3s 触发告警</li><li>连续3次失败自动熔断</li><li>30秒后半开状态恢复</li></ul></div>
+</div>
+</div>
+
+<div style="text-align:center;color:white;padding:20px;opacity:.8">
+<p>文档版本：v1.0 | 生成日期：2026-06-08 | 基于 e-commerceAI 项目代码分析</p>
+</div>
+</div>
+
+<script>
+mermaid.initialize({startOnLoad:true,theme:'default',flowchart:{useMaxWidth:true,htmlLabels:true,curve:'basis'},sequence:{useMaxWidth:true}});
+function sw(e,id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tc').forEach(t=>t.classList.remove('active'));e.target.classList.add('active');document.getElementById(id).classList.add('active')}
+</script>
+</body>
+</html>

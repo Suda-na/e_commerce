@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI评测方案与样例结果 - 直播竞拍系统</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px}
+.container{max-width:1400px;margin:0 auto}.header{text-align:center;color:white;margin-bottom:40px}.header h1{font-size:2.4rem;margin-bottom:10px;text-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.header p{font-size:1.1rem;opacity:.9}.card{background:white;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.2);padding:30px;margin-bottom:30px}
+.card h2{color:#333;font-size:1.8rem;margin-bottom:20px;padding-bottom:15px;border-bottom:3px solid #667eea}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:20px 0}.stat{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:20px;border-radius:12px;text-align:center}
+.stat .v{font-size:2rem;font-weight:bold}.stat .l{font-size:.9rem;opacity:.9}
+.io-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0}
+.io-box{background:#f8f9fa;border:1px solid #e9ecef;border-radius:8px;padding:18px;font-family:'Courier New',monospace;font-size:.85rem;line-height:1.6}
+.io-box .label{color:#667eea;font-weight:bold;margin-bottom:10px;font-size:.9rem}
+.io-box pre{white-space:pre-wrap;color:#333}
+.hl{color:#e91e63;font-weight:bold}.ok{color:#28a745}.nm{color:#0066cc}.cc{color:#6c757d;font-style:italic}
+table{width:100%;border-collapse:collapse;font-size:14px}th{padding:12px;text-align:left;background:#667eea;color:white}
+td{padding:10px;border-bottom:1px solid #eee}tr:nth-child(even){background:#f9f9f9}
+.grade{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.8rem;font-weight:bold}
+.grade.s{background:#d4edda;color:#155724}.grade.a{background:#d1ecf1;color:#0c5460}.grade.b{background:#fff3cd;color:#856404}
+.eval-box{background:#f8f9fa;border-left:4px solid #667eea;padding:20px;margin:20px 0;border-radius:0 8px 8px 0}
+.eval-box h4{color:#333;margin-bottom:12px}.eval-box ul{list-style:none;padding:0}.eval-box li{padding:6px 0 6px 25px;position:relative;font-size:.95rem;color:#555}
+.eval-box li::before{content:'▸';position:absolute;left:0;color:#667eea;font-weight:bold}
+.eval-flow{display:flex;align-items:center;justify-content:center;gap:15px;margin:20px 0;flex-wrap:wrap}
+.flow-step{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:12px 20px;border-radius:8px;font-size:.9rem;min-width:100px;text-align:center}
+.flow-arrow{color:#667eea;font-size:1.5rem}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin:20px 0}
+.metric-card{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:20px;border-radius:12px;text-align:center}
+.metric-card .name{font-size:.9rem;opacity:.9}.metric-card .val{font-size:2rem;font-weight:bold;margin:5px 0}
+.metric-card .bar{height:6px;background:rgba(255,255,255,.3);border-radius:3px;overflow:hidden;margin-top:10px}
+.metric-card .bar .fill{height:100%;border-radius:3px;background:white}
+.flow{background:#f8f9fa;border-radius:12px;padding:20px;margin:20px 0;overflow-x:auto}
+footer{text-align:center;color:white;padding:30px 0;opacity:.8;font-size:.9rem}
+@media(max-width:768px){.stats{grid-template-columns:repeat(2,1fr)}.io-grid{grid-template-columns:1fr}.eval-flow{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>AI评测方案与样例结果</h1>
+<p>直播竞拍全栈系统 · 输入输出样例 · 人工评估 · 自动评估</p>
+</div>
+
+<div class="card">
+<h2>评测概览</h2>
+<div class="stats">
+<div class="stat"><div class="v">3</div><div class="l">AI服务模块</div></div>
+<div class="stat"><div class="v">50+</div><div class="l">评测用例</div></div>
+<div class="stat"><div class="v">92.5</div><div class="l">综合评分</div></div>
+<div class="stat"><div class="v">1.2s</div><div class="l">P95响应时延</div></div>
+</div>
+</div>
+
+<div class="card">
+<h2>输入输出样例 (I/O Samples)</h2>
+
+<h3 style="color:#333;margin:20px 0 15px;font-size:1.3rem">1. 出价建议 (BidSuggestionRequest)</h3>
+<div class="io-grid">
+<div class="io-box">
+<div class="label">INPUT</div>
+<pre>{
+  "<span class="hl">auctionId</span>": <span class="nm">1001</span>,
+  "<span class="hl">userId</span>": "<span class="ok">user_001</span>",
+  "<span class="hl">riskLevel</span>": "<span class="ok">moderate</span>"
+}
+<span class="cc">// 系统自动获取:</span>
+当前价: ¥<span class="nm">1500</span> 步长: ¥<span class="nm">50</span>
+封顶价: ¥<span class="nm">3000</span> 剩余: <span class="nm">180</span>s</pre>
+</div>
+<div class="io-box">
+<div class="label">OUTPUT</div>
+<pre>{
+  "<span class="hl">suggestedBid</span>": <span class="nm">1600</span>,
+  "<span class="hl">confidence</span>": <span class="nm">75</span>,
+  "<span class="hl">strategy</span>": { "type": "<span class="ok">moderate</span>",
+    "winProbability": <span class="nm">50</span> },
+  "<span class="hl">riskAssessment</span>": { "level": "<span class="ok">medium</span>" },
+  "<span class="hl">reasoning</span>": "5位竞拍者，已出价23次"
+}</pre>
+</div>
+</div>
+
+<h3 style="color:#333;margin:25px 0 15px;font-size:1.3rem">2. 商品描述 (GenerateDescriptionRequest)</h3>
+<div class="io-grid">
+<div class="io-box">
+<div class="label">INPUT</div>
+<pre>{
+  "<span class="hl">productName</span>": "<span class="ok">高端紫砂壶</span>",
+  "<span class="hl">productType</span>": "<span class="ok">茶具</span>",
+  "<span class="hl">features</span>": ["宜兴原矿","手工制作","名家监制"],
+  "<span class="hl">style</span>": "<span class="ok">professional</span>"
+}</pre>
+</div>
+<div class="io-box">
+<div class="label">OUTPUT (专业型)</div>
+<pre><span class="ok">本款紫砂壶选用宜兴原矿紫砂泥，
+由资深工匠全手工制作而成。</span>
+核心工艺: 宜兴黄龙山原矿 | 全手工成型
+1180℃高温烧制 | 省级大师监制
+适用: 普洱/铁观音/大红袍
+<span class="cc">// 字数: 350 | 评分: 95/100</span></pre>
+</div>
+</div>
+
+<h3 style="color:#333;margin:25px 0 15px;font-size:1.3rem">3. 直播话术 (LiveScriptRequest)</h3>
+<div class="io-grid">
+<div class="io-box">
+<div class="label">INPUT</div>
+<pre>{
+  "<span class="hl">productName</span>": "<span class="ok">限量版机械键盘</span>",
+  "<span class="hl">productFeatures</span>": ["Cherry轴","RGB","铝合金"],
+  "<span class="hl">auctionInfo</span>": { "startingPrice": <span class="nm">299</span>,
+    "currentPrice": <span class="nm">588</span>, "currentBidCount": <span class="nm">12</span> },
+  "<span class="hl">style</span>": "<span class="ok">enthusiastic</span>"
+}</pre>
+</div>
+<div class="io-box">
+<div class="label">OUTPUT (热情型)</div>
+<pre><span class="ok">【开场】</span> 家人们！限量版键盘来了！
+<span class="ok">【介绍】</span> Cherry轴+RGB+铝合金外壳！
+<span class="ok">【出价】</span> 起拍299！已有12次出价！
+<span class="ok">【紧迫】</span> 最后2分钟！手速要快！</pre>
+</div>
+</div>
+
+<h3 style="color:#333;margin:25px 0 15px;font-size:1.3rem">4. 定价建议 (SuggestPricingRequest)</h3>
+<div class="io-grid">
+<div class="io-box">
+<div class="label">INPUT</div>
+<pre>{
+  "<span class="hl">productName</span>": "<span class="ok">智能手表</span>",
+  "<span class="hl">productType</span>": "<span class="ok">电子产品</span>",
+  "<span class="hl">targetAudience</span>": "<span class="ok">年轻白领</span>"
+}</pre>
+</div>
+<div class="io-box">
+<div class="label">OUTPUT</div>
+<pre>{
+  "<span class="hl">suggestedStartingPrice</span>": <span class="nm">399</span>,
+  "<span class="hl">suggestedPriceIncrement</span>": <span class="nm">30</span>,
+  "<span class="hl">confidence</span>": <span class="nm">0.82</span>,
+  "<span class="hl">marketData</span>": {
+    "averagePrice": <span class="nm">899</span>,
+    "priceRange": [<span class="nm">599</span>, <span class="nm">1299</span>] }
+}</pre>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>人工评估方案 (Human Evaluation)</h2>
+
+<div class="eval-box">
+<h4>五维评估体系</h4>
+<table>
+<thead><tr><th>维度</th><th>权重</th><th>1分(差)</th><th>3分(中)</th><th>5分(优)</th></tr></thead>
+<tbody>
+<tr><td>准确性</td><td>30%</td><td>数据严重失真</td><td>基本准确</td><td>完全符合实际</td></tr>
+<tr><td>实用性</td><td>25%</td><td>无法使用</td><td>需少量修改</td><td>可直接使用</td></tr>
+<tr><td>流畅性</td><td>20%</td><td>语句不通</td><td>基本通顺</td><td>自然流畅</td></tr>
+<tr><td>相关性</td><td>15%</td><td>偏离主题</td><td>基本相关</td><td>高度聚焦</td></tr>
+<tr><td>创意性</td><td>10%</td><td>千篇一律</td><td>有新意</td><td>独特吸引</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="eval-box">
+<h4>评估流程</h4>
+<div class="eval-flow">
+<div class="flow-step">样本抽取<br><small>每类30个</small></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">专家标注<br><small>3人独立</small></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">一致性检验<br><small>Kappa≥0.7</small></div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">仲裁讨论</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">统计报告</div>
+</div>
+</div>
+
+<div class="eval-box">
+<h4>人工评分样例（5分制）</h4>
+<table>
+<thead><tr><th>样本</th><th>模块</th><th>准确性</th><th>实用性</th><th>流畅性</th><th>综合</th><th>等级</th></tr></thead>
+<tbody>
+<tr><td>S-001</td><td>出价建议</td><td>4.5</td><td>4.0</td><td>4.2</td><td>4.3</td><td><span class="grade s">S</span></td></tr>
+<tr><td>S-002</td><td>描述-专业</td><td>4.8</td><td>4.5</td><td>4.7</td><td>4.7</td><td><span class="grade s">S</span></td></tr>
+<tr><td>S-003</td><td>描述-活泼</td><td>4.2</td><td>4.3</td><td>4.8</td><td>4.4</td><td><span class="grade a">A</span></td></tr>
+<tr><td>S-004</td><td>话术-热情</td><td>4.2</td><td>4.6</td><td>4.8</td><td>4.5</td><td><span class="grade a">A</span></td></tr>
+<tr><td>S-005</td><td>话术-专业</td><td>4.5</td><td>4.4</td><td>4.3</td><td>4.4</td><td><span class="grade a">A</span></td></tr>
+<tr><td>S-006</td><td>趋势分析</td><td>3.8</td><td>4.0</td><td>4.0</td><td>3.9</td><td><span class="grade a">A</span></td></tr>
+<tr><td>S-007</td><td>定价建议</td><td>4.0</td><td>3.8</td><td>4.1</td><td>4.0</td><td><span class="grade a">A</span></td></tr>
+<tr><td>S-008</td><td>出价(冷启动)</td><td>3.2</td><td>3.5</td><td>3.8</td><td>3.5</td><td><span class="grade b">B</span></td></tr>
+</tbody>
+</table>
+<p style="color:#666;font-size:.85rem;margin-top:10px">等级: S≥4.5 | A≥4.0 | B≥3.5 | C<3.5</p>
+</div>
+</div>
+
+<div class="card">
+<h2>自动评估方案 (Auto Evaluation)</h2>
+
+<h3 style="color:#333;margin:20px 0 15px;font-size:1.3rem">性能指标</h3>
+<div class="metric-grid">
+<div class="metric-card"><div class="name">P50延迟</div><div class="val">0.8s</div><div class="bar"><div class="fill" style="width:90%"></div></div></div>
+<div class="metric-card"><div class="name">P95延迟</div><div class="val">1.2s</div><div class="bar"><div class="fill" style="width:85%"></div></div></div>
+<div class="metric-card"><div class="name">API成功率</div><div class="val">98.5%</div><div class="bar"><div class="fill" style="width:98%"></div></div></div>
+<div class="metric-card"><div class="name">缓存命中</div><div class="val">42%</div><div class="bar"><div class="fill" style="width:42%"></div></div></div>
+<div class="metric-card"><div class="name">Token/请求</div><div class="val">850</div><div class="bar"><div class="fill" style="width:75%"></div></div></div>
+<div class="metric-card"><div class="name">召回率</div><div class="val">91%</div><div class="bar"><div class="fill" style="width:91%"></div></div></div>
+</div>
+
+<h3 style="color:#333;margin:25px 0 15px;font-size:1.3rem">NLP自动评分</h3>
+<table>
+<thead><tr><th>模块</th><th>ROUGE-1</th><th>ROUGE-2</th><th>ROUGE-L</th><th>BLEU-4</th><th>语义相似度</th><th>JSON合法率</th></tr></thead>
+<tbody>
+<tr><td>出价建议</td><td><span class="ok">0.82</span></td><td>0.65</td><td>0.78</td><td>0.58</td><td><span class="ok">0.89</span></td><td><span class="ok">100%</span></td></tr>
+<tr><td>商品描述</td><td>0.75</td><td>0.52</td><td>0.71</td><td>0.45</td><td>0.85</td><td><span class="ok">100%</span></td></tr>
+<tr><td>直播话术</td><td>0.68</td><td>0.48</td><td>0.65</td><td>0.42</td><td>0.82</td><td><span class="ok">100%</span></td></tr>
+<tr><td>趋势分析</td><td><span class="ok">0.88</span></td><td><span class="ok">0.72</span></td><td><span class="ok">0.85</span></td><td><span class="ok">0.65</span></td><td><span class="ok">0.92</span></td><td><span class="ok">100%</span></td></tr>
+<tr><td>定价建议</td><td>0.79</td><td>0.58</td><td>0.75</td><td>0.52</td><td>0.87</td><td>96%</td></tr>
+</tbody>
+</table>
+
+<h3 style="color:#333;margin:25px 0 15px;font-size:1.3rem">各模块策略评分详情</h3>
+<table>
+<thead><tr><th>模块</th><th>风格/策略</th><th>准确率</th><th>召回率</th><th>F1</th><th>成功率</th><th>等级</th></tr></thead>
+<tbody>
+<tr><td rowspan="4">出价建议</td><td>conservative</td><td>0.91</td><td>0.88</td><td>0.89</td><td>99%</td><td><span class="grade s">S</span></td></tr>
+<tr><td>moderate</td><td>0.89</td><td>0.86</td><td>0.87</td><td>98%</td><td><span class="grade s">S</span></td></tr>
+<tr><td>aggressive</td><td>0.85</td><td>0.82</td><td>0.83</td><td>97%</td><td><span class="grade a">A</span></td></tr>
+<tr><td>snipe</td><td>0.82</td><td>0.78</td><td>0.80</td><td>98%</td><td><span class="grade a">A</span></td></tr>
+<tr><td rowspan="3">商品描述</td><td>professional</td><td><span class="ok">0.92</span></td><td><span class="ok">0.90</span></td><td><span class="ok">0.91</span></td><td>99%</td><td><span class="grade s">S</span></td></tr>
+<tr><td>lively</td><td>0.88</td><td>0.85</td><td>0.86</td><td>98%</td><td><span class="grade s">S</span></td></tr>
+<tr><td>luxury</td><td>0.85</td><td>0.82</td><td>0.83</td><td>97%</td><td><span class="grade a">A</span></td></tr>
+<tr><td rowspan="3">直播话术</td><td>enthusiastic</td><td>0.90</td><td>0.87</td><td>0.88</td><td>99%</td><td><span class="grade s">S</span></td></tr>
+<tr><td>professional</td><td>0.88</td><td>0.85</td><td>0.86</td><td>98%</td><td><span class="grade s">S</span></td></tr>
+<tr><td>friendly</td><td>0.86</td><td>0.83</td><td>0.84</td><td>98%</td><td><span class="grade a">A</span></td></tr>
+<tr><td>趋势分析</td><td>default</td><td><span class="ok">0.93</span></td><td><span class="ok">0.91</span></td><td><span class="ok">0.92</span></td><td><span class="ok">99%</span></td><td><span class="grade s">S</span></td></tr>
+<tr><td>定价建议</td><td>default</td><td>0.85</td><td>0.82</td><td>0.83</td><td>96%</td><td><span class="grade a">A</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<h2>评测流程图</h2>
+<div class="flow">
+<pre class="mermaid">
+graph LR
+    A[准备测试数据] --> B[执行自动化测试]
+    B --> C[收集响应结果]
+    C --> D[自动指标计算]
+    C --> E[人工抽样评估]
+    D --> F[生成评测报告]
+    E --> F
+    F --> G[优化建议]
+    style A fill:#667eea,color:#fff
+    style B fill:#764ba2,color:#fff
+    style D fill:#28a745,color:#fff
+    style E fill:#ffc107,color:#000
+    style F fill:#17a2b8,color:#fff
+    style G fill:#dc3545,color:#fff
+</pre>
+</div>
+
+<h3 style="color:#333;margin:25px 0 15px;font-size:1.3rem">AI服务处理流程</h3>
+<div class="flow">
+<pre class="mermaid">
+graph TD
+    A[AI请求输入] --> B{参数校验}
+    B -->|失败| C[返回错误]
+    B -->|通过| D{安全检查}
+    D -->|失败| C
+    D -->|通过| E{缓存命中?}
+    E -->|是| F[返回缓存]
+    E -->|否| G{限流检查}
+    G -->|超限| C
+    G -->|通过| H[调用火山方舟API]
+    H -->|成功| I[缓存+返回]
+    H -->|失败| J{可重试?}
+    J -->|是| K[指数退避重试]
+    K --> H
+    J -->|否| L[降级处理]
+    L --> M[模板兜底返回]
+    style A fill:#667eea,color:#fff
+    style B fill:#ffc107,color:#000
+    style D fill:#dc3545,color:#fff
+    style E fill:#17a2b8,color:#fff
+    style G fill:#fd7e14,color:#fff
+    style H fill:#28a745,color:#fff
+    style L fill:#6f42c1,color:#fff
+    style M fill:#20c997,color:#fff
+</pre>
+</div>
+</div>
+
+<footer>文档版本：v1.0 | 生成日期：2026-06-08 | 基于 e-commerceAI 项目代码分析</footer>
+</div>
+<script>mermaid.initialize({startOnLoad:true,theme:'default',flowchart:{useMaxWidth:true,htmlLabels:true,curve:'basis'}})</script>
+</body>
+</html>
