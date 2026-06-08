@@ -1,4 +1,5 @@
 import { favoriteService } from '../../services/favorite.service'
+import { proxyAvatarUrl } from '../../utils/util'
 
 interface MerchantFavorite {
   id: number
@@ -35,7 +36,10 @@ Page({
     try {
       const result = await favoriteService.getFavorites(1, 50)
       const data = result?.data || result
-      const favorites = data?.favorites || []
+      const favorites = (data?.favorites || []).map((f: any) => ({
+        ...f,
+        merchantAvatar: proxyAvatarUrl(f.merchantAvatar || f.merchant_avatar || ''),
+      }))
 
       this.setData({
         favorites,

@@ -3,6 +3,7 @@ const app = getApp<IAppOption>()
 import { authService } from '../../services/auth.service'
 import { request } from '../../utils/request'
 import { validator } from '../../utils/validator'
+import { proxyAvatarUrl } from '../../utils/util'
 
 Page({
   data: {
@@ -49,7 +50,7 @@ Page({
       
       if (data) {
         const userInfo = {
-          avatarUrl: data.avatarUrl || data.avatar || '',
+          avatarUrl: proxyAvatarUrl(data.avatarUrl || data.avatar || ''),
           nickname: data.nickname || data.username || '',
           phone: data.phone || '',
           email: data.email || '',

@@ -2,6 +2,7 @@
 import { auctionService } from '../../services/auction.service'
 import { authService } from '../../services/auth.service'
 import { getSocket } from '../../utils/socket'
+import { proxyAvatarUrl } from '../../utils/util'
 
 interface AuctionDetail {
   id: string
@@ -303,7 +304,7 @@ Component({
             'auction.merchantInfo': {
               id: String(merchant.id),
               username: merchant.username || '未知商家',
-              avatar: merchant.avatar || '',
+              avatar: proxyAvatarUrl(merchant.avatar || ''),
             }
           })
         }

@@ -9,6 +9,7 @@
 
 import { authService } from '../../services/auth.service'
 import { checkNetwork } from '../../utils/network'
+import { proxyAvatarUrl } from '../../utils/util'
 
 interface MerchantInfo {
   id: string
@@ -78,7 +79,7 @@ Page({
       const formattedMerchants: MerchantInfo[] = (merchants || []).map((m: any) => ({
         id: String(m.id),
         username: m.username || '未知商家',
-        avatar: m.avatar || '',
+        avatar: proxyAvatarUrl(m.avatar || ''),
         role: m.role || 'merchant',
         createdAt: m.created_at || m.createdAt || '',
         productCount: m.product_count || m.productCount || 0,
@@ -147,6 +148,15 @@ Page({
     
     wx.navigateTo({
       url: `/pages/live/live-room?merchantId=${merchantId}`,
+    })
+  },
+
+  /** 商家头像加载失败处理 */
+  onMerchantAvatarError(e: WechatMiniprogram.TouchEvent) {
+    const index = e.currentTarget.dataset.index
+    const key = `filteredMerchants[${index}].avatar`
+    this.setData({
+      [key]: '/assets/icons/default-avatar.png'
     })
   },
 

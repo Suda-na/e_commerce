@@ -70,6 +70,8 @@
             src="{{item.avatar || '/assets/icons/default-avatar.png'}}"
             mode="aspectFill"
             lazy-load
+            binderror="onMerchantAvatarError"
+            data-index="{{index}}"
           />
           <view class="live-indicator">
             <view class="live-dot" />

@@ -56,8 +56,8 @@
           <text class="anchor-name">{{merchantInfo.username || '商家'}}</text>
           <!-- 观看人数 -->
           <view class="viewer-count">
-            <text class="viewer-icon">👥</text>
-            <text class="viewer-num">{{onlineCountText}}人观看</text>
+            <view class="viewer-dot" />
+            <text class="viewer-num">{{onlineCountText}}</text>
           </view>
         </view>
       </view>

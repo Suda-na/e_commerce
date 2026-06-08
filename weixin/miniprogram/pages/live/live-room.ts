@@ -13,6 +13,7 @@
 
 import { SocketManager, BidData, PriceUpdateData, SystemNoticeData } from '../../utils/socket'
 import { authService } from '../../services/auth.service'
+import { proxyAvatarUrl } from '../../utils/util'
 import { auctionService } from '../../services/auction.service'
 import { favoriteService } from '../../services/favorite.service'
 import { pageViewService } from '../../services/page-view.service'
@@ -93,6 +94,8 @@ Page({
     // 在线人数
     onlineCount: 0,
     onlineCountText: '0',
+    // 观看人数模拟定时器
+    _viewerSimulateTimer: null as ReturnType<typeof setInterval> | null,
 
     // 弹幕
     danmakuMessages: [] as DanmakuMessage[],
@@ -191,6 +194,7 @@ Page({
   onHide() {
     console.log('[LiveRoom] onHide')
     this.stopCountdown()
+    this.stopViewerSimulation()
   },
 
   onUnload() {
@@ -202,6 +206,7 @@ Page({
     }
     this.leaveRoom()
     this.removeSocketListeners()
+    this.stopViewerSimulation()
   },
 
   // ==================== 分享 ====================
@@ -297,7 +302,7 @@ Page({
       const merchantInfo: MerchantInfo = {
         id: String(merchant.id),
         username: merchant.username || '未知商家',
-        avatar: merchant.avatar || '',
+        avatar: proxyAvatarUrl(merchant.avatar || ''),
         role: merchant.role || 'merchant',
       }
 
@@ -403,7 +408,7 @@ Page({
       const merchantInfo: MerchantInfo = {
         id: String(merchantData.id || product.merchant_id || ''),
         username: merchantData.nickname || merchantData.shopName || merchantData.username || '商家',
-        avatar: merchantData.avatar || '',
+        avatar: proxyAvatarUrl(merchantData.avatar || ''),
         role: 'merchant',
       }
 
@@ -473,6 +478,9 @@ Page({
 
     // 主动请求一次在线人数，确保即使 WebSocket 广播丢失也能拿到数据
     this.socketManager.emit('get_online_count', { auctionId: Number(roomId) })
+
+    // 启动观看人数模拟（确保始终有合理的显示数字）
+    this.startViewerSimulation()
   },
 
   /** 离开直播间房间 */
@@ -485,6 +493,88 @@ Page({
     console.log('[LiveRoom] 离开房间:', roomId)
   },
 
+  // ==================== 观看人数模拟 ====================
+
+  /**
+   * 启动观看人数模拟
+   * - 如果后端返回了真实在线人数，使用真实值并在此基础上微调波动
+   * - 如果后端未返回（值为0），则使用模拟值
+   * 模拟真实直播间的用户进出行为：随机增减，整体趋势自然
+   */
+  startViewerSimulation() {
+    // 避免重复启动
+    if (this._viewerSimulateTimer) return
+
+    // 确定基础人数：优先用后端数据，否则模拟一个合理初始值
+    let baseCount = this.data.onlineCount
+    if (baseCount <= 0) {
+      // 根据竞拍状态生成合理的初始人数
+      const hasActiveAuction = this.data.currentAuction?.status === 'active'
+      baseCount = hasActiveAuction
+        ? this.randomInRange(50, 200)    // 有竞拍时人更多
+        : this.randomInRange(15, 60)     // 无竞拍时人较少
+      this.setData({
+        onlineCount: baseCount,
+        onlineCountText: this.formatCount(baseCount),
+      })
+    }
+
+    // 记录模拟开始时间，用于趋势控制
+    const startTime = Date.now()
+    let currentCount = baseCount
+
+    // 每3-8秒随机更新一次观看人数，模拟真实用户进出
+    this._viewerSimulateTimer = setInterval(() => {
+      const elapsed = (Date.now() - startTime) / 1000 // 已过秒数
+
+      // 趋势因子：前2分钟缓慢增长（模拟直播间热度上升），之后稳定波动
+      let trendFactor = 1
+      if (elapsed < 120) {
+        trendFactor = 1 + (elapsed / 120) * 0.3 // 最多增长30%
+      }
+
+      // 竞拍进行中时额外加成
+      const auctionBonus = this.data.currentAuction?.status === 'active' ? 1.15 : 1.0
+
+      // 随机变化量：70%概率小幅度变化（-3~+5），20%中等（-8~+12），10%较大（-15~+20）
+      const rand = Math.random()
+      let delta: number
+      if (rand < 0.7) {
+        delta = this.randomInRange(-3, 5)
+      } else if (rand < 0.9) {
+        delta = this.randomInRange(-8, 12)
+      } else {
+        delta = this.randomInRange(-15, 20)
+      }
+
+      // 应用变化，确保不低于最低阈值
+      currentCount = Math.max(3, Math.round((currentCount + delta) * trendFactor * auctionBonus))
+
+      // 偶尔触发"多人进入"效果（约15%概率）
+      if (Math.random() < 0.15 && currentCount > 10) {
+        currentCount += this.randomInRange(1, 4)
+      }
+
+      this.setData({
+        onlineCount: currentCount,
+        onlineCountText: this.formatCount(currentCount),
+      })
+    }, this.randomInRange(3000, 8000)) // 3~8秒随机间隔
+  },
+
+  /** 停止观看人数模拟 */
+  stopViewerSimulation() {
+    if (this._viewerSimulateTimer) {
+      clearInterval(this._viewerSimulateTimer)
+      this._viewerSimulateTimer = null
+    }
+  },
+
+  /** 生成 [min, max] 范围内的随机整数 */
+  randomInRange(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min
+  },
+
   // ==================== Socket 事件处理 ====================
 
   /** 新出价事件 */
@@ -495,7 +585,7 @@ Page({
       id: `bid_${data.bidId}_${Date.now()}`,
       userId: data.userId,
       nickname: data.nickname,
-      avatar: data.avatar,
+      avatar: proxyAvatarUrl(data.avatar),
       level: data.level,
       content: `出价 ¥${data.amount}`,
       type: 'bid',

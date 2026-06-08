@@ -12,8 +12,8 @@ App<IAppOption>({
     userInfo: null,
     isLoggedIn: false,
     token: '',
-    baseUrl: 'http://127.0.0.1:3001/api', // 开发环境API地址（与request.ts保持一致）
-    socketUrl: 'ws://127.0.0.1:3001', // 开发环境WebSocket地址
+    baseUrl: 'https://www.sudaworld.xyz/api', // API地址
+    socketUrl: 'wss://www.sudaworld.xyz', // WebSocket地址
     systemInfo: null,
     unreadCount: 0, // 全局未读消息数
     _unreadPollingTimer: null as any, // 未读消息轮询定时器
@@ -139,7 +139,7 @@ App<IAppOption>({
       wx.setStorageSync(ERROR_LOG_KEY, errorLogs)
 
       // 开发环境下在控制台显示详细信息
-      if (this.globalData.baseUrl.includes('localhost')) {
+      if (this.globalData.baseUrl.includes('localhost') || this.globalData.baseUrl.includes('127.0.0.1')) {
         console.group('[ErrorReport] 错误详情')
         console.log('类型:', errorInfo.type)
         console.log('消息:', errorInfo.message)

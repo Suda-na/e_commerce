@@ -182,6 +182,15 @@ router.post('/avatar',
 );
 
 /**
+ * @route GET /api/auth/avatar-proxy
+ * @desc 头像代理（解决小程序白名单限制）
+ * @access Public
+ */
+router.get('/avatar-proxy',
+  asyncHandler(authController.avatarProxy)
+);
+
+/**
  * @route GET /api/auth/merchants
  * @desc 获取所有商家用户
  * @access Public

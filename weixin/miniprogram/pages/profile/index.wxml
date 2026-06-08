@@ -6,16 +6,12 @@
     <view class="user-card-header">
       <!-- 头像 -->
       <view class="avatar-wrapper">
-        <image 
-          wx:if="{{userInfo.avatarUrl}}" 
-          class="avatar" 
-          src="{{userInfo.avatarUrl}}" 
+        <image
+          class="avatar"
+          src="{{userInfo.avatarUrl ? userInfo.avatarUrl : '/assets/icons/default-avatar.png'}}"
           mode="aspectFill"
-          lazy-load
+          binderror="onAvatarError"
         />
-        <view wx:else class="avatar">
-          <text class="avatar-icon">👤</text>
-        </view>
       </view>
       
       <!-- 用户信息 -->

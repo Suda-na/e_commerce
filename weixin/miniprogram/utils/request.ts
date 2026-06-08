@@ -22,19 +22,19 @@ interface RequestConfig {
 
 /** 开发环境配置 */
 const DEV_CONFIG: RequestConfig = {
-  baseURL: 'http://127.0.0.1:3001/api',
+  baseURL: 'https://www.sudaworld.xyz/api',
   timeout: 15000,
 };
 
 /** 生产环境配置 */
 const PROD_CONFIG: RequestConfig = {
-  baseURL: 'https://your-production-domain.com/api',
+  baseURL: 'https://www.sudaworld.xyz/api',
   timeout: 15000,
 };
 
 /** 体验版配置 */
 const TRIAL_CONFIG: RequestConfig = {
-  baseURL: 'https://your-trial-domain.com/api',
+  baseURL: 'https://www.sudaworld.xyz/api',
   timeout: 15000,
 };
 

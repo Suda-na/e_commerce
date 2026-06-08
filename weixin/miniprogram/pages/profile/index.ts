@@ -5,6 +5,7 @@ import { notificationApiService } from '../../services/notification-api.service'
 import { storage, STORAGE_KEYS } from '../../utils/storage'
 import { getSocket } from '../../utils/socket'
 import { eventBus, EVENTS } from '../../utils/event-bus'
+import { proxyAvatarUrl } from '../../utils/util'
 
 Page({
   data: {
@@ -77,7 +78,7 @@ Page({
     this.setData({
       isLoggedIn,
       userInfo: {
-        avatarUrl: userInfo.avatarUrl || userInfo.avatar || '',
+        avatarUrl: proxyAvatarUrl(userInfo.avatarUrl || userInfo.avatar || ''),
         nickname: userInfo.nickname || userInfo.username || '',
         id: userInfo.id || userInfo._id || '',
         phone: userInfo.phone || '',
@@ -231,8 +232,10 @@ Page({
       // 需要提取 data.data 获取实际用户信息
       const data = res?.data || res || null
       if (data) {
+        // 通过后端代理加载外部头像，解决小程序白名单限制
+        const rawAvatarUrl = data.avatarUrl || data.avatar || ''
         const userInfo = {
-          avatarUrl: data.avatarUrl || data.avatar || '',
+          avatarUrl: proxyAvatarUrl(rawAvatarUrl),
           nickname: data.nickname || data.username || '',
           id: data.id || data._id || '',
           phone: data.phone || '',
@@ -289,6 +292,14 @@ Page({
   onLoginTap() {
     wx.navigateTo({
       url: '/pages/login/login',
+    })
+  },
+
+  onAvatarError() {
+    // 头像加载失败时显示默认头像
+    console.log('[Profile] 头像加载失败，切换到本地默认头像')
+    this.setData({
+      'userInfo.avatarUrl': '/assets/icons/default-avatar.png'
     })
   },
 

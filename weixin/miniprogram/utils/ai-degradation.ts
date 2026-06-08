@@ -110,7 +110,7 @@ class AIDegradationManager {
   private async checkAllModules(): Promise<void> {
     try {
       // 安全获取app实例
-      let baseUrl = 'http://localhost:3001/api' // 默认值
+      let baseUrl = 'https://www.sudaworld.xyz/api' // 默认值
       try {
         const app = getApp<IAppOption>()
         if (app && app.globalData) {

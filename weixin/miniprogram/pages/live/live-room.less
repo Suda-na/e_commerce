@@ -152,18 +152,41 @@
 .viewer-count {
   display: flex;
   align-items: center;
-  gap: 4rpx;
+  gap: 6rpx;
   margin-left: @spacing-xs;
+  padding: 4rpx 14rpx 4rpx 8rpx;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 20rpx;
+  backdrop-filter: blur(8rpx);
+  -webkit-backdrop-filter: blur(8rpx);
 }
 
-.viewer-icon {
-  font-size: 22rpx;
+.viewer-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background-color: #ff4d4f;
+  box-shadow: 0 0 8rpx rgba(255, 77, 79, 0.8);
+  animation: viewerDotPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes viewerDotPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
 }
 
 .viewer-num {
   font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: @font-weight-medium;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.5rpx;
+  font-family: 'DIN Alternate', 'Roboto Condensed', Arial, sans-serif;
 }
 
 /* 右侧操作区 */

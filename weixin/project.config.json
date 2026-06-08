@@ -39,7 +39,7 @@
       "less"
     ],
     "skylineRenderEnable": true,
-    "ignoreUploadUnusedFiles": true,
+    "ignoreUploadUnusedFiles": false,
     "compileWorklet": false,
     "localPlugins": false,
     "condition": false,

@@ -710,6 +710,31 @@ export const buildUrlParams = (params: Record<string, any>): string => {
     .join('&');
 };
 
+// ==================== 头像代理 ====================
+
+const AVATAR_PROXY_BASE = 'https://www.sudaworld.xyz/api/auth/avatar-proxy'
+
+/**
+ * 将外部头像URL转为后端代理URL，解决小程序白名单限制
+ * - 外部域名（dicebear、boltp等）不在白名单内，小程序无法直接加载
+ * - 通过后端代理接口转发，所有头像请求走 sudaworld.xyz
+ * @param url 原始头像URL
+ * @returns 可在小程序中加载的代理URL，或原始URL（本地路径/已代理URL）
+ */
+export const proxyAvatarUrl = (url: string | undefined | null): string => {
+  if (!url) return '/assets/icons/default-avatar.png'
+  // 本地路径直接返回
+  if (url.startsWith('/') || url.startsWith('wxfile://') || url.startsWith('http://tmp/')) {
+    return url
+  }
+  // 已经是代理URL或本域名的直接返回
+  if (url.includes('/auth/avatar-proxy') || url.includes('sudaworld.xyz')) {
+    return url
+  }
+  // 外部URL走代理
+  return `${AVATAR_PROXY_BASE}?url=${encodeURIComponent(url)}`
+}
+
 // ==================== 默认导出 ====================
 
 export default {
@@ -775,4 +800,5 @@ export default {
   generateOrderNo,
   parseUrlParams,
   buildUrlParams,
+  proxyAvatarUrl,
 };

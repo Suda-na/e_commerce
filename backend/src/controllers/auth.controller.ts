@@ -235,6 +235,59 @@ export const authController = {
   },
 
   /**
+   * 头像代理：通过后端转发外部头像图片，解决小程序白名单限制
+   * GET /api/auth/avatar-proxy?url=xxx
+   */
+  async avatarProxy(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const targetUrl = req.query.url as string;
+      if (!targetUrl) {
+        res.status(400).json({ success: false, message: '缺少 url 参数' });
+        return;
+      }
+
+      // 只允许代理头像相关域名
+      const allowedHosts = [
+        'api.dicebear.com',
+        'cdn.boltp.com',
+        'boltp.com',
+        'www.boltp.com',
+      ];
+      let parsedUrl: URL;
+      try {
+        parsedUrl = new URL(targetUrl);
+      } catch {
+        res.status(400).json({ success: false, message: '无效的 URL' });
+        return;
+      }
+
+      if (!allowedHosts.some(host => parsedUrl.hostname === host || parsedUrl.hostname.endsWith('.' + host))) {
+        res.status(403).json({ success: false, message: '不允许代理该域名' });
+        return;
+      }
+
+      const axios = (await import('axios')).default;
+      const response = await axios.get(targetUrl, {
+        responseType: 'arraybuffer',
+        timeout: 10000,
+        headers: {
+          'User-Agent': 'Mozilla/5.0',
+        },
+      });
+
+      const contentType = String(response.headers['content-type'] || 'image/png');
+      res.setHeader('Content-Type', contentType);
+      res.setHeader('Cache-Control', 'public, max-age=86400'); // 缓存1天
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.send(response.data);
+    } catch (error: any) {
+      logger.error(`Avatar proxy error: ${error.message}`);
+      // 代理失败时返回默认头像重定向
+      res.redirect('/assets/icons/default-avatar.png');
+    }
+  },
+
+  /**
    * 获取所有商家用户
    */
   async getMerchants(req: Request, res: Response, next: NextFunction): Promise<void> {

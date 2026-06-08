@@ -72,8 +72,8 @@
 
 ### 演示地址
 
-- **商家Web端**：http://localhost:3001（本地运行）
-- **后端API**：http://localhost:3000（本地运行）
+- **商家Web端**：[React App (sudaworld.xyz)](https://www.sudaworld.xyz/login)
+- **后端API**：[sudaworld.xyz/api/](https://www.sudaworld.xyz/api/)
 - **微信小程序**：使用微信开发者工具导入 `weixin/` 目录
 
 ### 核心截图
