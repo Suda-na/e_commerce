@@ -601,14 +601,9 @@ const OrdersPage: React.FC = () => {
           currentOrder ? (
             <Space>
               {currentOrder.status === 'pending' && (
-                <>
-                  <Button danger onClick={() => { handleCancelOrder(currentOrder.id); setDetailVisible(false); }}>
-                    取消订单
-                  </Button>
-                  <Button type="primary" onClick={() => { handlePayOrder(currentOrder.id); setDetailVisible(false); }}>
-                    模拟支付
-                  </Button>
-                </>
+                <Button danger onClick={() => { handleCancelOrder(currentOrder.id); setDetailVisible(false); }}>
+                  取消订单
+                </Button>
               )}
               {currentOrder.status === 'paid' && (
                 <Button type="primary" icon={<SendOutlined />} onClick={() => { setDetailVisible(false); handleOpenShipModal(currentOrder.id); }}>
