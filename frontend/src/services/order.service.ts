@@ -83,12 +83,16 @@ class OrderService {
 
   async payOrder(id: number): Promise<Order> {
     const response = await api.post<ApiResponse<any>>(`/orders/${id}/pay`);
-    return this.toCamelCase(response.data.data!);
+    const data = response.data.data!;
+    // 后端返回 OrderPayResultDto，order 字段包含订单数据
+    return this.toCamelCase(data.order || data);
   }
 
   async cancelOrder(id: number): Promise<Order> {
     const response = await api.post<ApiResponse<any>>(`/orders/${id}/cancel`);
-    return this.toCamelCase(response.data.data!);
+    const data = response.data.data!;
+    // 后端返回 OrderCancelResultDto，order 字段包含订单数据
+    return this.toCamelCase(data.order || data);
   }
 
   async shipOrder(id: number, data: { trackingNumber: string; shippingCompany: string; remark?: string }): Promise<Order> {
