@@ -1135,8 +1135,8 @@ Component({
         auctionResult: auctionResult
       })
       
-      // 如果是中标，振动反馈
-      if (result.winnerId === myUserId) {
+      // 如果是中标，振动反馈（统一转字符串比较，避免 number vs string 类型不匹配）
+      if (String(result.winnerId) === String(myUserId)) {
         wx.vibrateShort({ type: 'medium' })
       }
     },

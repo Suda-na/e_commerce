@@ -108,11 +108,12 @@ export class RedisLua {
       if capPriceVal > 0 and amount >= capPriceVal then
         isCompleted = 1
       end
-      
-      -- 检查是否需要延时（仅在endTime有效时检查）
+
+      -- 检查是否需要延时（仅在endTime有效且未达到封顶价时检查）
+      -- 达到封顶价时竞拍立即结束，不再延时
       local isExtended = 0
       local newEndTime = endTime
-      if endTime > 0 then
+      if isCompleted == 0 and endTime > 0 then
         local timeLeft = math.floor((endTime - currentTime) / 1000)
         if timeLeft <= delayTimeVal then
           -- 延长delayTime秒：在原结束时间上叠加延时时长

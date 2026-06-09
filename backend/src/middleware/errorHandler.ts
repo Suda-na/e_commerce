@@ -135,6 +135,19 @@ export const errorHandler = (
     message = 'Related resource not found';
     isOperational = true;
   }
+  // 处理数据库连接超时
+  else if (err.name === 'SequelizeConnectionAcquireTimeoutError') {
+    statusCode = 503;
+    code = 'DATABASE_BUSY';
+    message = '服务器繁忙，请稍后重试';
+    isOperational = true;
+  }
+  else if (err.name === 'SequelizeConnectionError' || err.name === 'SequelizeConnectionRefusedError') {
+    statusCode = 503;
+    code = 'DATABASE_UNAVAILABLE';
+    message = '数据库服务暂时不可用，请稍后重试';
+    isOperational = true;
+  }
   // 处理语法错误
   else if (err instanceof SyntaxError && 'body' in err) {
     statusCode = 400;

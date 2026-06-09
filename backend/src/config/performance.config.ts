@@ -98,11 +98,11 @@ export const performanceConfig = {
   database: {
     // 连接池配置
     pool: {
-      max: 20, // 最大连接数
-      min: 5, // 最小连接数
-      acquire: 30000, // 获取连接超时（毫秒）
-      idle: 10000, // 空闲连接超时（毫秒）
-      evict: 1000, // 连接回收检查间隔（毫秒）
+      max: 50, // 最大连接数（从20提升到50）
+      min: 10, // 最小连接数（从5提升到10）
+      acquire: 60000, // 获取连接超时（毫秒）（从30s提升到60s）
+      idle: 30000, // 空闲连接超时（毫秒）（从10s提升到30s）
+      evict: 5000, // 连接回收检查间隔（毫秒）（从1s提升到5s）
       handleDisconnects: true,
     },
     // 读写分离配置

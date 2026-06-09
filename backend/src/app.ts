@@ -339,11 +339,23 @@ function stopMemoryGuard(): void {
 
 process.on('uncaughtException', (error) => {
   logger.error('Uncaught Exception:', error);
+  // 对于数据库连接超时类错误，不要立即退出，让连接池自我恢复
+  if (error.message && error.message.includes('ConnectionAcquireTimeout')) {
+    logger.warn('Database connection pool timeout detected, allowing pool recovery...');
+    return; // 不退出进程，让连接池自行恢复
+  }
+  // 其他严重错误仍然退出
   process.exit(1);
 });
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason: any, promise) => {
   logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // 对于数据库连接超时类错误，不要立即退出
+  if (reason?.message && reason.message.includes('ConnectionAcquireTimeout')) {
+    logger.warn('Database connection pool timeout in unhandled rejection, allowing pool recovery...');
+    return;
+  }
+  // 其他严重错误仍然退出
   process.exit(1);
 });
 

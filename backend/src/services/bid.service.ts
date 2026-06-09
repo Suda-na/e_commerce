@@ -414,6 +414,7 @@ export class BidService {
           status: 'completed',
           winner_id: winnerId,
           current_price: finalPrice,
+          end_time: new Date(),
         }, { transaction });
 
         await auction.product.update({

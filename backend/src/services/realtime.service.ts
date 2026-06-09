@@ -85,11 +85,23 @@ export class RealtimeService {
 
               await auctionService.completeAuction(auctionId);
 
+              // 获取获胜者昵称
+              let winnerNickname = '';
+              try {
+                const leaderboard = await bidService.getLeaderboard(auctionId, 1);
+                const winnerId = auction.winner_id || 0;
+                const winnerEntry = leaderboard.find((entry: any) => entry.user_id === winnerId);
+                winnerNickname = winnerEntry?.username || '';
+              } catch (e) {
+                logger.warn(`Failed to get winner nickname for auction ${auctionId}:`, e);
+              }
+
               // 广播竞拍结束事件
               await this.broadcastAuctionEnded(
                 auctionId,
                 auction.winner_id || 0,
-                auction.current_price || 0
+                auction.current_price || 0,
+                winnerNickname
               );
 
               logger.info(`Auction ${auctionId} auto-completed by scheduler`);
@@ -271,12 +283,13 @@ export class RealtimeService {
   /**
    * 广播竞拍结束
    */
-  async broadcastAuctionEnded(auctionId: number, winnerId: number, finalPrice: number): Promise<void> {
+  async broadcastAuctionEnded(auctionId: number, winnerId: number, finalPrice: number, winnerNickname?: string): Promise<void> {
     const roomName = `auction:${auctionId}`;
     
     this.io.to(roomName).emit('auction_ended', {
       auctionId,
       winnerId,
+      winnerNickname: winnerNickname || '',
       finalPrice,
       timestamp: new Date(),
     });

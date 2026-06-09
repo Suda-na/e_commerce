@@ -531,9 +531,15 @@ const ProductsPage: React.FC = () => {
   };
 
   const handleUseAIDescription = () => {
-    form.setFieldValue('description', aiResult);
+    // 先保存当前 AI 结果，避免闭包问题
+    const descriptionToApply = aiResult;
+    // 先关闭 AI 弹窗
     setAiModalVisible(false);
-    message.success('已应用 AI 生成的描述');
+    // 延迟设置表单值，确保弹窗关闭完成后再更新表单
+    setTimeout(() => {
+      form.setFieldsValue({ description: descriptionToApply });
+      message.success('已应用 AI 生成的描述');
+    }, 50);
   };
 
   const handleAIPricing = async () => {

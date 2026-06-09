@@ -12,7 +12,31 @@ export const sequelize = new Sequelize(
     port: config.database.port,
     dialect: config.database.dialect,
     logging: config.database.logging ? (msg) => logger.debug(msg) : false,
-    pool: config.database.pool,
+    pool: {
+      max: config.database.pool.max,
+      min: config.database.pool.min,
+      acquire: config.database.pool.acquire,
+      idle: config.database.pool.idle,
+      evict: 5000, // 每5秒检查并回收失效连接
+    },
+    retry: {
+      max: 3, // 最大重试次数
+      match: [
+        /ETIMEDOUT/,
+        /EHOSTUNREACH/,
+        /ECONNRESET/,
+        /ECONNREFUSED/,
+        /SequelizeConnectionAcquireTimeoutError/,
+        /SequelizeConnectionError/,
+        /PROTOCOL_CONNECTION_LOST/,
+      ],
+    },
+    dialectOptions: {
+      connectTimeout: 60000, // TCP连接超时60秒
+      // 启用keepalive防止MySQL主动断开连接
+      keepAlive: true,
+      keepAliveInitialDelay: 10000,
+    },
     define: {
       timestamps: true,
       underscored: true,

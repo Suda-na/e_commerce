@@ -369,9 +369,14 @@ export class SocketService {
             );
           }
 
+          // 从排行榜数据中获取获胜者昵称
+          const winnerEntry = leaderboardData.find((entry: any) => entry.user_id === result.winnerId);
+          const winnerNickname = winnerEntry?.username || '';
+
           broadcastPromises.push(
             this.notificationService.notifyAuctionEnded(auctionId, {
               winnerId: result.winnerId!,
+              winnerNickname,
               finalPrice: result.currentPrice!,
               totalBids: 0,
               endTime: new Date(),
@@ -704,11 +709,12 @@ export class SocketService {
   /**
    * 广播竞拍结束
    */
-  async broadcastAuctionEnded(auctionId: number, winnerId: number, finalPrice: number): Promise<void> {
+  async broadcastAuctionEnded(auctionId: number, winnerId: number, finalPrice: number, winnerNickname?: string): Promise<void> {
     const roomName = `auction:${auctionId}`;
     this.io.to(roomName).emit('auction_ended', {
       auctionId,
       winnerId,
+      winnerNickname: winnerNickname || '',
       finalPrice,
       timestamp: new Date(),
     });

@@ -62,8 +62,8 @@ Component({
     'result': function(result: AuctionResult) {
       if (!result || !result.auctionId) return
       
-      // 判断结果类型
-      const isWon = result.winnerId === result.myUserId
+      // 判断结果类型（统一转为字符串比较，避免 number vs string 类型不匹配）
+      const isWon = String(result.winnerId) === String(result.myUserId)
       const resultType: ResultType = isWon ? 'won' : 'lost'
       
       this.setData({ resultType })

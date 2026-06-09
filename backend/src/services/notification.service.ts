@@ -53,6 +53,7 @@ export class NotificationService {
    */
   async notifyAuctionEnded(auctionId: number, result: {
     winnerId: number;
+    winnerNickname?: string;
     finalPrice: number;
     totalBids: number;
     endTime: Date;

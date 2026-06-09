@@ -20,10 +20,10 @@ export const config = {
     dialect: 'mysql' as const,
     logging: process.env.NODE_ENV === 'development',
     pool: {
-      max: parseInt(process.env.DB_POOL_MAX || '20', 10),
-      min: parseInt(process.env.DB_POOL_MIN || '5', 10),
-      acquire: parseInt(process.env.DB_POOL_ACQUIRE || '30000', 10),
-      idle: parseInt(process.env.DB_POOL_IDLE || '10000', 10),
+      max: parseInt(process.env.DB_POOL_MAX || '50', 10),
+      min: parseInt(process.env.DB_POOL_MIN || '10', 10),
+      acquire: parseInt(process.env.DB_POOL_ACQUIRE || '60000', 10),
+      idle: parseInt(process.env.DB_POOL_IDLE || '30000', 10),
     },
   },
 
