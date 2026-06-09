@@ -85,7 +85,7 @@ export const orderController = {
         throw new ValidationError('无效的订单ID');
       }
 
-      const result = await orderService.payOrder(orderId, req.user.userId, req.body?.shipping_address);
+      const result = await orderService.payOrder(orderId, req.user.userId, req.body?.shipping_address, req.user.role);
 
       logger.info(`Order paid by user ${req.user.userId}: ${orderId}`);
 
@@ -109,7 +109,7 @@ export const orderController = {
         throw new ValidationError('无效的订单ID');
       }
 
-      const result = await orderService.cancelOrder(orderId, req.user.userId);
+      const result = await orderService.cancelOrder(orderId, req.user.userId, req.user.role);
 
       logger.info(`Order cancelled by user ${req.user.userId}: ${orderId}`);
 
