@@ -621,7 +621,9 @@ const OrdersPage: React.FC = () => {
                     同意退款
                   </Button>
                   <Button icon={<CloseCircleOutlined />} onClick={() => { setDetailVisible(false); handleOpenRefundModal(currentOrder.id, 'reject'); }}>
-                
+                    拒绝退款
+                  </Button>
+                </>
               <Button icon={<EditOutlined />} onClick={() => { setDetailVisible(false); handleOpenRemarkModal(currentOrder); }}>
                 备注
               </Button>
