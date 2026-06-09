@@ -193,9 +193,9 @@ export class OrderService {
   /**
    * 模拟支付订单
    */
-  async payOrder(orderId: number, userId: number, shippingAddress?: string): Promise<OrderPayResultDto> {
+  async payOrder(orderId: number, userId: number, shippingAddress?: string, userRole?: string): Promise<OrderPayResultDto> {
     const transaction = await sequelize.transaction();
-    
+
     try {
       const order = await Order.findByPk(orderId, {
         include: [
@@ -220,7 +220,10 @@ export class OrderService {
         throw new NotFoundError('订单不存在');
       }
 
-      if (order.user_id !== userId) {
+      // 买家只能支付自己的订单，商家只能支付自己商品的订单
+      const isBuyer = order.user_id === userId;
+      const isMerchant = userRole === 'merchant' && order.merchant_id === userId;
+      if (!isBuyer && !isMerchant) {
         throw new AuthorizationError('只能支付自己的订单');
       }
 
@@ -228,8 +231,9 @@ export class OrderService {
         throw new ValidationError(`订单状态为${order.status}，无法支付`);
       }
 
-      // 获取用户收货地址
-      const user = await User.findByPk(userId, {
+      // 获取买家收货地址（无论操作者是买家还是商家，都使用买家的地址）
+      const buyerId = order.user_id;
+      const user = await User.findByPk(buyerId, {
         attributes: ['id', 'receiver_name', 'receiver_phone', 'province', 'city', 'district', 'detail_address'],
         transaction,
       });
@@ -307,9 +311,9 @@ export class OrderService {
   /**
    * 取消订单
    */
-  async cancelOrder(orderId: number, userId: number): Promise<OrderCancelResultDto> {
+  async cancelOrder(orderId: number, userId: number, userRole?: string): Promise<OrderCancelResultDto> {
     const transaction = await sequelize.transaction();
-    
+
     try {
       const order = await Order.findByPk(orderId, {
         include: [
@@ -334,7 +338,10 @@ export class OrderService {
         throw new NotFoundError('订单不存在');
       }
 
-      if (order.user_id !== userId) {
+      // 买家只能取消自己的订单，商家只能取消自己商品的订单
+      const isBuyer = order.user_id === userId;
+      const isMerchant = userRole === 'merchant' && order.merchant_id === userId;
+      if (!isBuyer && !isMerchant) {
         throw new AuthorizationError('只能取消自己的订单');
       }
 
