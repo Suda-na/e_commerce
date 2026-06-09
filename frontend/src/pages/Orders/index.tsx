@@ -148,6 +148,25 @@ const OrdersPage: React.FC = () => {
     setDetailVisible(true);
   };
 
+  const handlePayOrder = async (id: number) => {
+    modal.confirm({
+      title: '确认模拟支付',
+      content: '确认将该订单标记为已支付？',
+      onOk: async () => {
+        try {
+          await orderService.payOrder(id);
+          message.success('支付成功');
+          refreshList();
+          if (detailVisible && currentOrder?.id === id) {
+            dispatch(fetchOrder(id));
+          }
+        } catch (error: any) {
+          message.error(error?.response?.data?.message || error?.message || '支付失败');
+        }
+      },
+    });
+  };
+
   const handleCancelOrder = async (id: number) => {
     modal.confirm({
       title: '确认取消订单',
@@ -601,9 +620,14 @@ const OrdersPage: React.FC = () => {
           currentOrder ? (
             <Space>
               {currentOrder.status === 'pending' && (
-                <Button danger onClick={() => { handleCancelOrder(currentOrder.id); setDetailVisible(false); }}>
-                  取消订单
-                </Button>
+                <>
+                  <Button danger onClick={() => { handleCancelOrder(currentOrder.id); setDetailVisible(false); }}>
+                    取消订单
+                  </Button>
+                  <Button type="primary" onClick={() => { handlePayOrder(currentOrder.id); setDetailVisible(false); }}>
+                    模拟支付
+                  </Button>
+                </>
               )}
               {currentOrder.status === 'paid' && (
                 <Button type="primary" icon={<SendOutlined />} onClick={() => { setDetailVisible(false); handleOpenShipModal(currentOrder.id); }}>
