@@ -51,23 +51,6 @@ const OrderDetailPage: React.FC = () => {
     };
   }, [dispatch, id]);
 
-  const handlePayOrder = async () => {
-    if (!order) return;
-    modal.confirm({
-      title: '确认模拟支付',
-      content: '这是一个演示功能，将模拟完成支付流程',
-      onOk: async () => {
-        try {
-          await orderService.payOrder(order.id);
-          message.success('支付成功');
-          dispatch(fetchOrder(order.id));
-        } catch (error: any) {
-          message.error(error || '支付失败');
-        }
-      },
-    });
-  };
-
   const handleCancelOrder = async () => {
     if (!order) return;
     modal.confirm({
@@ -141,13 +124,6 @@ const OrderDetailPage: React.FC = () => {
                 onClick={handleCancelOrder}
               >
                 取消订单
-              </Button>
-              <Button
-                type="primary"
-                icon={<DollarOutlined />}
-                onClick={handlePayOrder}
-              >
-                模拟支付
               </Button>
             </>
           )}

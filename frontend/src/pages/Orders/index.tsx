@@ -148,22 +148,6 @@ const OrdersPage: React.FC = () => {
     setDetailVisible(true);
   };
 
-  const handlePayOrder = async (id: number) => {
-    modal.confirm({
-      title: '确认模拟支付',
-      content: '这是一个演示功能，将模拟完成支付流程',
-      onOk: async () => {
-        try {
-          await orderService.payOrder(id);
-          message.success('支付成功');
-          refreshList();
-        } catch (error: any) {
-          message.error(error || '支付失败');
-        }
-      },
-    });
-  };
-
   const handleCancelOrder = async (id: number) => {
     modal.confirm({
       title: '确认取消订单',
@@ -637,10 +621,7 @@ const OrdersPage: React.FC = () => {
                     同意退款
                   </Button>
                   <Button icon={<CloseCircleOutlined />} onClick={() => { setDetailVisible(false); handleOpenRefundModal(currentOrder.id, 'reject'); }}>
-                    拒绝退款
-                  </Button>
-                </>
-              )}
+                
               <Button icon={<EditOutlined />} onClick={() => { setDetailVisible(false); handleOpenRemarkModal(currentOrder); }}>
                 备注
               </Button>
