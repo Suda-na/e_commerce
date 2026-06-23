@@ -104,11 +104,15 @@ Component({
       this._handlers = {
         time_extended: this.onTimeExtended.bind(this),
         new_bid: this.onNewBid.bind(this),
+        auction_ended: this.onAuctionEnded.bind(this),
+        cap_price_reached: this.onCapPriceReached.bind(this),
       }
 
       try {
         sm.on('time_extended', this._handlers.time_extended)
         sm.on('new_bid', this._handlers.new_bid)
+        sm.on('auction_ended', this._handlers.auction_ended)
+        sm.on('cap_price_reached', this._handlers.cap_price_reached)
       } catch (error) {
         console.error('[AuctionCard] Error setting up socket listeners:', error)
         this._handlers = null
@@ -122,6 +126,8 @@ Component({
       try {
         sm.off('time_extended', this._handlers.time_extended)
         sm.off('new_bid', this._handlers.new_bid)
+        sm.off('auction_ended', this._handlers.auction_ended)
+        sm.off('cap_price_reached', this._handlers.cap_price_reached)
       } catch (error) {
         console.error('[AuctionCard] Error removing socket listeners:', error)
       } finally {
@@ -169,21 +175,89 @@ Component({
       const { auction } = this.properties
       if (!auction || String(data.auctionId) !== String(auction.id)) return
 
+      const newPrice = Number(data.currentPrice ?? data.amount ?? 0)
+      const startPrice = Number(auction.startPrice ?? auction.start_price) || 0
+      const displayPrice = newPrice > 0 ? newPrice : startPrice
+
+      // 更新价格显示
+      this.setData({
+        priceText: `¥${displayPrice.toLocaleString()}`,
+        hasBid: newPrice > 0 && newPrice !== startPrice,
+      })
+
       // 更新 endTime（如果出价触发了延时）
       const endTime = data.endTime
       if (endTime) {
         const endTs = typeof endTime === 'number' ? endTime : new Date(endTime).getTime()
         if (!isNaN(endTs)) {
-          this.properties.auction = { ...auction, endTime: endTs }
+          this.properties.auction = { ...auction, endTime: endTs, currentPrice: newPrice }
         }
+      } else {
+        this.properties.auction = { ...auction, currentPrice: newPrice }
       }
+
+      // 出价达到封顶价时立即更新状态
+      if (data.isCompleted) {
+        this.setData({
+          statusText: '已结束',
+          statusClass: 'status-ended',
+          timeLeft: '已结束',
+        })
+        this.stopCountdownTimer()
+      }
+    },
+
+    // 竞拍结束事件
+    onAuctionEnded(data: any) {
+      const { auction } = this.properties
+      if (!auction || String(data.auctionId) !== String(auction.id)) return
+
+      const finalPrice = Number(data.finalPrice ?? data.currentPrice ?? auction.currentPrice ?? 0)
+      const startPrice = Number(auction.startPrice ?? auction.start_price) || 0
+      const displayPrice = finalPrice > 0 ? finalPrice : startPrice
+
+      this.properties.auction = { ...auction, status: 'completed', currentPrice: finalPrice }
+      this.setData({
+        statusText: '已结束',
+        statusClass: 'status-ended',
+        timeLeft: '已结束',
+        priceText: `¥${displayPrice.toLocaleString()}`,
+        hasBid: finalPrice > 0 && finalPrice !== startPrice,
+      })
+      this.stopCountdownTimer()
+    },
+
+    // 封顶价达到事件
+    onCapPriceReached(data: any) {
+      const { auction } = this.properties
+      if (!auction || String(data.auctionId) !== String(auction.id)) return
+
+      const finalPrice = Number(data.finalPrice ?? data.currentPrice ?? auction.capPrice ?? auction.currentPrice ?? 0)
+      const startPrice = Number(auction.startPrice ?? auction.start_price) || 0
+      const displayPrice = finalPrice > 0 ? finalPrice : startPrice
+
+      this.properties.auction = { ...auction, status: 'completed', currentPrice: finalPrice }
+      this.setData({
+        statusText: '已结束',
+        statusClass: 'status-ended',
+        timeLeft: '已结束',
+        priceText: `¥${displayPrice.toLocaleString()}`,
+        hasBid: finalPrice > 0 && finalPrice !== startPrice,
+      })
+      this.stopCountdownTimer()
     },
 
     // ==================== 倒计时 ====================
 
     updateCountdown() {
       const { auction } = this.properties
-      if (!auction || auction.status !== 'active' || !auction.endTime) {
+      if (!auction || !auction.endTime) {
+        this.setData({ timeLeft: '' })
+        return
+      }
+
+      // 已结束的竞拍直接显示
+      if (auction.status !== 'active') {
         this.setData({ timeLeft: '' })
         return
       }
@@ -195,7 +269,13 @@ Component({
       const diff = end - now
 
       if (diff <= 0) {
-        this.setData({ timeLeft: '已结束' })
+        // 倒计时归零，立即在本地结束竞拍，不等后端确认
+        this.properties.auction = { ...auction, status: 'completed' }
+        this.setData({
+          timeLeft: '已结束',
+          statusText: '已结束',
+          statusClass: 'status-ended',
+        })
         this.stopCountdownTimer()
         return
       }

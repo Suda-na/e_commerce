@@ -119,21 +119,21 @@ export class BidService {
 
         // 8. 同步更新数据库中的竞拍记录（确保 current_price 和 winner_id 一致）
         // 注意：必须使用原始 amount 而非 bidResult.currentPrice，因为 Redis Lua 返回的数值可能存在精度问题
-        if (!bidResult.isCompleted) {
-          try {
-            await Auction.update({
-              current_price: amount,
-              winner_id: bidResult.winnerId,
-              end_time: new Date(bidResult.endTime),
-            }, {
-              where: { id: auctionId, status: 'active' },
-            });
-          } catch (updateError) {
-            logger.error('Sync auction record after bid failed:', updateError);
-          }
+        // 无论是否达到封顶价，都需要更新 current_price 和 winner_id，确保数据一致性
+        // status 由 handleAuctionCompleted 统一处理
+        try {
+          await Auction.update({
+            current_price: amount,
+            winner_id: bidResult.winnerId,
+            end_time: new Date(bidResult.endTime),
+          }, {
+            where: { id: auctionId, status: 'active' },
+          });
+        } catch (updateError) {
+          logger.error('Sync auction record after bid failed:', updateError);
         }
 
-        // 9. 如果竞拍结束，异步处理结束逻辑
+        // 9. 如果竞拍结束，处理结束逻辑（更新状态、创建订单、清理缓存等）
         if (bidResult.isCompleted) {
           await this.handleAuctionCompleted(auctionId, userId, amount);
         }

@@ -112,7 +112,7 @@ class BidService {
         cleanup()
         resolve({
           success: false,
-          error: data.message || '出价失败'
+          error: data.message || data.error || '出价失败'
         })
       }
 

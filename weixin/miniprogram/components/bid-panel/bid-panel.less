@@ -352,6 +352,46 @@
   }
 }
 
+/* ==================== 封顶价提示 ==================== */
+
+.cap-price-notice {
+  display: flex;
+  align-items: center;
+  gap: @spacing-xs;
+  margin: @spacing-sm @spacing-md + @spacing-sm;
+  padding: @spacing-sm @spacing-md;
+  background: linear-gradient(135deg, #fff1f0 0%, #fff7e6 100%);
+  border-radius: @border-radius-md;
+  border: @border-width-thin solid #ffccc7;
+}
+
+.cap-price-icon {
+  font-size: @font-size-sm;
+  flex-shrink: 0;
+}
+
+.cap-price-label {
+  font-size: @font-size-sm;
+  color: @text-color-secondary;
+  font-weight: @font-weight-medium;
+  flex-shrink: 0;
+}
+
+.cap-price-value {
+  font-size: @font-size-lg;
+  color: #CF1322;
+  font-weight: @font-weight-heavy;
+  font-family: 'DIN Alternate', 'Roboto Condensed', Arial, sans-serif;
+  flex-shrink: 0;
+}
+
+.cap-price-hint {
+  font-size: @font-size-xs;
+  color: @text-color-disabled;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
 /* ==================== 智能提示 ==================== */
 
 .smart-tip {

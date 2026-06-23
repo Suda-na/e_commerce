@@ -712,7 +712,7 @@ export const buildUrlParams = (params: Record<string, any>): string => {
 
 // ==================== 头像代理 ====================
 
-const AVATAR_PROXY_BASE = 'https://www.sudaworld.xyz/api/auth/avatar-proxy'
+const AVATAR_PROXY_BASE = 'http://localhost:3001/api/auth/avatar-proxy'
 
 /**
  * 将外部头像URL转为后端代理URL，解决小程序白名单限制

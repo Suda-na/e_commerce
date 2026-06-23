@@ -226,11 +226,9 @@ Component({
     },
     
     /**
-     * 查看订单
+     * 确认（关闭弹窗）
      */
     onViewOrder() {
-      const { result } = this.data
-      this.triggerEvent('viewOrder', { auctionId: result.auctionId })
       this.onClose()
     }
   }

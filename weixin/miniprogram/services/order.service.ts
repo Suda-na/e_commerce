@@ -107,6 +107,13 @@ class OrderService {
     return transformOrderData(data)
   }
 
+  // 通过竞拍ID查找对应的中标订单
+  async getOrderByAuctionId(auctionId: string): Promise<any> {
+    const res = await request.get<any>(`/orders/auction/${auctionId}`)
+    const data = res.data?.data || res.data
+    return transformOrderData(data)
+  }
+
   // 创建订单
   async createOrder(params: CreateOrderParams): Promise<any> {
     const res = await request.post<any>('/orders', params)

@@ -72,6 +72,28 @@ export const orderController = {
   },
 
   /**
+   * 通过竞拍ID获取中标订单
+   */
+  async getOrderByAuctionId(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      if (!req.user) {
+        throw new AuthenticationError('未认证');
+      }
+
+      const auctionId = parseInt(req.params.auctionId);
+      if (isNaN(auctionId)) {
+        throw new ValidationError('无效的竞拍ID');
+      }
+
+      const order = await orderService.getOrderByAuctionId(auctionId, req.user.userId, req.user.role);
+
+      successResponse(res, order);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  /**
    * 模拟支付订单
    */
   async payOrder(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {

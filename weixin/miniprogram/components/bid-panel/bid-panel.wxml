@@ -114,6 +114,14 @@
         </view>
       </view>
     </view>
+
+    <!-- 封顶价提示 -->
+    <view class="cap-price-notice" wx:if="{{auction.capPrice}}">
+      <text class="cap-price-icon">🚫</text>
+      <text class="cap-price-label">封顶价</text>
+      <text class="cap-price-value">¥{{auction.capPrice}}</text>
+      <text class="cap-price-hint">出价不可超过此价格</text>
+    </view>
     
     <!-- 智能提示 -->
     <view class="smart-tip tip-{{tipType}}">

@@ -12,8 +12,8 @@ App<IAppOption>({
     userInfo: null,
     isLoggedIn: false,
     token: '',
-    baseUrl: 'https://www.sudaworld.xyz/api', // API地址
-    socketUrl: 'wss://www.sudaworld.xyz', // WebSocket地址
+    baseUrl: 'http://localhost:3001/api', // API地址
+    socketUrl: 'ws://localhost:3001', // WebSocket地址
     systemInfo: null,
     unreadCount: 0, // 全局未读消息数
     _unreadPollingTimer: null as any, // 未读消息轮询定时器

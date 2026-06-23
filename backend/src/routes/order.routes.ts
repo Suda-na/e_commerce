@@ -172,6 +172,22 @@ router.get('/stats',
 );
 
 /**
+ * @route GET /api/orders/auction/:auctionId
+ * @desc 通过竞拍ID获取中标订单
+ * @access Private (需要认证)
+ */
+router.get('/auction/:auctionId',
+  authenticate,
+  requirePermission('order:read'),
+  apiRateLimit,
+  param('auctionId')
+    .isInt({ min: 1 })
+    .withMessage('无效的竞拍ID')
+    .toInt(),
+  asyncHandler(orderController.getOrderByAuctionId)
+);
+
+/**
  * @route GET /api/orders/:id
  * @desc 获取订单详情
  * @access Private (需要认证)

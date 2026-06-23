@@ -38,8 +38,8 @@ const createProductValidation = [
     .isURL({ require_tld: false, protocols: ['http', 'https'] })
     .withMessage('商品图片必须是有效的URL'),
   body('starting_price')
-    .isFloat({ min: 0.01, max: 99999999.99 })
-    .withMessage('起拍价必须在0.01-99999999.99之间')
+    .isFloat({ min: 0, max: 99999999.99 })
+    .withMessage('起拍价必须在0-99999999.99之间')
     .toFloat(),
   body('price_increment')
     .isFloat({ min: 0.01, max: 999999.99 })
@@ -138,8 +138,8 @@ const updateProductValidation = [
     .withMessage('商品图片必须是有效的URL'),
   body('starting_price')
     .optional()
-    .isFloat({ min: 0.01, max: 99999999.99 })
-    .withMessage('起拍价必须在0.01-99999999.99之间')
+    .isFloat({ min: 0, max: 99999999.99 })
+    .withMessage('起拍价必须在0-99999999.99之间')
     .toFloat(),
   body('price_increment')
     .optional()

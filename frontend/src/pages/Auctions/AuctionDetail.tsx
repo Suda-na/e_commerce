@@ -46,6 +46,7 @@ import {
   updateCurrentPrice,
   updateOnlineCount,
   updateParticipantCount,
+  updateAuctionStatus,
   updateEndTime,
 } from '../../store/slices/auctionSlice';
 import { formatPrice, formatDate, statusColors, auctionStatusLabels, formatCountdown } from '../../utils/hooks';
@@ -167,6 +168,14 @@ const AuctionDetailPage: React.FC = () => {
 
     const handleAuctionEnded = (data: any) => {
       if (data.auctionId === auctionId) {
+        // 立即更新 Redux 状态，避免等待 API 请求延迟
+        if (currentAuction) {
+          dispatch(updateCurrentPrice({
+            price: data.finalPrice ?? data.currentPrice ?? currentAuction.currentPrice,
+            bidCount: currentAuction.bidCount,
+          }));
+        }
+        // 重新从后端获取完整数据
         dispatch(fetchAuction(auctionId));
         dispatch(fetchLeaderboard(auctionId));
         message.info('竞拍已结束！');
@@ -213,6 +222,21 @@ const AuctionDetailPage: React.FC = () => {
       }
     };
 
+    const handleCapPriceReached = (data: any) => {
+      if (data.auctionId === auctionId) {
+        // 立即更新 Redux 状态
+        if (currentAuction) {
+          dispatch(updateCurrentPrice({
+            price: data.finalPrice ?? data.currentPrice ?? currentAuction.currentPrice,
+            bidCount: currentAuction.bidCount,
+          }));
+        }
+        dispatch(fetchAuction(auctionId));
+        dispatch(fetchLeaderboard(auctionId));
+        message.success('已达到封顶价，竞拍自动成交！');
+      }
+    };
+
     socketService.on('new_bid', handleNewBid);
     socketService.on('leaderboard_update', handleLeaderboardUpdate);
     socketService.on('auction_update', handleAuctionUpdate);
@@ -222,6 +246,7 @@ const AuctionDetailPage: React.FC = () => {
     socketService.on('auction_ended', handleAuctionEnded);
     socketService.on('time_extended', handleTimeExtended);
     socketService.on('outbid', handleOutbid);
+    socketService.on('cap_price_reached', handleCapPriceReached);
 
     return () => {
       socketService.leaveAuction(auctionId);
@@ -234,6 +259,7 @@ const AuctionDetailPage: React.FC = () => {
       socketService.off('auction_ended', handleAuctionEnded);
       socketService.off('time_extended', handleTimeExtended);
       socketService.off('outbid', handleOutbid);
+      socketService.off('cap_price_reached', handleCapPriceReached);
       setSocketConnected(false);
     };
   }, [auctionId, token, dispatch]);
@@ -249,6 +275,9 @@ const AuctionDetailPage: React.FC = () => {
 
         if (diff <= 0 && timerRef.current) {
           clearInterval(timerRef.current);
+          // 倒计时归零，立即在本地结束竞拍，不等后端确认
+          dispatch(updateAuctionStatus('completed'));
+          // 同时从后端获取完整数据
           dispatch(fetchAuction(auctionId));
         }
       };

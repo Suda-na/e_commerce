@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { AuctionState, Auction, LeaderboardEntry } from '../../types';
+import { AuctionState, Auction, AuctionStatus, LeaderboardEntry } from '../../types';
 import { auctionService } from '../../services/auction.service';
 
 const initialState: AuctionState = {
@@ -122,6 +122,11 @@ const auctionSlice = createSlice({
         state.currentAuction.bidCount = action.payload.bidCount;
       }
     },
+    updateAuctionStatus(state, action: PayloadAction<AuctionStatus>) {
+      if (state.currentAuction) {
+        state.currentAuction.status = action.payload;
+      }
+    },
     updateEndTime(state, action: PayloadAction<string>) {
       if (state.currentAuction) {
         state.currentAuction.endTime = action.payload;
@@ -176,5 +181,5 @@ const auctionSlice = createSlice({
   },
 });
 
-export const { clearCurrentAuction, clearError, updateLeaderboard, updateOnlineCount, updateParticipantCount, updateCurrentPrice, updateEndTime } = auctionSlice.actions;
+export const { clearCurrentAuction, clearError, updateLeaderboard, updateOnlineCount, updateParticipantCount, updateCurrentPrice, updateAuctionStatus, updateEndTime } = auctionSlice.actions;
 export default auctionSlice.reducer;

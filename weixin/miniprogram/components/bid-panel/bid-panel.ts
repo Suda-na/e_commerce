@@ -133,6 +133,9 @@ Component({
       const myLastBid = auction.myLastBid || 0
       
       const minBid = currentPrice + priceStep
+      // 封顶价限制：初始出价不超过封顶价
+      const maxBid = capPrice != null ? capPrice : Infinity
+      const initialBid = Math.min(minBid, maxBid)
       
       const quickAddOptions = [
         priceStep,
@@ -142,8 +145,8 @@ Component({
       ]
       
       this.setData({
-        bidAmount: minBid,
-        bidAmountText: minBid.toString(),
+        bidAmount: initialBid,
+        bidAmountText: initialBid.toString(),
         quickAddOptions,
         myBidAmount: myLastBid,
         errorMessage: '',
@@ -208,11 +211,17 @@ Component({
     // 输入出价金额
     onBidInput(e: WechatMiniprogram.Input) {
       const value = e.detail.value
-      const amount = parseFloat(value) || 0
+      let amount = parseFloat(value) || 0
+      
+      // 封顶价限制：输入金额不超过封顶价
+      const { auction } = this.data
+      if (auction.capPrice && amount > auction.capPrice) {
+        amount = auction.capPrice
+      }
       
       this.setData({
         bidAmount: amount,
-        bidAmountText: value,
+        bidAmountText: amount === auction.capPrice ? amount.toString() : value,
         errorMessage: ''
       })
       
@@ -329,7 +338,12 @@ Component({
     // 增加金额
     onTapIncrease() {
       const { bidAmount, auction } = this.data
-      const newAmount = bidAmount + auction.priceStep
+      let newAmount = bidAmount + auction.priceStep
+      
+      // 封顶价限制：增加后不超过封顶价
+      if (auction.capPrice && newAmount > auction.capPrice) {
+        newAmount = auction.capPrice
+      }
       
       this.setData({
         bidAmount: newAmount,
@@ -414,7 +428,12 @@ Component({
     onTapQuickAdd(e: WechatMiniprogram.TouchEvent) {
       const { amount } = e.currentTarget.dataset
       const { auction } = this.data
-      const newAmount = auction.currentPrice + amount
+      let newAmount = auction.currentPrice + amount
+      
+      // 封顶价限制：快捷加价不超过封顶价
+      if (auction.capPrice && newAmount > auction.capPrice) {
+        newAmount = auction.capPrice
+      }
       
       this.setData({
         bidAmount: newAmount,
@@ -509,6 +528,17 @@ Component({
       let timeLeftText = ''
       if (timeLeft <= 0) {
         timeLeftText = '已结束'
+        // 倒计时归零，立即在本地结束竞拍，不等后端确认
+        if (auction.status === 'active' || this.data.bidStatus !== 'ended') {
+          this.setData({
+            bidStatus: 'ended',
+            'auction.status': 'ended',
+            tipType: 'ended',
+            tipIcon: '⏰',
+            tipText: '竞拍已结束',
+          })
+          this.stopCountdown()
+        }
       } else if (timeLeft < 60) {
         timeLeftText = `${timeLeft}秒`
       } else if (timeLeft < 3600) {
@@ -611,7 +641,8 @@ Component({
 
       const updates: any = {
         'auction.currentPrice': data.amount,
-        'auction.bidCount': (auction.bidCount || 0) + 1
+        'auction.bidCount': data.bidCount ?? (auction.bidCount || 0) + 1,
+        'auction.participantCount': data.participantCount ?? auction.participantCount
       }
 
       if (data.endTime) {
@@ -624,10 +655,12 @@ Component({
 
       // 重新计算出价金额
       const minBid = data.amount + auction.priceStep
+      const maxBid = auction.capPrice || Infinity
+      const newBidAmount = Math.min(minBid, maxBid)
       if (this.data.bidAmount < minBid) {
         this.setData({
-          bidAmount: minBid,
-          bidAmountText: minBid.toString()
+          bidAmount: newBidAmount,
+          bidAmountText: newBidAmount.toString()
         })
       }
 
@@ -670,10 +703,12 @@ Component({
       
       // 重新计算出价金额
       const minBid = data.currentPrice + auction.priceStep
+      const maxBid = auction.capPrice || Infinity
+      const newBidAmount = Math.min(minBid, maxBid)
       if (this.data.bidAmount < minBid) {
         this.setData({
-          bidAmount: minBid,
-          bidAmountText: minBid.toString()
+          bidAmount: newBidAmount,
+          bidAmountText: newBidAmount.toString()
         })
       }
       
@@ -754,10 +789,12 @@ Component({
 
       // 重新计算出价金额
       const minBid = data.currentPrice + auction.priceStep
+      const maxBid = auction.capPrice || Infinity
+      const newBidAmount = Math.min(minBid, maxBid)
       if (this.data.bidAmount < minBid) {
         this.setData({
-          bidAmount: minBid,
-          bidAmountText: minBid.toString()
+          bidAmount: newBidAmount,
+          bidAmountText: newBidAmount.toString()
         })
       }
 
@@ -872,10 +909,20 @@ Component({
 
           this.setData(successUpdates)
 
-          // 达到封顶价时停止倒计时，等待 auction_ended 事件显示结果弹窗
+          // 达到封顶价时停止倒计时，当前用户即为中标者，直接显示结果弹窗
           if (result.isCompleted) {
             this.stopCountdown()
             wx.vibrateShort({ type: 'heavy' })
+            // 封顶价成交：当前出价用户即为中标者，直接用当前用户信息展示结果
+            const myUserId = wx.getStorageSync('userId') || ''
+            setTimeout(() => {
+              this.showAuctionResult({
+                finalPrice: result.newPrice || bidAmount,
+                winnerId: myUserId,
+                winnerNickname: wx.getStorageSync('nickname') || '',
+                status: 'completed'
+              })
+            }, 500)
             return
           }
 
@@ -927,11 +974,20 @@ Component({
           errorMsg = error.message
         }
         
+        // 识别封顶价相关错误并给出明确提示
+        const { auction, bidAmount } = this.data
+        if (auction.capPrice && bidAmount > auction.capPrice) {
+          errorMsg = `出价不能超过封顶价 ¥${auction.capPrice.toLocaleString()}`
+        }
+        
         // 出价失败
         this.setData({
           bidStatus: 'error',
           errorMessage: errorMsg,
-          shakeAnimation: true
+          shakeAnimation: true,
+          tipType: 'cap-warning',
+          tipIcon: '🚫',
+          tipText: errorMsg
         })
         
         // 振动反馈
@@ -1230,8 +1286,12 @@ Component({
       const { bidSuggestion, auction } = this.data
       if (!bidSuggestion || !auction) return
 
-      const suggestedBid = bidSuggestion.suggestedBid
+      let suggestedBid = bidSuggestion.suggestedBid
       if (suggestedBid && suggestedBid > auction.currentPrice) {
+        // 封顶价限制：AI建议出价不超过封顶价
+        if (auction.capPrice && suggestedBid > auction.capPrice) {
+          suggestedBid = auction.capPrice
+        }
         this.setData({
           bidAmount: suggestedBid,
           bidAmountText: suggestedBid.toString(),

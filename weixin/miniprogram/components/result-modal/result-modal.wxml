@@ -47,7 +47,7 @@
           <text>确认并支付</text>
         </button>
         <button class="btn btn-secondary" bind:tap="onViewOrder">
-          <text>查看订单</text>
+          <text>确认</text>
         </button>
       </view>
     </block>

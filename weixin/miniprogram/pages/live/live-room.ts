@@ -988,13 +988,57 @@ Page({
     }
   },
 
+  /** 中标后 - 确认并支付：跳转订单详情页 */
+  onBidPanelPay(e: WechatMiniprogram.CustomEvent) {
+    const { auctionId, amount } = e.detail || {}
+    console.log('[LiveRoom] 确认并支付:', auctionId, amount)
+
+    // 关闭出价面板
+    this.setData({ showBidPanel: false, selectedAuction: null })
+
+    // 跳转到订单详情页（通过 auctionId 查找对应订单）
+    wx.navigateTo({
+      url: `/pages/orders/detail?auctionId=${auctionId}&action=pay`
+    })
+  },
+
+  /** 中标后 - 查看订单：跳转订单详情页 */
+  onBidPanelViewOrder(e: WechatMiniprogram.CustomEvent) {
+    const { auctionId } = e.detail || {}
+    console.log('[LiveRoom] 查看订单:', auctionId)
+
+    // 关闭出价面板
+    this.setData({ showBidPanel: false, selectedAuction: null })
+
+    // 跳转到订单详情页
+    wx.navigateTo({
+      url: `/pages/orders/detail?auctionId=${auctionId}`
+    })
+  },
+
+  /** 未中标 - 继续围观：关闭结果弹窗即可 */
+  onBidPanelContinue() {
+    console.log('[LiveRoom] 继续围观')
+    // 结果弹窗内部会自行关闭，这里只需记录日志
+  },
+
+  /** 关闭竞拍结果弹窗 */
+  onBidPanelResultClose() {
+    console.log('[LiveRoom] 结果弹窗关闭')
+  },
+
   /** 倒计时结束 */
   onCountdownFinish() {
     console.log('[LiveRoom] 竞拍倒计时结束')
-    this.setData({ 
+    // 倒计时归零，立即在本地结束竞拍，不等后端确认
+    const { currentAuction } = this.data
+    this.setData({
       liveStatus: 'ended',
       countdownText: '已结束',
       countdownTimeLeft: 0,
+      'currentAuction.status': 'ended',
+      'currentAuction.statusText': '已结束',
+      activeAuctionCount: 0,
     })
   },
 
@@ -1029,8 +1073,8 @@ Page({
     if (timeLeft <= 0) {
       countdownText = '已结束'
       this.stopCountdown()
-      // 延迟触发结束，避免竞态
-      setTimeout(() => this.onCountdownFinish(), 1000)
+      // 立即触发结束
+      this.onCountdownFinish()
     } else if (timeLeft < 60) {
       countdownText = `${timeLeft}秒`
     } else if (timeLeft < 3600) {

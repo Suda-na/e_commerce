@@ -210,11 +210,15 @@ Component({
       this._socketHandlers = {
         time_extended: this.onTimeExtended.bind(this),
         new_bid: this.onSocketNewBid.bind(this),
+        auction_ended: this.onAuctionEnded.bind(this),
+        cap_price_reached: this.onCapPriceReached.bind(this),
       }
 
       try {
         sm.on('time_extended', this._socketHandlers.time_extended)
         sm.on('new_bid', this._socketHandlers.new_bid)
+        sm.on('auction_ended', this._socketHandlers.auction_ended)
+        sm.on('cap_price_reached', this._socketHandlers.cap_price_reached)
       } catch (error) {
         console.error('[AuctionDetailSheet] Error setting up socket listeners:', error)
         this._socketHandlers = null
@@ -228,6 +232,8 @@ Component({
       try {
         sm.off('time_extended', this._socketHandlers.time_extended)
         sm.off('new_bid', this._socketHandlers.new_bid)
+        sm.off('auction_ended', this._socketHandlers.auction_ended)
+        sm.off('cap_price_reached', this._socketHandlers.cap_price_reached)
       } catch (error) {
         console.error('[AuctionDetailSheet] Error removing socket listeners:', error)
       } finally {
@@ -269,9 +275,11 @@ Component({
       const { auction } = this.data
       if (!auction || String(data.auctionId) !== String(auction.id)) return
 
+      const newPrice = Number(data.currentPrice ?? data.amount ?? 0)
       const updates: any = {
-        'auction.currentPrice': Number(data.currentPrice ?? data.amount ?? 0),
+        'auction.currentPrice': newPrice,
         'auction.bidCount': (auction.bidCount || 0) + 1,
+        displayCurrentPrice: newPrice.toFixed(2),
       }
 
       if (data.participantCount !== undefined) {
@@ -287,8 +295,49 @@ Component({
         }
       }
 
+      // 出价达到封顶价时立即更新状态
+      if (data.isCompleted) {
+        updates['auction.status'] = 'completed'
+        updates['auction.statusText'] = '已结束'
+        this.clearCountdown()
+        updates['countdownText'] = '已结束'
+      }
+
       this.setData(updates)
       this.loadLeaderboard(auction.id)
+    },
+
+    // 竞拍结束事件
+    onAuctionEnded(data: any) {
+      const { auction } = this.data
+      if (!auction || String(data.auctionId) !== String(auction.id)) return
+
+      const finalPrice = Number(data.finalPrice ?? data.currentPrice ?? auction.currentPrice ?? 0)
+      this.setData({
+        'auction.status': 'completed',
+        'auction.statusText': '已结束',
+        'auction.currentPrice': finalPrice,
+        displayCurrentPrice: finalPrice.toFixed(2),
+        countdownText: '已结束',
+      })
+      this.clearCountdown()
+      this.loadLeaderboard(auction.id)
+    },
+
+    // 封顶价达到事件
+    onCapPriceReached(data: any) {
+      const { auction } = this.data
+      if (!auction || String(data.auctionId) !== String(auction.id)) return
+
+      const finalPrice = Number(data.finalPrice ?? data.currentPrice ?? auction.capPrice ?? auction.currentPrice ?? 0)
+      this.setData({
+        'auction.status': 'completed',
+        'auction.statusText': '已结束',
+        'auction.currentPrice': finalPrice,
+        displayCurrentPrice: finalPrice.toFixed(2),
+        countdownText: '已结束',
+      })
+      this.clearCountdown()
     },
 
     // 加载商家信息
@@ -340,7 +389,12 @@ Component({
         const diff = endTimeMs - now
         
         if (diff <= 0) {
-          this.setData({ countdownText: '已结束' })
+          // 倒计时归零，立即在本地结束竞拍，不等后端确认
+          this.setData({
+            countdownText: '已结束',
+            'auction.status': 'completed',
+            'auction.statusText': '已结束',
+          })
           this.clearCountdown()
           return
         }

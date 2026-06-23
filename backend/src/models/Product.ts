@@ -96,7 +96,7 @@ Product.init(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
       validate: {
-        min: 0.01,
+        min: 0,
       },
     },
     price_increment: {

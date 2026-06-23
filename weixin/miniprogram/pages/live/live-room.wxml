@@ -201,6 +201,10 @@
     auction="{{selectedAuction}}"
     bind:close="onCloseBidPanel"
     bind:success="onBidSuccess"
+    bind:pay="onBidPanelPay"
+    bind:viewOrder="onBidPanelViewOrder"
+    bind:continue="onBidPanelContinue"
+    bind:resultClose="onBidPanelResultClose"
   />
 
   <!-- ===== 加载状态 ===== -->

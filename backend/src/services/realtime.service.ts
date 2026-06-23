@@ -108,6 +108,33 @@ export class RealtimeService {
             } catch (error) {
               logger.error(`Auto-complete auction ${auctionId} failed:`, error);
             }
+          } else if (auction.status === 'completed') {
+            // 封顶价达到后Redis状态已为completed，但可能还在活跃集合中
+            // 广播结束事件并清理缓存，确保前端收到通知
+            try {
+              let winnerNickname = '';
+              try {
+                const leaderboard = await bidService.getLeaderboard(auctionId, 1);
+                const winnerId = auction.winner_id || 0;
+                const winnerEntry = leaderboard.find((entry: any) => entry.user_id === winnerId);
+                winnerNickname = winnerEntry?.username || '';
+              } catch (e) {
+                logger.warn(`Failed to get winner nickname for auction ${auctionId}:`, e);
+              }
+
+              await this.broadcastAuctionEnded(
+                auctionId,
+                auction.winner_id || 0,
+                auction.current_price || 0,
+                winnerNickname
+              );
+
+              // 清理缓存，从活跃集合中移除
+              await auctionService.completeAuction(auctionId).catch(() => {});
+              logger.info(`Auction ${auctionId} completed (cap price), cleaned up by scheduler`);
+            } catch (error) {
+              logger.error(`Cleanup completed auction ${auctionId} failed:`, error);
+            }
           } else {
             // 推送竞拍更新
             await this.broadcastAuctionUpdate(auctionId, {

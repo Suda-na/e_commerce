@@ -889,9 +889,9 @@ export class SocketManager {
   private getUrl(): string {
     try {
       const app = getApp<IAppOption>();
-      return app.globalData.socketUrl || 'wss://www.sudaworld.xyz';
+      return app.globalData.socketUrl || 'ws://localhost:3001';
     } catch (e) {
-      return 'wss://www.sudaworld.xyz';
+      return 'ws://localhost:3001';
     }
   }
 

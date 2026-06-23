@@ -25,7 +25,7 @@ export class CreateProductDto {
   images?: string[];
 
   @IsNumber()
-  @Min(0.01)
+  @Min(0)
   @Max(99999999.99)
   @Type(() => Number)
   starting_price!: number;
@@ -127,7 +127,7 @@ export class UpdateProductDto {
 
   @IsOptional()
   @IsNumber()
-  @Min(0.01)
+  @Min(0)
   @Max(99999999.99)
   @Type(() => Number)
   starting_price?: number;

@@ -41,11 +41,13 @@ Page({
     // 支付中
     paying: false,
     // 取消中
-    cancelling: false
+    cancelling: false,
+    // 是否来自"确认并支付"跳转（进入后自动触发支付）
+    payAction: false
   },
 
   onLoad(options: any) {
-    console.log('Order detail page loaded')
+    console.log('Order detail page loaded, options:', options)
     // 检查登录状态
     const app = getApp<IAppOption>()
     if (!app.globalData.isLoggedIn) {
@@ -61,9 +63,15 @@ Page({
       }, 1500)
       return
     }
+
+    // 支持两种方式进入：orderId 或 auctionId
     if (options.id) {
-      this.setData({ orderId: options.id })
+      this.setData({ orderId: options.id, payAction: options.action === 'pay' })
       this.loadOrderDetail(options.id)
+    } else if (options.auctionId) {
+      // 通过竞拍ID查找中标订单
+      this.setData({ payAction: options.action === 'pay' })
+      this.loadOrderByAuctionId(options.auctionId)
     } else {
       this.setData({ 
         loading: false,
@@ -73,9 +81,10 @@ Page({
   },
 
   onShow() {
-    // 页面显示时刷新数据
-    if (this.data.orderId && this.data.order) {
-      this.loadOrderDetail(this.data.orderId)
+    // 页面显示时刷新数据（仅当orderId为有效数字/字符串时）
+    const orderId = this.data.orderId
+    if (orderId && this.data.order && typeof orderId !== 'object') {
+      this.loadOrderDetail(String(orderId))
     }
   },
 
@@ -116,6 +125,61 @@ Page({
           error: '加载订单详情失败，请重试'
         })
       }
+    }
+  },
+
+  // 通过竞拍ID加载对应的中标订单
+  async loadOrderByAuctionId(auctionId: string, retryCount = 0) {
+    this.setData({ loading: true, error: '' })
+
+    try {
+      const order = await orderService.getOrderByAuctionId(auctionId)
+      console.log('[OrderDetail] 通过auctionId获取订单:', auctionId, order)
+
+      if (!order || !order.id) {
+        // 订单可能还在创建中，自动重试
+        if (retryCount < 3) {
+          setTimeout(() => {
+            this.loadOrderByAuctionId(auctionId, retryCount + 1)
+          }, 1500)
+          return
+        }
+        this.setData({
+          loading: false,
+          error: '暂未生成订单，请稍后查看'
+        })
+        return
+      }
+
+      // 格式化订单数据用于显示
+      const orderDisplay = this.formatOrderForDisplay(order)
+
+      this.setData({
+        orderId: String(order.id),
+        order,
+        orderDisplay,
+        loading: false
+      })
+
+      // 如果来自"确认并支付"跳转，自动触发支付
+      if (this.data.payAction && order.status === 'pending') {
+        setTimeout(() => {
+          this.handlePayOrder()
+        }, 500)
+      }
+    } catch (error: any) {
+      console.error('通过竞拍ID加载订单失败:', error)
+      // 404可能是订单尚未创建，自动重试
+      if (retryCount < 3) {
+        setTimeout(() => {
+          this.loadOrderByAuctionId(auctionId, retryCount + 1)
+        }, 1500)
+        return
+      }
+      this.setData({
+        loading: false,
+        error: '加载订单失败，请稍后重试'
+      })
     }
   },
 

@@ -365,7 +365,7 @@ const ProductsPage: React.FC = () => {
               newPrice = batchPriceValue;
               break;
           }
-          newPrice = Math.max(0.01, newPrice);
+          newPrice = Math.max(0, newPrice);
           return dispatch(updateProduct({
             id: p.id,
             data: { startingPrice: newPrice },
@@ -1013,10 +1013,10 @@ const ProductsPage: React.FC = () => {
             label="起拍价 (元)"
             rules={[
               { required: true, message: '请输入起拍价' },
-              { type: 'number', min: 0.01, message: '起拍价必须大于0' },
+              { type: 'number', min: 0, message: '起拍价不能为负数' },
             ]}
           >
-            <InputNumber min={0.01} step={0.01} style={{ width: '100%' }} placeholder="0.00" />
+            <InputNumber min={0} step={0.01} style={{ width: '100%' }} placeholder="0.00" />
           </Form.Item>
         </Col>
         <Col xs={24} sm={8}>

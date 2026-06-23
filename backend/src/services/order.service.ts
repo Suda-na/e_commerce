@@ -191,6 +191,55 @@ export class OrderService {
   }
 
   /**
+   * 通过竞拍ID获取中标订单
+   */
+  async getOrderByAuctionId(auctionId: number, userId: number, userRole: string): Promise<OrderResponseDto> {
+    try {
+      const order = await Order.findOne({
+        where: { auction_id: auctionId },
+        include: [
+          {
+            model: Auction,
+            as: 'auction',
+            attributes: ['id', 'product_id', 'status', 'current_price', 'end_time'],
+            include: [
+              {
+                model: Product,
+                as: 'product',
+                attributes: ['id', 'name', 'images'],
+              },
+            ],
+          },
+          {
+            model: User,
+            as: 'user',
+            attributes: userRole === 'merchant'
+              ? ['id', 'username', 'avatar', 'receiver_name', 'receiver_phone', 'province', 'city', 'district', 'detail_address']
+              : ['id', 'username', 'avatar'],
+          },
+        ],
+      });
+
+      if (!order) {
+        throw new NotFoundError('该竞拍暂无订单');
+      }
+
+      if (userRole === 'user' && order.user_id !== userId) {
+        throw new AuthorizationError('只能查看自己的订单');
+      }
+
+      if (userRole === 'merchant' && order.merchant_id !== userId) {
+        throw new AuthorizationError('只能查看自己商品的订单');
+      }
+
+      return this.formatOrderResponse(order);
+    } catch (error) {
+      logger.error('Get order by auctionId failed:', error);
+      throw error;
+    }
+  }
+
+  /**
    * 模拟支付订单
    */
   async payOrder(orderId: number, userId: number, shippingAddress?: string, userRole?: string): Promise<OrderPayResultDto> {
